@@ -1,0 +1,127 @@
+#global_header_container {
+  // background-color: #1c8adb;
+  // background-color: #013b46;
+  background-color: #06575b;
+  color: white;
+  .nav-link {
+    color: white;
+  }
+  .nav-link:hover {
+    color: #c4dfe6;
+  }
+  #navbarSupportedContent {
+    margin-left: 5%;
+  }
+  #help4help_header_img {
+    width: 45px;
+    margin-left: 3%;
+    // border-radius: 100%;
+  }
+
+  #lupa_img {
+    width: 20px;
+  }
+
+  #user_avatar_img {
+    width: 30px;
+  }
+}
+
+.search_in_group {
+  border-radius: 100%;
+  .search_in {
+    border-radius: 2vw;
+    border: none;
+  }
+  .form-control:focus {
+    box-shadow: none;
+  }
+  .search_prepend_in {
+    background-color: white;
+    border-radius: 2vw;
+    border: none;
+  }
+}
+
+.navbar-nav {
+  width: 74%;
+  justify-content: space-around;
+  .dropdown-menu {
+    background-color: #06575b;
+  }
+  .dropdown-toggle::after {
+    color: white;
+  }
+  .dropdown-item {
+    color: white;
+  }
+  .dropdown-item.active,
+  .dropdown-item:active {
+    text-decoration: none;
+    background-color: transparent;
+  }
+  .dropdown-item:focus,
+  .dropdown-item:hover {
+    background-color: transparent;
+    color: #c4dfe6;
+  }
+}
+
+//mobile......................
+
+#global_header_mobile_container {
+  // background-color: #1c8adb;
+  // background-color: #013b46;
+  background-color: #06575b;
+  font-size: 4vw;
+  color: white;
+  .nav-link {
+    color: white;
+  }
+  .nav-link:hover {
+    color: #c4dfe6;
+  }
+  .navbar-toggler {
+    // width: 10vw;
+    // height: 6vw;
+    font-size: 4vw;
+  }
+
+  #navbarSupportedContent {
+    margin-left: 5%;
+  }
+  #help4help_header_img {
+    width: 74px;
+    margin-left: 5%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    // padding: 10%;
+    align-items: center;
+    // border-radius: 100%;
+  }
+  #lupa_img {
+    width: 20px;
+  }
+  #user_avatar_img {
+    width: 50px;
+  }
+}
+
+.search_in_mobile_group {
+  border-radius: 50%;
+  margin-top: 10px;
+  .search_in {
+    border-radius: 2vw;
+    border: none;
+    height: 8vw;
+    font-size: 5vw;
+  }
+  .form-control:focus {
+    box-shadow: none;
+  }
+  .search_prepend_in {
+    background-color: white;
+    border-radius: 2vw;
+    border: none;
+  }
+}

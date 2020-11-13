@@ -1,0 +1,157 @@
+#global_login_container {
+  background-color: #eaeaea;
+  margin-top: 2vw;
+  border-radius: 2vw;
+}
+.registration_ava_container {
+  display: flex;
+  align-items: center;
+  height: 84vh;
+  justify-content: center;
+  #registration_ava {
+    width: 24vw;
+  }
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+  .login_form_in {
+    width: 70%;
+    margin-left: 14%;
+    border-radius: 2vw;
+  }
+  .in_feedback {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+  .remember_check_in {
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+  }
+  .form-check-input {
+    position: relative;
+    // margin-top: 0.3rem;
+    // margin-left: 0rem;
+    margin-right: 0.3rem;
+    // width: 0.8vw;
+    // height: 3vh;
+  }
+
+  .in__label {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .login_form__title {
+    display: block;
+    align-items: center;
+    .title_content {
+      text-align: center;
+    }
+  }
+}
+
+.login_form_button_submit {
+  width: 40%;
+  margin-left: 30%;
+  border-radius: 30vw;
+}
+
+.registration_penitration {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4%;
+  justify-content: center;
+  text-align: center;
+  .dont_have_account {
+    margin-top: 26%;
+  }
+}
+
+//mobile..................
+
+#global_login_mobile_container {
+  background-color: #eaeaea;
+  margin-top: 4vw;
+  border-radius: 2vw;
+  font-size: 5vw;
+}
+
+.registration_ava_mobile_container {
+  display: flex;
+  align-items: center;
+  height: 16vh;
+  justify-content: center;
+  #registration_ava {
+    width: 24vw;
+  }
+}
+
+.login_mobile_form {
+  display: flex;
+  flex-direction: column;
+  height: 126vw;
+  .login_form_in {
+    width: 80%;
+    height: 6vh;
+    margin-left: 10%;
+    border-radius: 2vw;
+    font-size: 5vw;
+  }
+
+  .in__label {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+  .form_group {
+    margin-bottom: 6%;
+  }
+
+  .remember_check_in {
+    width: 100%;
+    text-align: center;
+  }
+  .form-check-input {
+    position: relative;
+    margin-top: 0.3rem;
+    margin-left: 0rem;
+    width: 4vw;
+    height: 4vw;
+  }
+
+  .login_form__title {
+    display: block;
+    align-items: center;
+    .title_content {
+      text-align: center;
+      font-size: 8vw;
+    }
+    margin-bottom: 3%;
+  }
+}
+
+.login_form_mobile_button_submit {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 2%;
+  height: 10vw;
+  border-radius: 2vw;
+  align-items: center;
+  font-size: 5vw;
+}
+
+.registration_mobile_penitration {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4%;
+  justify-content: center;
+  text-align: center;
+  .dont_have_account {
+    margin-top: 12%;
+  }
+}
