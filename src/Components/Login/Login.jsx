@@ -7,7 +7,7 @@ import registration_ava from "./../../images/registration_ava.png";
 import { InputGroup } from "react-bootstrap";
 import { email } from "../../utils/Validaters";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 // import { connect } from "react-redux";
 // import { LoginAuth } from "./../../Redux/Reducer/AuthReducer";
@@ -97,15 +97,17 @@ const Login = ({ mobile }) => {
                     }penitration`}
                   >
                     <div className="forgot_password_form">
-                      <a href="google.com">Forgot password?</a>
+                      <NavLink to="/restore" className="nav-link">
+                        Forgot Password
+                      </NavLink>
                     </div>
                     <div className="dont_have_account">
                       <span>
                         Dont have an account?
                         <br />
-                        <a href="google.com" className="text-primary">
+                        <NavLink to="/registration" className="nav-link">
                           Sign Up
-                        </a>
+                        </NavLink>
                       </span>
                     </div>
                   </div>

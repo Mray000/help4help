@@ -1,0 +1,55 @@
+#global_registration_container {
+  background-color: #06575b;
+  align-items: center;
+  text-align: center;
+  border-radius: 1vw;
+  margin-top: 2vw;
+  padding: 2vw;
+  color: white;
+}
+
+.registration_form_button_submit {
+  width: 100%;
+}
+
+.lessons_choice_container {
+  .draggable_elements {
+    .draggable_elements_1,
+    .draggable_elements_2 {
+      display: flex;
+    }
+    .draggable {
+      width: 20%;
+      border: teal solid 1px;
+      transition: 0.3s;
+    }
+    .draggable:hover {
+      opacity: 0.5;
+      cursor: move;
+    }
+    .draggable.dragged {
+      user-select: none;
+      opacity: 0.1;
+      cursor: default;
+    }
+  }
+  .droppable_elements {
+    display: flex;
+    .droppable {
+      // margin: 10%;
+      width: 50%;
+      height: 60px;
+      border: springgreen solid 1px;
+      display: flex;
+      .draggable {
+        width: 20%;
+        word-wrap: break-word;
+        border: teal solid 1px;
+        transition: 0.3s;
+      }
+    }
+    // .droppable.dropped {
+    //   font-size: 0px;
+    // }
+  }
+}

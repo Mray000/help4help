@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import { Form, Formik, Field } from "formik";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
@@ -34,8 +33,8 @@ const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
               let countDel = Math.ceil(message.length / 30);
               let i = 1;
               while (i <= countDel + 1) {
-                if (i !== countDel + 1) message.insert(i * 30 - i - 1, "\n");
-                else message.insert(i * 30 - i, "\n");
+                // if (i !== countDel + 1) message.insert(i * 30 - i, "\n");
+                message.insert(i * 30 - 1, "\n");
                 i++;
               }
               message = message.join("");
@@ -56,7 +55,6 @@ const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
                 component={TextField}
                 multiline
                 color="white"
-                currentColor="white"
                 name="preview_message"
                 placeholder="type..."
                 className="preview_add_message_in"

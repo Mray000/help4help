@@ -1,7 +1,9 @@
 #global_login_container {
-  background-color: #eaeaea;
+  // background-color: #eaeaea;
+  background-color: #06575b;
   margin-top: 2vw;
   border-radius: 2vw;
+  color: white;
 }
 .registration_ava_container {
   display: flex;
@@ -20,6 +22,10 @@
     width: 70%;
     margin-left: 14%;
     border-radius: 2vw;
+    border: none;
+  }
+  .form-control:focus {
+    box-shadow: none;
   }
   .in_feedback {
     width: 100%;
@@ -64,11 +70,11 @@
 .registration_penitration {
   display: flex;
   flex-direction: column;
-  margin-top: 4%;
+  margin-top: 1%;
   justify-content: center;
   text-align: center;
   .dont_have_account {
-    margin-top: 26%;
+    margin-top: 24%;
   }
 }
 

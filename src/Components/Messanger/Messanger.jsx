@@ -3,7 +3,7 @@ import DialogsList from "./DialogsList";
 import MessegeList from "./MessageList";
 import "./Messanger.scss";
 
-const Messanger2 = () => {
+const Messanger = () => {
   return (
     <div className="row h-100 global_messanger_container">
       <DialogsList />
@@ -13,4 +13,4 @@ const Messanger2 = () => {
   );
 };
 
-export default Messanger2;
+export default Messanger;

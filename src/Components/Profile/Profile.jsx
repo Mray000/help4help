@@ -1,54 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Profile.scss";
 import ava from "./../../images/ava.png";
-import { ReactMic } from "react-mic";
 
-const Profile = ({ user_ava = ava }) => {
+const Profile = ({
+  user_ava = "https://instamir.info/wp-content/uploads/2019/04/instami-avatarka-v-instagram-8.png",
+}) => {
   return (
     <div id="global_profile_container">
       <div className="row">
         <div className="col-6">
-          <img src={user_ava} alt="your avatar" className="avatar" />
+          <img src={user_ava} alt="profile_avatar" className="profile_avatar" />
+          <div>Name Surname</div>
         </div>
-        <div className="col-6">
-          <Example />
-        </div>
+        <div className="col-6">{/* <div>ewdf</div> */}</div>
       </div>
-    </div>
-  );
-};
-
-const Example = () => {
-  const [record, setRecord] = useState(false);
-
-  const changeRecord = () => {
-    setRecord(!record);
-  };
-
-  // onData(recordedBlob) {
-  //   console.log('chunk of real-time data is: ', recordedBlob);
-  // }
-
-  const onStop = (recordedBlob) => {
-    console.log("recordedBlob is: ", recordedBlob);
-  };
-
-  return (
-    <div style={{ width: "100%", height: "100% !important" }}>
-      <ReactMic
-        record={record}
-        className="sound-wave"
-        onStop={onStop}
-        // onData={onData}
-        strokeColor="#000000"
-        backgroundColor="#FF4081"
-        width="400"
-        height="100"
-        // style={{ width: "1000%" }}
-      />
-      <button onClick={changeRecord} type="button">
-        Record!
-      </button>
     </div>
   );
 };

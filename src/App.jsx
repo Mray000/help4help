@@ -11,9 +11,13 @@ import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
 // import WithSuspence from "./utils/WithSuspence";
 // import Dialogs from "./Compinents/Dialogs/Dialogs";
 // import ProfileEdit from "./Compinents/Profile/Edit/ProfileEdit";
-import Login from "./Components/Login/Login";
+import WithSuspence from "./utils/WithSuspence";
 import Profile from "./Components/Profile/Profile";
-import Messanger2 from "./Components/Messanger2/Messanger2";
+import Messanger from "./Components/Messanger/Messanger";
+const Login = React.lazy(() => import("./Components/Login/Login.jsx"));
+const Registration = React.lazy(() =>
+  import("./Components/Login/Registration/Registration.jsx")
+);
 
 const App = () => {
   // useEffect(() => {
@@ -30,14 +34,11 @@ const App = () => {
       <div className="app-wrapper">
         <Header mobile={mobile} />
         <div className="container  app_wraper_content">
-          <Route path="/login" render={() => <Login mobile={mobile} />} />
+          <Route path="/login" render={WithSuspence(Login)} />
           <Route path="/profile" render={() => <Profile mobile={mobile} />} />
-          <Route
-            path="/dialogs"
-            render={() => <Messanger2 mobile={mobile} />}
-          />
+          <Route path="/dialogs" render={() => <Messanger mobile={mobile} />} />
+          <Route path="/registration" render={WithSuspence(Registration)} />
         </div>
-        {/* <Route path="/dialogs" render={() => <Messanger mobile={mobile} />} /> */}
       </div>
     </BrowserRouter>
   );

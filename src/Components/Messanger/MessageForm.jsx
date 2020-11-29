@@ -6,6 +6,8 @@ import { AddMessage } from "../../Redux/Reducer/DialogsReducer";
 import AudioMessage from "./AudioMessage";
 import PhotoPreviewModal from "./PhotoPreviewModal";
 import "./Messanger.scss";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
 const MessageForm = () => {
   const mobile = false;
@@ -14,6 +16,7 @@ const MessageForm = () => {
   const handleShow = () => setShow(true);
   const [src, setSrc] = useState("");
   const dispatch = useDispatch();
+  const [display_emoji, setDisplay_emoji] = useState(false);
   Array.prototype.insert = function (index, item) {
     this.splice(index, 0, item);
     return this;
@@ -38,7 +41,7 @@ const MessageForm = () => {
       }}
       initialValues={{ message: "" }}
     >
-      {({ handleSubmit, values }) => (
+      {({ handleSubmit, setFieldValue, values, ...props }) => (
         <Form
           onSubmit={handleSubmit}
           className={`add_message_in_${mobile ? "mobile_" : ""}container`}
@@ -78,12 +81,31 @@ const MessageForm = () => {
               }
             }}
           />
-          <FontAwesomeIcon
-            icon="smile"
-            color="white"
-            size={mobile ? "6x" : "lg"}
-            className={`${display_none && "display_none"}`}
-          />
+          <div className="emoji_container">
+            <div
+              style={{
+                display: display_emoji ? "block" : "none",
+              }}
+              className="emoji_picker"
+            >
+              <Picker
+                set="apple"
+                onSelect={(e) => {
+                  setFieldValue("message", values.message + e.native);
+                }}
+                theme="dark"
+              />
+            </div>
+            <FontAwesomeIcon
+              icon="smile"
+              color="white"
+              size={mobile ? "6x" : "lg"}
+              className={`${display_none && "display_none"}`}
+              onClick={() => {
+                setDisplay_emoji(!display_emoji);
+              }}
+            />
+          </div>
           <AudioMessage setDisplay={setDisplay} display={display_none} />
           {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
         </Form>
