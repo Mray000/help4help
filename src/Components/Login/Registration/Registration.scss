@@ -1,3 +1,23 @@
+#global_registration_container,
+#g_global_registration_container,
+.registration_form,
+.registration_form_controls {
+  height: 100% !important;
+}
+
+.lessons_choice_container {
+  height: 40% !important;
+}
+
+.draggable_elements,
+.droppable_elements {
+  height: 14% !important;
+}
+
+#g_global_registration_container {
+  display: flex;
+}
+
 #global_registration_container {
   background-color: #06575b;
   align-items: center;
@@ -17,15 +37,20 @@
     .draggable_elements_1,
     .draggable_elements_2 {
       display: flex;
+      height: 49% !important;
+    }
+    .draggable_elements_2 {
+      margin-top: 2%;
     }
     .draggable {
-      width: 20%;
+      width: 18.4%;
+      margin-right: 2%;
+      // font-size: 1vw;
       border: teal solid 1px;
       transition: 0.3s;
-    }
-    .draggable:hover {
-      opacity: 0.5;
-      cursor: move;
+      cursor: grab;
+      text-align: center;
+      height: 100% !important;
     }
     .draggable.dragged {
       user-select: none;
@@ -34,17 +59,20 @@
     }
   }
   .droppable_elements {
-    display: flex;
     .droppable {
-      // margin: 10%;
-      width: 50%;
-      height: 60px;
-      border: springgreen solid 1px;
+      width: 100%;
+      height: 50% !important;
+      border: springgreen solid 2px;
+      border-radius: 0.4vw;
       display: flex;
+      text-align: center;
+      // height: 3.8vh;
       .draggable {
         width: 20%;
-        word-wrap: break-word;
-        border: teal solid 1px;
+        font-weight: 600;
+        // text-align: center;
+        font-size: 1.8vw;
+        border-right: springgreen solid 2px;
         transition: 0.3s;
       }
     }

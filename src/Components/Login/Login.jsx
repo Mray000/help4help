@@ -3,12 +3,11 @@ import "./Login.scss";
 import { Formik } from "formik";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import registration_ava from "./../../images/registration_ava.png";
+import registration_ava from "./../../images/registration_ava2.png";
 import { InputGroup } from "react-bootstrap";
 import { email } from "../../utils/Validaters";
 import { useSelector } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
-
 // import { connect } from "react-redux";
 // import { LoginAuth } from "./../../Redux/Reducer/AuthReducer";
 // import { Redirect } from "react-router-dom";
@@ -57,7 +56,6 @@ const Login = ({ mobile }) => {
                         isInvalid={touched.email && email(values.email)}
                       />
                     </Form.Group>
-
                     <Form.Group className="form_group">
                       <Form.Label className="in__label">Password</Form.Label>
                       <Form.Control

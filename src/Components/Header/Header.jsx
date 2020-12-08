@@ -87,7 +87,7 @@ const Search = ({ mobile }) => {
               <InputGroup.Text className="search_prepend_in">
                 <FontAwesomeIcon
                   icon="search"
-                  color="cian"
+                  color="blue"
                   size={mobile ? "3x" : ""}
                 />
               </InputGroup.Text>
@@ -101,7 +101,6 @@ const Search = ({ mobile }) => {
               type="search"
             />
           </InputGroup>
-          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form>
       )}
     </Formik>

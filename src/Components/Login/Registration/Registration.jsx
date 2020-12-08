@@ -13,17 +13,20 @@ const Registration = () => {
   return (
     <Formik onSubmit={console.log} initialValues={Object}>
       {({ handleSubmit, handleChange, touched, errors, values }) => (
-        <Form onSubmit={handleSubmit} style={{ display: "flex" }}>
+        <Form
+          onSubmit={handleSubmit}
+          id={`g_global_registration_${mobile ? "mobile_" : ""}container`}
+        >
           <div className="col-4"></div>
           <Form.Group
             id={`global_registration_${mobile ? "mobile_" : ""}container`}
             className="col-4"
           >
-            <div className={`login_${mobile ? "mobile_" : ""}form`}>
-              <div className="login_form__title">
+            <div className={`registration_${mobile ? "mobile_" : ""}form`}>
+              <div className="registration_form__title">
                 <h1 className="title_content">Registration</h1>
               </div>
-              <div>
+              <div className="registration_form_controls">
                 <Form.Group className="form_group">
                   <Form.Label className="in__label">Email</Form.Label>
                   <Form.Control

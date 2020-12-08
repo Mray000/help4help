@@ -14,32 +14,15 @@ const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
       onHide={handleClose}
       className="photo_preview_modal_global_container"
     >
-      {/* <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
-      </Modal.Header> */}
       <Modal.Body className="preview_photo_modal_body">
         <div className="photo_preview_modal_images_container">
           <div className="photo_preview_modal_image_container">
             <img src={src} alt="" />
           </div>
-          {/* <div className="photo_preview_modal_image_container">
-            <img src={src} alt="" className="photo_preview_modal_image" />
-          </div> */}
         </div>
         <Formik
           onSubmit={(values, actions) => {
-            let message = values.preview_message.split("");
-            if (message.length > 30) {
-              let countDel = Math.ceil(message.length / 30);
-              let i = 1;
-              while (i <= countDel + 1) {
-                // if (i !== countDel + 1) message.insert(i * 30 - i, "\n");
-                message.insert(i * 30 - 1, "\n");
-                i++;
-              }
-              message = message.join("");
-              dispatch(AddMessage(message, src));
-            } else dispatch(AddMessage(message ? message : null, src));
+            dispatch(AddMessage(values.message ? values.message : null, src));
             actions.resetForm();
           }}
           initialValues={{ preview_message: "" }}

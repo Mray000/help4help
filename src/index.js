@@ -18,6 +18,8 @@ import {
   faPaperclip,
   faSmile,
   faMicrophone,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -26,7 +28,9 @@ library.add(
   faSearch,
   faPaperclip,
   faSmile,
-  faMicrophone
+  faMicrophone,
+  faAngleDoubleLeft,
+  faAngleDoubleRight
 );
 
 ReactDOM.render(
