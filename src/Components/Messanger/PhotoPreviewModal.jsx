@@ -22,7 +22,12 @@ const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
         </div>
         <Formik
           onSubmit={(values, actions) => {
-            dispatch(AddMessage(values.message ? values.message : null, src));
+            dispatch(
+              AddMessage(
+                values.preview_message ? values.preview_message : null,
+                src
+              )
+            );
             actions.resetForm();
           }}
           initialValues={{ preview_message: "" }}

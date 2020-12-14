@@ -1,6 +1,7 @@
 // import src from "*.bmp";
 
 const NEW_MESSAGE = "NEW-MESSAGE";
+const DELETE_MESSAGE = "DELETE_MESSAGE";
 
 let InintialState = {
   people: [
@@ -78,34 +79,61 @@ const DialogsReducer = (state = InintialState, action) => {
   switch (action.type) {
     case NEW_MESSAGE:
       let MessageElement = {
-        id: 15,
+        id: Date.now().toString(),
         whom: "my",
         message: action.message,
         photo: action.photo,
         audio: action.audio,
+        reply: action.reply,
       };
       return {
         ...state,
         messages: [...state.messages, MessageElement],
+      };
+    case DELETE_MESSAGE:
+      let messages1 = state.messages.slice();
+      action.id.map((id) => {
+        messages1 = messages1.filter((m) => m.id !== id);
+      });
+      return {
+        ...state,
+        messages: messages1,
       };
     default:
       return state;
   }
 };
 
-const add_message = (message = null, photo = null, audio = null) => ({
+const add_message = (
+  message = null,
+  photo = null,
+  audio = null,
+  reply = null
+) => ({
   type: NEW_MESSAGE,
   message: message,
   photo: photo,
   audio: audio,
+  reply: reply,
 });
 
-export const AddMessage = (message, photo, audio) => async (dispatch) => {
+const delete_message = (id) => ({
+  type: DELETE_MESSAGE,
+  id: id,
+});
+
+export const AddMessage = (message, photo, audio, reply) => async (
+  dispatch
+) => {
   // let data = await ProfileAPI.UpdateStatus(status);
   // if (data.resultCode === 0) {
   //   dispatch(SetStatus(status));
   // }
-  dispatch(add_message(message, photo, audio ? audio.blobURL : null));
+  dispatch(add_message(message, photo, audio ? audio.blobURL : null, reply));
+};
+
+export const DeleteMessage = (id) => async (dispatch) => {
+  dispatch(delete_message(id));
 };
 
 export default DialogsReducer;

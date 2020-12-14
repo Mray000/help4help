@@ -9,7 +9,11 @@ import "./Messanger.scss";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 
-const MessageForm = ({ display_global_none }) => {
+const MessageForm = ({
+  display_global_none,
+  reply_messages_id,
+  setReplyMessage,
+}) => {
   const mobile = false;
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -44,8 +48,22 @@ const MessageForm = ({ display_global_none }) => {
         //   i++;
         // }
         // message = message2;
-        if (values.message) dispatch(AddMessage(values.message));
-        actions.resetForm();
+        if (values.message) {
+          dispatch(
+            AddMessage(
+              values.message,
+              null,
+              null,
+              reply_messages_id.length > 0 ? reply_messages_id : null
+            )
+          );
+          setReplyMessage([]);
+          actions.resetForm();
+        } else if (reply_messages_id.length > 0) {
+          dispatch(AddMessage(values.message, null, null, reply_messages_id));
+          setReplyMessage([]);
+          actions.resetForm();
+        }
       }}
       initialValues={{ message: "", add_photo: "" }}
     >

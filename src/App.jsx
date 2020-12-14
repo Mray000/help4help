@@ -18,6 +18,7 @@ const Login = React.lazy(() => import("./Components/Login/Login.jsx"));
 const Registration = React.lazy(() =>
   import("./Components/Login/Registration/Registration.jsx")
 );
+const Video = React.lazy(() => import("./Components/Video/Video.jsx"));
 
 const App = () => {
   // useEffect(() => {
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/profile" render={() => <Profile mobile={mobile} />} />
           <Route path="/dialogs" render={() => <Messanger mobile={mobile} />} />
           <Route path="/registration" render={WithSuspence(Registration)} />
+          <Route path="/video" render={WithSuspence(Video)} />
         </div>
       </div>
     </BrowserRouter>

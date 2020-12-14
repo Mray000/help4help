@@ -42,6 +42,7 @@ export const ProfileAPI = {
   UpdatePhoto(photo) {
     let formData = new FormData();
     formData.append("image", photo);
+
     return instance
       .put(`profile/photo`, formData)
       .then((promise) => promise.data);

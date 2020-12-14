@@ -1,22 +1,49 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik } from "formik";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import React from "react";
-import { Form, InputGroup } from "react-bootstrap";
 import message_ava from "./../../images/ava.png";
 import "./Messanger.scss";
 
-const MessageListHeader = ({ FilterMessage }) => {
-  return (
-    <div className="message_list_header_global_container">
-      <div>
-        <div>{"Name, Surname"}</div>
-        <div>last seen...</div>
+const MessageListHeader = ({
+  FilterMessage,
+  select_messages_id,
+  DeleteMessage,
+  setSelectMessage,
+  setReplyMessage,
+}) => {
+  const SelectDelete = () => {
+    DeleteMessage(select_messages_id);
+    setSelectMessage([]);
+  };
+  const SelectReply = () => {
+    setReplyMessage([...select_messages_id]);
+    setSelectMessage([]);
+  };
+  if (select_messages_id.length === 0) {
+    return (
+      <div className="message_list_header_global_container">
+        <div>
+          <div>{"Name, Surname"}</div>
+          {/* <div>last seen...</div> */}
+        </div>
+        <MessageListSearchForm FilterMessage={FilterMessage} />
+        <img src={message_ava} alt=":B" />
+        <div>:</div>
       </div>
-      <MessageListSearchForm FilterMessage={FilterMessage} />
-      <img src={message_ava} alt=":B" />
-      <div>:</div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="select_message_header_container">
+        <Button onClick={SelectDelete} variant="danger">
+          Delete
+        </Button>
+        <Button onClick={SelectReply} variant="success">
+          Reply
+        </Button>
+      </div>
+    );
+  }
 };
 
 const MessageListSearchForm = ({ FilterMessage }) => {
@@ -24,7 +51,7 @@ const MessageListSearchForm = ({ FilterMessage }) => {
   return (
     <Formik
       onSubmit={(e) => {
-        FilterMessage(e.dialogs_filter_s.toLowerCase());
+        FilterMessage(e.messages_filter_s.toLowerCase());
       }}
       initialValues={Object}
     >
@@ -35,17 +62,8 @@ const MessageListSearchForm = ({ FilterMessage }) => {
           className={`search_message_in_${mobile ? "mobile_" : ""}group`}
         >
           <Form.Group>
-            <InputGroup.Prepend>
-              <InputGroup.Text className="search_prepend_in">
-                <FontAwesomeIcon
-                  icon="search"
-                  color="white"
-                  size={mobile ? "3x" : ""}
-                />
-              </InputGroup.Text>
-            </InputGroup.Prepend>
             <Form.Control
-              name="dialogs_filter_s"
+              name="messages_filter_s"
               onChange={handleChange}
               placeholder="Search"
               type="text"
