@@ -12,6 +12,10 @@
   margin-right: 0;
 }
 
+button:focus {
+  outline: none;
+}
+
 .app_wraper_content {
   height: 100vh;
   padding: 0;
