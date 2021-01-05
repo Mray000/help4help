@@ -1,23 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Formik } from "formik";
-import Form from "react-bootstrap/Form";
 import "./Registration.scss";
 import DnD from "./DnD";
 import { Button } from "@material-ui/core";
+import { email } from "../../../utils/Validaters";
+import { useDispatch, useSelector } from "react-redux";
+import { getPreSubmitValues } from "../../../Redux/Selectors/AuthSelectors";
+// import { setPreSubmitValues } from "../../../Redux/Reducer/AuthReducer";
+import { Field, Form, Formik } from "formik";
 
 const Registration = () => {
   const mobile = false;
   const [pageNumber, setPageNumber] = useState(1);
+  const [preSubmitValues, setPreSubmitValues] = useState({});
   const [fade, setFade] = useState(false);
   return (
-    <Formik onSubmit={console.log} initialValues={Object}>
+    <Formik
+      onSubmit={(values) => {
+        setFade(true);
+        setTimeout(() => {
+          setPageNumber(2);
+        }, 1000);
+        setPreSubmitValues(values);
+      }}
+      initialValues={preSubmitValues}
+    >
       {({
         handleSubmit,
         handleChange,
         touched,
-        errors,
         values,
-        isValidating,
+        initialValues,
+        ...props
       }) => (
         <Form
           onSubmit={handleSubmit}
@@ -26,7 +39,7 @@ const Registration = () => {
           }container `}
         >
           <div className="col-4"></div>
-          <Form.Group
+          <div
             className={`global_registration_${
               mobile ? "mobile_" : ""
             }container  col-4`}
@@ -36,76 +49,74 @@ const Registration = () => {
                 className={`registration_${mobile ? "mobile_" : ""}form ${
                   fade ? "fade" : ""
                 }`}
-                // ref={fadeElement}
+                onClick={() => {
+                  window.pr = props;
+                }}
               >
                 <div className="registration_form__title">
                   <h1 className="title_content">Registration</h1>
                 </div>
-                <Form.Group className="form_group">
-                  <Form.Label className="in__label">Email</Form.Label>
-                  <Form.Control
-                    required
-                    type="email"
-                    name="email"
-                    onChange={handleChange}
-                    className="registration_form_in"
-                    isValid={touched.email && values.email}
-                  />
-                </Form.Group>
+                <div className="field_label">Email</div>
+                <Field
+                  required
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  className="registration_form_in"
+                  isValid={touched.email && values.email}
+                  isInvalid={touched.email && !values.email}
+                />
+                <div className="field_label">Password</div>
+                <Field
+                  required
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  className="registration_form_in"
+                  isValid={touched.password && values.password}
+                  isInvalid={touched.password && !values.password}
+                />
+                <div className="field_label">Name</div>
 
-                <Form.Group className="form_group">
-                  <Form.Label className="in__label">Password</Form.Label>
-                  <Form.Control
-                    required
-                    type="password"
-                    name="password"
-                    onChange={handleChange}
-                    className="registration_form_in"
-                    isValid={touched.password && values.password}
-                  />
-                </Form.Group>
-                <Form.Group className="form_group">
-                  <Form.Label className="in__label">Name</Form.Label>
-                  <Form.Control
-                    required
-                    name="name"
-                    onChange={handleChange}
-                    className="registration_form_in"
-                    isValid={touched.name && values.name}
-                  />
-                </Form.Group>
-                <Form.Group className="form_group">
-                  <Form.Label className="in__label">Surname</Form.Label>
-                  <Form.Control
-                    required
-                    name="surname"
-                    onChange={handleChange}
-                    className="registration_form_in"
-                    isValid={touched.surname && values.surname}
-                  />
-                </Form.Group>
-                <Form.Group className="form_group">
-                  <Form.Label className="in__label">Birthday</Form.Label>
-                  <Form.Control
-                    required
-                    type="date"
-                    name="data"
-                    className="form-control"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
+                <Field
+                  required
+                  name="name"
+                  onChange={handleChange}
+                  className="registration_form_in"
+                  isValid={touched.name && values.name}
+                />
+                <div className="field_label">Surname</div>
+
+                <Field
+                  required
+                  name="surname"
+                  onChange={handleChange}
+                  className="registration_form_in"
+                  isValid={touched.surname && values.surname}
+                />
+                <div className="field_label">Birthday</div>
+                <Field
+                  required
+                  type="date"
+                  name="bd"
+                  className="form-control"
+                  onChange={handleChange}
+                />
                 <Button
                   type="submit"
                   className={`registration_form_${
                     mobile ? "mobile_" : ""
                   }button_submit`}
                   onClick={() => {
-                    // if (isValidating) {
-                    setFade(true);
-                    setTimeout(() => {
-                      setPageNumber(2);
-                    }, 1000);
-                    // }
+                    if (
+                      values.email &&
+                      values.password &&
+                      values.name &&
+                      values.surname &&
+                      values.bd
+                    ) {
+                      handleSubmit();
+                    }
                   }}
                 >
                   Submit
@@ -117,9 +128,8 @@ const Registration = () => {
                 setFade={setFade}
                 setPageNumber={setPageNumber}
               />
-              // <div>a</div>
             )}
-          </Form.Group>
+          </div>
           <div className="col-4"></div>
         </Form>
       )}

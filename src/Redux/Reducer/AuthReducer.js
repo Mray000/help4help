@@ -3,6 +3,7 @@ import { stopSubmit } from "redux-form";
 
 const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
 const SET_CAPTCHA = "auth/SET_CAPTCHA";
+const SET_PRE_SUBMIT_VALUES = "auth/SET_PRE_SUBMIT_VALUES";
 
 let InintialState = {
   id: null,

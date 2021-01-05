@@ -26,6 +26,7 @@ const DialogsList = () => {
           <NavLink
             to={"/dialogs/" + p.id}
             className="dialog_list_humon_container"
+            key={p.id}
           >
             <div className="dialog_list_humon">
               <img className="avatar" src={p.ava ? p.ava : ava} alt="" />
@@ -34,7 +35,6 @@ const DialogsList = () => {
                 <div className="last_message">Last message...</div>
               </div>
             </div>
-            <div className="hrrr"></div>
           </NavLink>
         );
       })}
@@ -63,7 +63,7 @@ const DialogsListSearch = ({ FilterDialogs }) => {
                 <FontAwesomeIcon
                   icon="search"
                   color="white"
-                  size={mobile ? "3x" : ""}
+                  size={mobile ? `3x` : null}
                 />
               </InputGroup.Text>
             </InputGroup.Prepend>
@@ -72,7 +72,7 @@ const DialogsListSearch = ({ FilterDialogs }) => {
               onChange={handleChange}
               placeholder="Search"
               type="text"
-              autocomplete="off"
+              autoComplete="off"
             />
           </Form.Group>
         </Form>

@@ -2,7 +2,7 @@
 import React from "react";
 import "./Header.scss";
 // import help4help from "./../../images/лого2.png";
-import help4help from "./../../images/лого3.png";
+import help4help from "./../../images/лого4.jpg";
 import { Formik } from "formik";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -16,7 +16,7 @@ const Header = ({ mobile, location }) => {
   // if (location.pathname === "/dialogs") return null;
   return (
     <nav
-      className="navbar navbar-expand-xl navbar-light"
+      className="navbar navbar-expand-lg navbar-light"
       id={`global_header_${mobile ? "mobile_" : ""}container`}
     >
       <img src={help4help} alt="Наша ава!" id="help4help_header_img" />
@@ -88,7 +88,7 @@ const Search = ({ mobile }) => {
                 <FontAwesomeIcon
                   icon="search"
                   color="blue"
-                  size={mobile ? "3x" : ""}
+                  size={mobile ? `3x` : null}
                 />
               </InputGroup.Text>
             </InputGroup.Prepend>

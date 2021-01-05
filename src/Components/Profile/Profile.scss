@@ -6,6 +6,32 @@
   color: white;
   // height: 600px;
   padding: 20px;
+
+  .modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    margin: auto;
+    height: 100% !important;
+    .modal-content {
+      height: 100% !important;
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      .modal-body {
+        width: 100%;
+        padding: 0;
+      }
+      .prt {
+        text-align: center;
+      }
+    }
+  }
+
   .row {
     height: 100% !important;
   }
@@ -77,31 +103,6 @@
     }
     .avatar_container:hover .down {
       opacity: 1;
-    }
-  }
-}
-
-.modal-dialog {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0;
-  margin: auto;
-  height: 100% !important;
-  .modal-content {
-    height: 100% !important;
-    width: 100%;
-    border: none;
-    background: transparent;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    .modal-body {
-      width: 100%;
-      padding: 0;
-    }
-    .prt {
-      text-align: center;
     }
   }
 }

@@ -20,7 +20,6 @@ import { NavLink, Redirect } from "react-router-dom";
 //   if (props.isAuth) return <Redirect to="/profile" />;
 
 const Login = ({ mobile }) => {
-  const messages = useSelector((state) => state.Dialogs.message);
   return (
     <Formik onSubmit={console.log} initialValues={Object}>
       {({ handleSubmit, handleChange, touched, errors, values }) => (
@@ -65,7 +64,7 @@ const Login = ({ mobile }) => {
                         onChange={handleChange}
                         className="login_form_in"
                         isValid={touched.password && values.password}
-                        isInvalid={touched.email && email(values.email)}
+                        isInvalid={touched.password && !values.password}
                       />
                     </Form.Group>
                     <Form.Group className="form_group">

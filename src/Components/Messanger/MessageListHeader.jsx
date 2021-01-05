@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik } from "formik";
-import { Button, Form, InputGroup } from "react-bootstrap";
-import React from "react";
+import { Button, Form } from "react-bootstrap";
+import React, { useEffect, useRef } from "react";
 import message_ava from "./../../images/ava.png";
 import "./Messanger.scss";
 
 const MessageListHeader = ({
   FilterMessage,
   select_messages_id,
+  message_for_search,
   DeleteMessage,
   setSelectMessage,
   setReplyMessage,
@@ -24,12 +24,13 @@ const MessageListHeader = ({
     return (
       <div className="message_list_header_global_container">
         <div>
-          <div>{"Name, Surname"}</div>
-          {/* <div>last seen...</div> */}
+          <div>{"Name Surname"}</div>
         </div>
-        <MessageListSearchForm FilterMessage={FilterMessage} />
+        <MessageListSearchForm
+          FilterMessage={FilterMessage}
+          message_for_search={message_for_search}
+        />
         <img src={message_ava} alt=":B" />
-        <div>:</div>
       </div>
     );
   } else {
@@ -46,16 +47,22 @@ const MessageListHeader = ({
   }
 };
 
-const MessageListSearchForm = ({ FilterMessage }) => {
+const MessageListSearchForm = ({ FilterMessage, message_for_search }) => {
   let mobile = false;
+  let formik = useRef(null);
+  useEffect(() => {
+    if (message_for_search.find((e) => e === 0) === 0) {
+      formik.current.value = "";
+    }
+  }, [message_for_search]);
   return (
     <Formik
-      onSubmit={(e) => {
-        FilterMessage(e.messages_filter_s.toLowerCase());
+      onSubmit={(values) => {
+        FilterMessage(values.messages_filter_s.toLowerCase());
       }}
-      initialValues={Object}
+      initialValues={{ messages_filter_s: " " }}
     >
-      {({ handleSubmit, handleChange, touched, errors }) => (
+      {({ handleSubmit, handleChange }) => (
         <Form
           onSubmit={handleSubmit}
           onChange={handleSubmit}
@@ -67,7 +74,8 @@ const MessageListSearchForm = ({ FilterMessage }) => {
               onChange={handleChange}
               placeholder="Search"
               type="text"
-              autocomplete="off"
+              autoСomplete="off"
+              ref={formik}
             />
           </Form.Group>
         </Form>

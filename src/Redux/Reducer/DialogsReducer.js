@@ -1,8 +1,58 @@
 // import src from "*.bmp";
 
+import moment from "moment";
+
 const NEW_MESSAGE = "NEW-MESSAGE";
 const DELETE_MESSAGE = "DELETE_MESSAGE";
-
+const EDIT_MESSAGE = "EDIT_MESSAGE";
+const getData = () => {
+  let date = new Date(Date.now());
+  let h_m = `${date.getHours()}:${
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+  }`;
+  let basic = moment().format("MMMM D YYYY");
+  return basic + " " + h_m;
+};
+const getData2 = () => {
+  let date = new Date(Date.now());
+  let h_m = `${date.getHours()}:${
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+  }`;
+  let basic = moment(moment().format("MMMM D YYYY"), "MMMM D YYYY")
+    .add(15, "days")
+    .format("MMMM D YYYY");
+  return basic + " " + h_m;
+};
+const getData3 = () => {
+  let date = new Date(Date.now());
+  let h_m = `${date.getHours()}:${
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+  }`;
+  let basic = moment(moment().format("MMMM D YYYY"), "MMMM D YYYY")
+    .add(25, "days")
+    .format("MMMM D YYYY");
+  return basic + " " + h_m;
+};
+const getData4 = () => {
+  let date = new Date(Date.now());
+  let h_m = `${date.getHours()}:${
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+  }`;
+  let basic = moment(moment().format("MMMM D YYYY"), "MMMM D YYYY")
+    .add(35, "days")
+    .format("MMMM D YYYY");
+  return basic + " " + h_m;
+};
+const getData0 = () => {
+  let date = new Date(Date.now());
+  let h_m = `${date.getHours()}:${
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+  }`;
+  let basic = moment(moment().format("MMMM D YYYY"), "MMMM D YYYY")
+    .subtract(1, "days")
+    .format("MMMM D YYYY");
+  return basic + " " + h_m;
+};
 let InintialState = {
   people: [
     { id: 1, name: "Amir" },
@@ -12,66 +62,318 @@ let InintialState = {
     { id: 5, name: "ILham" },
     { id: 6, name: "Ruslan" },
     { id: 7, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
-    { id: 8, name: "Ruslan" },
+    { id: 9, name: "Ruslan" },
+    { id: 10, name: "Ruslan" },
+    { id: 11, name: "Ruslan" },
+    { id: 12, name: "Ruslan" },
+    { id: 13, name: "Ruslan" },
+    { id: 14, name: "Ruslan" },
+    { id: 15, name: "Ruslan" },
+    { id: 16, name: "Ruslan" },
+    { id: 17, name: "Ruslan" },
+    { id: 18, name: "Ruslan" },
+    { id: 19, name: "Ruslan" },
+    { id: 20, name: "Ruslan" },
+    { id: 21, name: "Ruslan" },
+    { id: 22, name: "Ruslan" },
+    { id: 23, name: "Ruslan" },
+    { id: 24, name: "Ruslan" },
   ],
   messages: [
-    { id: 1, message: "Hi", whom: "my" },
-    { id: 2, message: "What are u doing?", whom: "my" },
-    { id: 3, message: "Я хочу кушать", whom: "my" },
-    { id: 4, message: "ааааааааа да?", whom: "my" },
-    { id: 5, message: "может пук пук?", whom: "my" },
-    { id: 6, message: "Hehe", whom: "him" },
-    { id: 7, message: "LoKwegwEG Cheburek", whom: "him" },
-    { id: 8, message: "я тоже хочу пук пук", whom: "him" },
-    { id: 9, message: "длдлдлдлдл", whom: "him" },
-    { id: 10, message: "LoL KeK Cwgeweg", whom: "my" },
-    { id: 11, message: "GWEGWEG", whom: "him" },
-    { id: 12, message: "124235", whom: "him" },
-    { id: 13, message: "mgw3krw  jg  reg", whom: "my" },
-    { id: 14, message: "фиуууу", whom: "my" },
-    { id: 15, message: "дададада", whom: "my" },
-    { id: 16, message: "3rgrreg", whom: "him" },
-    { id: 17, message: "пока", whom: "him" },
-    { id: 18, message: "qeotklwgl", whom: "my" },
-    { id: 19, message: "qazplm", whom: "him" },
-    { id: 20, message: "zxc123456", whom: "my" },
-    { id: 21, message: "fwefwef", whom: "him" },
-    { id: 22, message: "909090", whom: "my" },
-    { id: 23, message: "аррр", whom: "him" },
-    { id: 24, message: "вр", whom: "my" },
-    { id: 25, message: "ПоНоС", whom: "him" },
-    { id: 26, message: "пАнОс", whom: "my" },
-    { id: 27, message: "Сушка", whom: "him" },
-    { id: 28, message: "цуаоцу", whom: "my" },
-    { id: 29, message: "а я посрал вчера", whom: "him" },
-    { id: 30, message: "покакал", whom: "my" },
-    { id: 31, message: "панос", whom: "him" },
-    { id: 32, message: "пукпукпук", whom: "my" },
-    { id: 33, message: "пукпук", whom: "him" },
-    { id: 34, message: "пук", whom: "my" },
-    { id: 35, message: "птмуклоам", whom: "him" },
-    { id: 36, message: "никогла", whom: "my" },
-    { id: 37, message: "лололо", whom: "him" },
-    { id: 38, message: "ло", whom: "my" },
-    { id: 39, message: "лошка", whom: "him" },
-    { id: 40, message: "ка", whom: "my" },
-    { id: 41, message: "лbлvdvsошка", whom: "him" },
-    { id: 42, message: "wmy&\ndfdf", whom: "my" },
+    {
+      id: 1,
+      message: "Hi",
+      whom: "my",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 2,
+      message: "What are u doing?",
+      whom: "my",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 3,
+      message: "Я хочу кушать",
+      whom: "my",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 4,
+      message: "ааааааааа да?",
+      whom: "my",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 5,
+      message: "может пук пук?",
+      whom: "my",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 6,
+      message: "Hehe",
+      whom: "him",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 7,
+      message: "LoKwegwEG Cheburek",
+      whom: "him",
+      photos: null,
+      date: getData0(),
+    },
+    {
+      id: 8,
+      message: "я тоже хочу пук пук",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 9,
+      message: "длдлдлдлдл",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 10,
+      message: "LoL KeK Cwgeweg",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 11,
+      message: "GWEGWEG",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 12,
+      message: "124235",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 13,
+      message: "mgw3krw  jg  reg",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 14,
+      message: "фиуууу",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 15,
+      message: "дададада",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 16,
+      message: "3rgrreg",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 17,
+      message: "пока",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 18,
+      message: "qeotklwgl",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 19,
+      message: "qazplm",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 20,
+      message: "zxc123456",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 21,
+      message: "fwefwef",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 22,
+      message: "909090",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 23,
+      message: "аррр",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 24,
+      message: "вр",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 25,
+      message: "ПоНоС",
+      whom: "him",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 26,
+      message: "пАнОс",
+      whom: "my",
+      photos: null,
+      date: getData(),
+    },
+    {
+      id: 27,
+      message: "Сушка",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 28,
+      message: "цуаоцу",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 29,
+      message: "а я посрал вчера",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 30,
+      message: "покакал",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 31,
+      message: "панос",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 32,
+      message: "пукпукпук",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 33,
+      message: "пукпук",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 34,
+      message: "пук",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 35,
+      message: "птмуклоам",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 36,
+      message: "никогла",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 37,
+      message: "лололо",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 38,
+      message: "ло",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 39,
+      message: "лошка",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 40,
+      message: "ка",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 41,
+      message: "лbлvdvsошка",
+      whom: "him",
+      photos: null,
+      date: getData2(),
+    },
+    {
+      id: 42,
+      message: "wmy&dfdf",
+      whom: "my",
+      photos: null,
+      date: getData2(),
+    },
   ],
 };
 
@@ -82,9 +384,10 @@ const DialogsReducer = (state = InintialState, action) => {
         id: Date.now().toString(),
         whom: "my",
         message: action.message,
-        photo: action.photo,
+        photos: action.photos,
         audio: action.audio,
         reply: action.reply,
+        date: action.message === "1" ? getData4() : getData3(),
       };
       return {
         ...state,
@@ -99,6 +402,17 @@ const DialogsReducer = (state = InintialState, action) => {
         ...state,
         messages: messages1,
       };
+    case EDIT_MESSAGE:
+      let messageE = state.messages.find((m) => m.id === action.id);
+      messageE.message = action.text;
+      messageE.date = getData().slice(0, -3) + " edit";
+      let index = state.messages[messageE];
+      let NewMessages = [...state.messages];
+      NewMessages[index] = messageE;
+      return {
+        ...state,
+        messages: NewMessages,
+      };
     default:
       return state;
   }
@@ -106,13 +420,13 @@ const DialogsReducer = (state = InintialState, action) => {
 
 const add_message = (
   message = null,
-  photo = null,
+  photos = null,
   audio = null,
   reply = null
 ) => ({
   type: NEW_MESSAGE,
   message: message,
-  photo: photo,
+  photos: photos,
   audio: audio,
   reply: reply,
 });
@@ -122,14 +436,28 @@ const delete_message = (id) => ({
   id: id,
 });
 
-export const AddMessage = (message, photo, audio, reply) => async (
+export const edit_message = (id, text) => ({
+  type: EDIT_MESSAGE,
+  id: id,
+  text: text,
+});
+
+export const AddMessage = (message, photos, audio, reply) => async (
   dispatch
 ) => {
   // let data = await ProfileAPI.UpdateStatus(status);
   // if (data.resultCode === 0) {
   //   dispatch(SetStatus(status));
   // }
-  dispatch(add_message(message, photo, audio ? audio.blobURL : null, reply));
+  dispatch(add_message(message, photos, audio ? audio.blobURL : null, reply));
+};
+
+export const EditMessage = (id, text) => async (dispatch) => {
+  // let data = await ProfileAPI.UpdateStatus(status);
+  // if (data.resultCode === 0) {
+  //   dispatch(SetStatus(status));
+  // }
+  dispatch(edit_message(id, text));
 };
 
 export const DeleteMessage = (id) => async (dispatch) => {

@@ -17,7 +17,7 @@ const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
       <Modal.Body className="preview_photo_modal_body">
         <div className="photo_preview_modal_images_container">
           <div className="photo_preview_modal_image_container">
-            <img src={src} alt="" />
+            <img src={src[0]} alt="" />
           </div>
         </div>
         <Formik
@@ -32,7 +32,7 @@ const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
           }}
           initialValues={{ preview_message: "" }}
         >
-          {({ handleSubmit, values }) => (
+          {({ handleSubmit }) => (
             <Form
               onSubmit={handleSubmit}
               className={`preview_add_message_in_${

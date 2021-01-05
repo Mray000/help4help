@@ -5,6 +5,7 @@ const MessageSearchList = ({
   message_for_search,
   MessageToFind,
   display_none,
+  setMessageForSearch,
 }) => {
   return (
     <div
@@ -15,7 +16,10 @@ const MessageSearchList = ({
       {message_for_search.map((m) => {
         return (
           <div
-            onClick={() => MessageToFind(m.id)}
+            onClick={() => {
+              setMessageForSearch([0]);
+              MessageToFind(m.id);
+            }}
             className={m.whom === "my" ? `my_m` : `him_m`}
           >
             <img
