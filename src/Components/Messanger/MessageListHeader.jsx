@@ -84,4 +84,5 @@ const MessageListSearchForm = ({ FilterMessage, message_for_search }) => {
   );
 };
 
-export default MessageListHeader;
+export default React.memo(MessageListHeader);
+// export default MessageListHeader;

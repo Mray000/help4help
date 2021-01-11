@@ -31,7 +31,7 @@ const Profile = ({
             <div className="avatar_container">
               <img
                 src={user_ava}
-                alt="profile_avatar"
+                alt="📷"
                 className="avatar"
                 onClick={() => setShow(true)}
               />

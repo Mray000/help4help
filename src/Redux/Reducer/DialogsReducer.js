@@ -374,6 +374,27 @@ let InintialState = {
       photos: null,
       date: getData2(),
     },
+    {
+      id: 43,
+      message: null,
+      whom: "my",
+      photos: [
+        "https://scontent-hel3-1.cdninstagram.com/v/t51.2885-15/e35/138395924_2789398654631256_330758106058142235_n.jpg?_nc_ht=scontent-hel3-1.cdninstagram.com&_nc_cat=100&_nc_ohc=86CloZvMAyMAX9iRT0r&tp=1&oh=52a0c51fb1f661bd0b174b06ea75989c&oe=6027D902",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a4/%D0%97%D0%B0%D0%BA%D0%B0%D1%82_%D0%9F%D0%B0%D0%B0%D0%BD%D0%B0%D1%8F%D1%80%D0%B2%D0%B8.jpg",
+        "https://fotogora.ru/wp-content/uploads/2016/12/abstract-1846401_1280.jpg",
+        "https://cameralabs.org/media/k2/items/cache/f83c9c315cf89e75d4d5b66c3e25f60b_L.jpg",
+      ],
+      date: getData2(),
+    },
+    // {
+    //   id: 44,
+    //   message: "моя чикса😏",
+    //   whom: "my",
+    //   photos: [
+    //     "https://shelly.kpfu.ru/e-ksu/docs/F1433752806/IMG_1516.jpg?rnd=4558",
+    //   ],
+    //   date: getData2(),
+    // },
   ],
 };
 
@@ -403,15 +424,17 @@ const DialogsReducer = (state = InintialState, action) => {
         messages: messages1,
       };
     case EDIT_MESSAGE:
-      let messageE = state.messages.find((m) => m.id === action.id);
-      messageE.message = action.text;
-      messageE.date = getData().slice(0, -3) + " edit";
-      let index = state.messages[messageE];
-      let NewMessages = [...state.messages];
-      NewMessages[index] = messageE;
       return {
         ...state,
-        messages: NewMessages,
+        messages: state.messages.map((m) => {
+          if (m.id === action.id) {
+            m.message = action.text;
+            m.date = getData().slice(0, -3) + " edit";
+            return m;
+          } else {
+            return m;
+          }
+        }),
       };
     default:
       return state;

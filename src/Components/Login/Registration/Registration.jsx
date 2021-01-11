@@ -3,8 +3,6 @@ import "./Registration.scss";
 import DnD from "./DnD";
 import { Button } from "@material-ui/core";
 import { email } from "../../../utils/Validaters";
-import { useDispatch, useSelector } from "react-redux";
-import { getPreSubmitValues } from "../../../Redux/Selectors/AuthSelectors";
 // import { setPreSubmitValues } from "../../../Redux/Reducer/AuthReducer";
 import { Field, Form, Formik } from "formik";
 

@@ -2,11 +2,16 @@ import React from "react";
 import { Form, Formik, Field } from "formik";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { AddMessage } from "../../Redux/Reducer/DialogsReducer";
 import "./Messanger.scss";
 import { TextField } from "formik-material-ui";
 
-const PhotoPreviewModal = ({ show, src, handleClose, mobile = false }) => {
+const PhotoPreviewModal = ({
+  AddMessage,
+  show,
+  src,
+  handleClose,
+  mobile = false,
+}) => {
   const dispatch = useDispatch();
   return (
     <Modal

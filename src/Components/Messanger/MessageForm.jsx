@@ -53,12 +53,12 @@ const MessageForm = ({
                 values.message,
                 null,
                 null,
-                reply_messages_id.length > 0 ? reply_messages_id : null
+                reply_messages_id.length ? reply_messages_id : null
               )
             );
           setReplyMessage([]);
           actions.resetForm();
-        } else if (reply_messages_id.length > 0) {
+        } else if (reply_messages_id.length) {
           dispatch(AddMessage(values.message, null, null, reply_messages_id));
           setReplyMessage([]);
           actions.resetForm();
@@ -75,7 +75,12 @@ const MessageForm = ({
           setMessageValue={() => setFieldValue("message", edit_message.message)}
           ref={form}
         >
-          <PhotoPreviewModal src={src} show={show} handleClose={handleClose} />
+          <PhotoPreviewModal
+            src={src}
+            show={show}
+            handleClose={handleClose}
+            AddMessage={AddMessage}
+          />
           <div className="add_photo_container">
             <label htmlFor="add_photo">
               <FontAwesomeIcon
@@ -154,7 +159,7 @@ const MessageForm = ({
   );
 };
 
-export default MessageForm;
+export default React.memo(MessageForm);
 
 // if (values.message.length > 30) {
 // let message = values.message.split("");
