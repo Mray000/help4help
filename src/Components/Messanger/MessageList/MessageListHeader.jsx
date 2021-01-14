@@ -1,8 +1,8 @@
 import { Formik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import React, { useEffect, useRef } from "react";
-import message_ava from "./../../images/ava.png";
-import "./Messanger.scss";
+import message_ava from "./../../../images/ava.png";
+import "./../Messanger.scss";
 
 const MessageListHeader = ({
   FilterMessage,
@@ -17,7 +17,7 @@ const MessageListHeader = ({
     setSelectMessage([]);
   };
   const SelectReply = () => {
-    setReplyMessage([...select_messages_id]);
+    setReplyMessage(select_messages_id);
     setSelectMessage([]);
   };
   if (select_messages_id.length === 0) {
@@ -76,6 +76,7 @@ const MessageListSearchForm = ({ FilterMessage, message_for_search }) => {
               type="text"
               autoСomplete="off"
               ref={formik}
+              autocomplete="off"
             />
           </Form.Group>
         </Form>

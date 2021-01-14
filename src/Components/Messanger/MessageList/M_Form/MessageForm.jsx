@@ -2,11 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AddMessage, EditMessage } from "../../Redux/Reducer/DialogsReducer";
-import AudioMessage from "./AudioMessage";
-import PhotoPreviewModal from "./PhotoPreviewModal";
-import "./Messanger.scss";
+import {
+  AddMessage,
+  EditMessage,
+} from "../../../../Redux/Reducer/DialogsReducer";
+import AudioMessageInput from "./AudioMessageInput";
+import PreviewModal from "./PreviewModal";
 import "emoji-mart/css/emoji-mart.css";
+import "./../../Messanger.scss";
 
 const MessageForm = ({
   display_global_none,
@@ -19,7 +22,8 @@ const MessageForm = ({
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [src, setSrc] = useState([]);
+  const [srcOfImg, setSrcOfImg] = useState([]);
+  const [srcOfFiles, setSrcOfFiles] = useState([]);
   const dispatch = useDispatch();
   const [display_emoji, setDisplay_emoji] = useState(false);
   const [display_none, setDisplay] = useState(false);
@@ -53,13 +57,16 @@ const MessageForm = ({
                 values.message,
                 null,
                 null,
+                null,
                 reply_messages_id.length ? reply_messages_id : null
               )
             );
           setReplyMessage([]);
           actions.resetForm();
         } else if (reply_messages_id.length) {
-          dispatch(AddMessage(values.message, null, null, reply_messages_id));
+          dispatch(
+            AddMessage(values.message, null, null, null, reply_messages_id)
+          );
           setReplyMessage([]);
           actions.resetForm();
         }
@@ -75,14 +82,17 @@ const MessageForm = ({
           setMessageValue={() => setFieldValue("message", edit_message.message)}
           ref={form}
         >
-          <PhotoPreviewModal
-            src={src}
+          <PreviewModal
+            srcOfImg={srcOfImg}
+            setSrcOfImg={setSrcOfImg}
+            srcOfFiles={srcOfFiles}
+            setSrcOfFiles={setSrcOfFiles}
             show={show}
             handleClose={handleClose}
             AddMessage={AddMessage}
           />
           <div className="add_photo_container">
-            <label htmlFor="add_photo">
+            <label htmlFor="add_photo" className="icon_add_photo">
               <FontAwesomeIcon
                 icon="paperclip"
                 color="white"
@@ -97,13 +107,34 @@ const MessageForm = ({
               name="add_photo"
               multiple
               onChange={(e) => {
-                let mass = [];
-                if (e.target.files.length) {
-                  for (let i = 0; i < e.target.files.length; i++) {
-                    mass.push(window.URL.createObjectURL(e.target.files[i]));
+                let extension = e.target.files[0].name.slice(
+                  e.target.files[0].name.lastIndexOf(".") + 1,
+                  e.target.files[0].name.length
+                );
+
+                if (
+                  extension === "txt" ||
+                  extension === "docx" ||
+                  extension === "doc" ||
+                  extension === "pptx"
+                ) {
+                  let mass = [];
+                  if (e.target.files.length) {
+                    for (let i = 0; i < e.target.files.length; i++) {
+                      mass.push(e.target.files[i]);
+                    }
+                    setSrcOfFiles(mass);
+                    handleShow();
                   }
-                  setSrc(mass);
-                  handleShow();
+                } else {
+                  let mass = [];
+                  if (e.target.files.length) {
+                    for (let i = 0; i < e.target.files.length; i++) {
+                      mass.push(window.URL.createObjectURL(e.target.files[i]));
+                    }
+                    setSrcOfImg(mass);
+                    handleShow();
+                  }
                 }
               }}
             />
@@ -137,17 +168,19 @@ const MessageForm = ({
                 theme="dark"
               /> */}
             </div>
-            <FontAwesomeIcon
-              icon="smile"
-              color="white"
-              size={mobile ? "6x" : "lg"}
-              className={`${display_none && "display_none"}`}
-              onClick={() => {
-                setDisplay_emoji(!display_emoji);
-              }}
-            />
+            <div className="icon_in_smile">
+              <FontAwesomeIcon
+                icon="smile"
+                color="white"
+                size={mobile ? "6x" : "lg"}
+                className={`${display_none && "display_none"}`}
+                onClick={() => {
+                  setDisplay_emoji(!display_emoji);
+                }}
+              />
+            </div>
           </div>
-          <AudioMessage
+          <AudioMessageInput
             submit={() => handleSubmit()}
             setDisplay={setDisplay}
             display={display_none}

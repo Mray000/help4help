@@ -1,6 +1,7 @@
 // import src from "*.bmp";
 
 import moment from "moment";
+import { onNewMessage } from "../../axios/axios";
 
 const NEW_MESSAGE = "NEW-MESSAGE";
 const DELETE_MESSAGE = "DELETE_MESSAGE";
@@ -86,6 +87,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 2,
@@ -93,6 +95,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 3,
@@ -100,6 +103,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 4,
@@ -107,6 +111,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 5,
@@ -114,6 +119,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 6,
@@ -121,6 +127,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 7,
@@ -128,6 +135,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData0(),
+      files: null,
     },
     {
       id: 8,
@@ -135,6 +143,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 9,
@@ -142,6 +151,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 10,
@@ -149,6 +159,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 11,
@@ -156,6 +167,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 12,
@@ -163,6 +175,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 13,
@@ -170,6 +183,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 14,
@@ -177,6 +191,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 15,
@@ -184,6 +199,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 16,
@@ -191,6 +207,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 17,
@@ -198,6 +215,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 18,
@@ -205,6 +223,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 19,
@@ -212,6 +231,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 20,
@@ -219,6 +239,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 21,
@@ -226,6 +247,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 22,
@@ -233,6 +255,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 23,
@@ -240,6 +263,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 24,
@@ -247,6 +271,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 25,
@@ -254,6 +279,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 26,
@@ -261,6 +287,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData(),
+      files: null,
     },
     {
       id: 27,
@@ -268,6 +295,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 28,
@@ -275,6 +303,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 29,
@@ -282,6 +311,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 30,
@@ -289,6 +319,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 31,
@@ -296,6 +327,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 32,
@@ -303,6 +335,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 33,
@@ -310,6 +343,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 34,
@@ -317,6 +351,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 35,
@@ -324,6 +359,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 36,
@@ -331,6 +367,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 37,
@@ -338,6 +375,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 38,
@@ -345,6 +383,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 39,
@@ -352,6 +391,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 40,
@@ -359,6 +399,7 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 41,
@@ -366,6 +407,7 @@ let InintialState = {
       whom: "him",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 42,
@@ -373,27 +415,28 @@ let InintialState = {
       whom: "my",
       photos: null,
       date: getData2(),
+      files: null,
     },
     {
       id: 43,
       message: null,
       whom: "my",
       photos: [
-        "https://scontent-hel3-1.cdninstagram.com/v/t51.2885-15/e35/138395924_2789398654631256_330758106058142235_n.jpg?_nc_ht=scontent-hel3-1.cdninstagram.com&_nc_cat=100&_nc_ohc=86CloZvMAyMAX9iRT0r&tp=1&oh=52a0c51fb1f661bd0b174b06ea75989c&oe=6027D902",
         "https://upload.wikimedia.org/wikipedia/commons/a/a4/%D0%97%D0%B0%D0%BA%D0%B0%D1%82_%D0%9F%D0%B0%D0%B0%D0%BD%D0%B0%D1%8F%D1%80%D0%B2%D0%B8.jpg",
         "https://fotogora.ru/wp-content/uploads/2016/12/abstract-1846401_1280.jpg",
         "https://cameralabs.org/media/k2/items/cache/f83c9c315cf89e75d4d5b66c3e25f60b_L.jpg",
       ],
       date: getData2(),
+      files: null,
     },
     // {
     //   id: 44,
-    //   message: "моя чикса😏",
     //   whom: "my",
     //   photos: [
     //     "https://shelly.kpfu.ru/e-ksu/docs/F1433752806/IMG_1516.jpg?rnd=4558",
     //   ],
     //   date: getData2(),
+    // files: null
     // },
   ],
 };
@@ -406,10 +449,12 @@ const DialogsReducer = (state = InintialState, action) => {
         whom: "my",
         message: action.message,
         photos: action.photos,
+        files: action.files ? [...action.files] : null,
         audio: action.audio,
         reply: action.reply,
         date: action.message === "1" ? getData4() : getData3(),
       };
+      window.f = action.files ? action.files[0] : null;
       return {
         ...state,
         messages: [...state.messages, MessageElement],
@@ -444,12 +489,15 @@ const DialogsReducer = (state = InintialState, action) => {
 const add_message = (
   message = null,
   photos = null,
+  files = null,
   audio = null,
   reply = null
 ) => ({
   type: NEW_MESSAGE,
   message: message,
   photos: photos,
+  files: files,
+
   audio: audio,
   reply: reply,
 });
@@ -465,14 +513,16 @@ export const edit_message = (id, text) => ({
   text: text,
 });
 
-export const AddMessage = (message, photos, audio, reply) => async (
+export const AddMessage = (message, photos, files, audio, reply) => async (
   dispatch
 ) => {
   // let data = await ProfileAPI.UpdateStatus(status);
   // if (data.resultCode === 0) {
   //   dispatch(SetStatus(status));
   // }
-  dispatch(add_message(message, photos, audio ? audio.blobURL : null, reply));
+  dispatch(
+    add_message(message, photos, files, audio ? audio.blobURL : null, reply)
+  );
 };
 
 export const EditMessage = (id, text) => async (dispatch) => {
@@ -486,5 +536,19 @@ export const EditMessage = (id, text) => async (dispatch) => {
 export const DeleteMessage = (id) => async (dispatch) => {
   dispatch(delete_message(id));
 };
+
+// export const MessagesListenner = () => async (dispatch) => {
+//   let websocket = await onNewMessage();
+//   websocket.addEventListener("message", async (e) => {
+//     let data = JSON.parse(e.data);
+//     if (data.length > 1) {
+//       // data.map((m) => dispatch(AddMessage(m.message, [m.photo])));
+//       data.map((m) => dispatch(AddMessage(m.message)));
+//     } else {
+//       // dispatch(AddMessage(data[0].message, [data[0].photo]));
+//       dispatch(AddMessage(data[0].message));
+//     }
+//   });
+// };
 
 export default DialogsReducer;

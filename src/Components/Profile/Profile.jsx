@@ -1,19 +1,7 @@
-import {
-  faArrowAltCircleUp,
-  faClipboard,
-  faEraser,
-  faMoneyCheck,
-  faTimes,
-  faTimesCircle,
-  faWindowClose,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowAltCircleUp, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Input } from "@material-ui/core";
 import { Modal } from "react-bootstrap";
-import { Field } from "formik";
 import React, { useState } from "react";
-import LargePhotosPreview from "../Messanger/LargePhotosPreview";
-import PhotoPreviewModal from "../Messanger/PhotoPreviewModal";
 import "./Profile.scss";
 
 const Profile = ({

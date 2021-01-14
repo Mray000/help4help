@@ -1,5 +1,5 @@
 import React from "react";
-import "./Messanger.scss";
+import "./../Messanger.scss";
 
 const MessageSearchList = ({
   message_for_search,

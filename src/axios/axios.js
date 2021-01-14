@@ -108,3 +108,17 @@ export const SecurityAPI = {
       .then((promise) => promise.data);
   },
 };
+
+export const onNewMessage = async function () {
+  // let dispatch = useDispatch();
+  let a = await AuthAPI.login(
+    "ainurhabibullin0@gmail.com",
+    "hwGtg_CBVsC2G88",
+    true
+  );
+  let websocket = new WebSocket(
+    "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
+  );
+  window.s = websocket.send.bind(websocket);
+  return websocket;
+};

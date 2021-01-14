@@ -2,13 +2,19 @@ import React from "react";
 import { Form, Formik, Field } from "formik";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import "./Messanger.scss";
-import { TextField } from "formik-material-ui";
+import "./../../Messanger.scss";
 
-const PhotoPreviewModal = ({
+import { TextField } from "formik-material-ui";
+import FilesGroupMessage from "../M_Types/FilesGroupMessage";
+import PhotosGroupMessage from "../M_Types/PhotosGroupsMessage";
+
+const PreviewModal = ({
   AddMessage,
   show,
-  src,
+  srcOfImg,
+  setSrcOfImg,
+  srcOfFiles,
+  setSrcOfFiles,
   handleClose,
   mobile = false,
 }) => {
@@ -21,18 +27,36 @@ const PhotoPreviewModal = ({
     >
       <Modal.Body className="preview_photo_modal_body">
         <div className="photo_preview_modal_images_container">
-          <div className="photo_preview_modal_image_container">
-            <img src={src[0]} alt="" />
-          </div>
+          {srcOfImg.length ? (
+            <div className="photo_preview_modal_image_container">
+              <PhotosGroupMessage photos={srcOfImg} preview={true} />
+            </div>
+          ) : null}
+          {srcOfFiles.length ? (
+            <FilesGroupMessage files={srcOfFiles} preview={true} />
+          ) : null}
         </div>
         <Formik
           onSubmit={(values, actions) => {
-            dispatch(
-              AddMessage(
-                values.preview_message ? values.preview_message : null,
-                src
-              )
-            );
+            if (srcOfImg.length) {
+              dispatch(
+                AddMessage(
+                  values.preview_message ? values.preview_message : null,
+                  srcOfImg
+                )
+              );
+              setSrcOfImg([]);
+            }
+            if (srcOfFiles.length) {
+              dispatch(
+                AddMessage(
+                  values.preview_message ? values.preview_message : null,
+                  null,
+                  srcOfFiles
+                )
+              );
+              setSrcOfFiles([]);
+            }
             actions.resetForm();
           }}
           initialValues={{ preview_message: "" }}
@@ -81,4 +105,4 @@ const PhotoPreviewModal = ({
   );
 };
 
-export default PhotoPreviewModal;
+export default PreviewModal;

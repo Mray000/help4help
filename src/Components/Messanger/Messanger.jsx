@@ -1,6 +1,6 @@
 import React from "react";
-import DialogsList from "./DialogsList";
-import MessegeList from "./MessageList";
+import DialogsList from "./DialogsList/DialogsList";
+import MessegeList from "./MessageList/MessageList";
 import "./Messanger.scss";
 
 const Messanger = () => {

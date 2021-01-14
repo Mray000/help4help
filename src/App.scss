@@ -1,8 +1,5 @@
 .app-wrapper {
-  // text-align: center;
-  // background-color: #eaeaea;
-  // background-color: #5cdb94;
-  background-color: #18191a;
+  background-color: #f5f5f5;
 }
 
 .row {
@@ -17,7 +14,6 @@ button:focus {
 .app_wraper_content {
   height: 100vh;
   padding: 0;
-  // margin: 0;
   color: black;
 }
 .MuiInput-underline:after {
@@ -34,28 +30,7 @@ button:focus {
 
 input:-internal-autofill-selected {
   appearance: menulist-button;
-  background-color: initial;
+  background-color: transparent;
   background-image: none !important;
   color: initial;
-}
-
-audio::-webkit-media-controls {
-  width: inherit;
-  height: inherit;
-  position: relative;
-  direction: ltr;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-}
-audio::-webkit-media-controls-enclosure {
-  width: 100%;
-  max-width: 800px;
-  height: 30px;
-  flex-shrink: 0;
-  bottom: 0;
-  text-indent: 0;
-  padding: 0;
-  box-sizing: border-box;
 }

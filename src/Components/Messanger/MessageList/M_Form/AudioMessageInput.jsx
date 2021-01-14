@@ -6,10 +6,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { ReactMic } from "react-mic";
 import { useDispatch } from "react-redux";
-import { AddMessage } from "../../Redux/Reducer/DialogsReducer";
-import "./Messanger.scss";
+import { AddMessage } from "../../../../Redux/Reducer/DialogsReducer";
+import "./../../Messanger.scss";
 
-const AudioMessage = ({ setDisplay, display_none, message_dirty, submit }) => {
+const AudioMessageInput = ({
+  setDisplay,
+  display_none,
+  message_dirty,
+  submit,
+}) => {
   const [record, setRecord] = useState(false);
   const changeRecording = () => {
     setDisplay(!record);
@@ -22,7 +27,7 @@ const AudioMessage = ({ setDisplay, display_none, message_dirty, submit }) => {
   };
   const onStop = (recordedBlob) => {
     console.log("recordedBlob is: ", recordedBlob);
-    dispatch(AddMessage(null, null, recordedBlob));
+    dispatch(AddMessage(null, null, null, recordedBlob));
   };
   const display_audio_none = !record;
   const icon_add_message = useRef(null);
@@ -67,23 +72,27 @@ const AudioMessage = ({ setDisplay, display_none, message_dirty, submit }) => {
           onStop={onStop}
           onData={onData}
           strokeColor="#fff"
-          backgroundColor="#17212B"
+          backgroundColor="#242526"
         />
       </div>
       <div className="icons_a_m_container">
-        <div className="icon_add_message_container" ref={icon_add_message}>
-          <div onClick={submit} className="icon_add_message">
-            <FontAwesomeIcon icon={faPaperPlane} color="white" size={"md"} />
-          </div>
+        <div
+          onClick={submit}
+          className="icon_add_message"
+          ref={icon_add_message}
+        >
+          <FontAwesomeIcon icon={faPaperPlane} color="white" size={"md"} />
         </div>
-        <div className="audio_icon_in_container" ref={icon_audio}>
-          <div onClick={changeRecording} className="audio_icon_in">
-            <FontAwesomeIcon icon="microphone" color="white" size={"lg"} />
-          </div>
+        <div
+          onClick={changeRecording}
+          className="icon_in_audio"
+          ref={icon_audio}
+        >
+          <FontAwesomeIcon icon="microphone" color="white" size={"lg"} />
         </div>
       </div>
     </div>
   );
 };
 
-export default AudioMessage;
+export default AudioMessageInput;

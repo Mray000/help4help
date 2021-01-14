@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getDialogsList } from "../../Redux/Selectors/DialogsSelector";
-import ava from "./../../images/ava.png";
-import "./Messanger.scss";
+import { getDialogsList } from "../../../Redux/Selectors/DialogsSelector";
+import ava from "./../../../images/ava.png";
+import "./../Messanger.scss";
 
 const DialogsList = () => {
   let people_list_global = useSelector(getDialogsList);
