@@ -1,18 +1,28 @@
+import { Modal } from "react-bootstrap";
 import fileSize from "filesize";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { truncate } from "../../../../utils/truncate";
 import document_icon from "./../../../../images/document.svg";
 import "./../../Messanger.scss";
+import { Button } from "bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const FilesGroupMessage = ({ files, preview = null }) => {
   let a = useRef();
+  const [show_photo, setShowPhoto] = useState([false, ""]);
   let urls;
   if (!preview) {
     urls = files.map((f) => window.URL.createObjectURL(f));
   }
+  // const handleShow = () => setShowPhoto([true);
+  // const handleClose = () => setShowPhoto(false);
+
   return (
-    <div className="message_files_container">
+    // <div className="message_files_container">
+    <>
       {files.map((f) => {
+        let image = f.type.indexOf("image") !== -1;
         return (
           <div
             className="message_file"
@@ -26,26 +36,83 @@ const FilesGroupMessage = ({ files, preview = null }) => {
               }px`,
             }}
             onClick={(e) => {
-              if (!preview) {
+              if (!preview && !image) {
                 e.stopPropagation();
                 a.current.click();
               }
+              if (!preview && image) {
+                e.stopPropagation();
+                setShowPhoto([true, urls[files.indexOf(f)]]);
+              }
             }}
           >
-            <img src={document_icon} alt="биба" style={{ width: "30px" }} />
+            {image ? (
+              <div className="file_mini_img_container">
+                <img src={urls[files.indexOf(f)]} alt="биба" />
+              </div>
+            ) : (
+              <img
+                src={document_icon}
+                alt="биба"
+                style={{
+                  width: "30px",
+                }}
+              />
+            )}
             <div>
               <div style={{ color: "white" }}>
                 {f.name.length > 40 ? truncate(f.name, 30) : f.name}
               </div>
-              <div style={{ color: "#A5A5A5" }}>{fileSize(f.size)}</div>
+              <div style={{ color: "#5B5B5B" }}>{fileSize(f.size)}</div>
             </div>
             {!preview && (
-              <a download={f.name} href={urls[files.indexOf(f)]} ref={a}></a>
+              <>
+                {!f.type.indexOf("image") !== -1 && (
+                  <a
+                    download={f.name}
+                    href={urls[files.indexOf(f)]}
+                    ref={a}
+                  ></a>
+                )}
+              </>
             )}
           </div>
         );
       })}
-    </div>
+      {!preview && (
+        <FilePhotoPreviw
+          show={show_photo[0]}
+          photo={show_photo[1]}
+          setShowPhoto={setShowPhoto}
+        />
+      )}
+    </>
+    // </div>
+  );
+};
+
+const FilePhotoPreviw = ({ show, setShowPhoto, photo }) => {
+  return (
+    <Modal
+      show={show}
+      onHide={() => {
+        // e.target.stopPropagation();
+        setShowPhoto([false, ""]);
+      }}
+      className="photos_preview_global_container"
+    >
+      <div className="prt" style={{ position: "relative" }}>
+        {/* <FontAwesomeIcon
+          icon={faTimes}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowPhoto([false, ""]);
+          }}
+          style={{ position: "absolute", top: "2%", left: "90%" }}
+        /> */}
+        <img src={photo} alt="" style={{ width: "50%" }} />
+      </div>
+    </Modal>
   );
 };
 

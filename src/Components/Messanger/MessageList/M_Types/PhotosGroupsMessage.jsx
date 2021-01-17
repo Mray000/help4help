@@ -1,4 +1,6 @@
-import React from "react";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useRef } from "react";
 import "./../../Messanger.scss";
 
 const PhotosGroupMessage = ({
@@ -7,30 +9,40 @@ const PhotosGroupMessage = ({
   photosForView = null,
   setShow = null,
   preview = null,
+  setShowEditModal = null,
 }) => {
   const PhotoMessage = ({ src, width }) => {
     return (
-      <img
-        alt="📷"
-        src={src}
-        style={{
-          width: `${width}%`,
-          objectFit: "contain",
-          display: "block",
-          borderRadius: "5px",
-        }}
-        onClick={(e) => {
-          if (!preview) {
-            e.stopPropagation();
-            setImgIndex(() => {
-              return photosForView.indexOf(src);
-            });
-            setShow(true);
-          }
-        }}
-      />
+      <>
+        {preview && (
+          <FontAwesomeIcon
+            icon={faEdit}
+            onClick={() => setShowEditModal([true, src])}
+          />
+        )}
+        <img
+          alt="📷"
+          src={src}
+          style={{
+            width: `${width}%`,
+            objectFit: "contain",
+            display: "block",
+            borderRadius: "5px",
+          }}
+          onClick={(e) => {
+            if (!preview) {
+              e.stopPropagation();
+              setImgIndex(() => {
+                return photosForView.indexOf(src);
+              });
+              setShow(true);
+            }
+          }}
+        />
+      </>
     );
   };
+
   return (
     <div
       className="photos_container"

@@ -12,19 +12,8 @@ import {
 } from "../../../Redux/Reducer/DialogsReducer.js";
 import moment from "moment";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faReply,
-  faStar,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
-import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage.jsx";
-import FilesGroupMessage from "./M_Types/FilesGroupMessage.jsx";
-import AudioMessage from "./M_Types/AudioMessage.jsx";
 import "./../Messanger.scss";
 import ReplyMessagePreview from "./ReplyMessagePreview.jsx";
-import ReplysGroupMessage from "./M_Types/ReplyGroupMessage.jsx";
 import Message from "./Message.jsx";
 
 const MessageList = () => {
@@ -274,13 +263,14 @@ const MessageList = () => {
         <div className="message_list">
           <div className="top_date_container" ref={top_date}>
             <div className="top_date">
-              {moment(date, "MMMM D").fromNow().indexOf("hour") !== -1
+              {/* {moment(date, "MMMM D").fromNow().indexOf("hour") !== -1
                 ? "today"
                 : moment(date, "MMMM D").fromNow().indexOf("a day ago") !==
                     -1 ||
                   moment(date, "MMMM D").fromNow().indexOf("2 days ago") !== -1
                 ? "yesterday"
-                : date}
+                : date} */}
+              {moment(date, "MMMM D").fromNow()}
             </div>
           </div>
           {messages.map((m) => {
@@ -299,6 +289,7 @@ const MessageList = () => {
                 m={m}
                 NextDay={NextDay}
                 last={last}
+                key={m.id}
                 search_message_id={search_message_id}
                 select_messages_id={select_messages_id}
                 message_to_find={message_to_find}

@@ -107,35 +107,28 @@ const MessageForm = ({
               name="add_photo"
               multiple
               onChange={(e) => {
-                let extension = e.target.files[0].name.slice(
-                  e.target.files[0].name.lastIndexOf(".") + 1,
-                  e.target.files[0].name.length
-                );
-
-                if (
-                  extension === "txt" ||
-                  extension === "docx" ||
-                  extension === "doc" ||
-                  extension === "pptx"
-                ) {
-                  let mass = [];
-                  if (e.target.files.length) {
-                    for (let i = 0; i < e.target.files.length; i++) {
-                      mass.push(e.target.files[i]);
-                    }
-                    setSrcOfFiles(mass);
-                    handleShow();
+                let massOfImg = [];
+                let massOfFile = [];
+                [...e.target.files].map((f) => {
+                  let extension = f.name.slice(
+                    f.name.lastIndexOf(".") + 1,
+                    f.name.length
+                  );
+                  if (
+                    extension === "txt" ||
+                    extension === "docx" ||
+                    extension === "doc" ||
+                    extension === "pptx"
+                  ) {
+                    massOfFile.push(f);
+                  } else {
+                    massOfImg.push(window.URL.createObjectURL(f));
                   }
-                } else {
-                  let mass = [];
-                  if (e.target.files.length) {
-                    for (let i = 0; i < e.target.files.length; i++) {
-                      mass.push(window.URL.createObjectURL(e.target.files[i]));
-                    }
-                    setSrcOfImg(mass);
-                    handleShow();
-                  }
-                }
+                });
+                console.log(massOfImg);
+                setSrcOfImg(massOfImg);
+                setSrcOfFiles(massOfFile);
+                handleShow();
               }}
             />
           </div>

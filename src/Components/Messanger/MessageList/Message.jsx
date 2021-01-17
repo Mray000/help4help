@@ -5,6 +5,7 @@ import AudioMessage from "./M_Types/AudioMessage";
 import FilesGroupMessage from "./M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage";
 import ReplysGroupMessage from "./M_Types/ReplyGroupMessage";
+import classNames from "classnames";
 
 const Message = ({
   m,
@@ -24,20 +25,22 @@ const Message = ({
   setEditMessage,
   setReplyMessage,
 }) => {
-  let my_him = m.whom === "my" ? "my_m" : "him_m";
-
+  var MessageClass = classNames({
+    my_m: m.whom === "my",
+    him_m: m.whom === "him",
+    last: last && !m.audio,
+    search: search_message_id === m.id,
+    select: select_messages_id.includes(m.id),
+  });
   return (
-    <>
+    <div>
       {NextDay(m)}
       <div
-        className={`${my_him} ${last && !m.audio ? "last" : ""} ${
-          search_message_id === m.id ? "search" : ""
-        } ${select_messages_id.includes(m.id) ? "select" : ""}`}
+        className={MessageClass}
         ref={search_message_id === m.id ? message_to_find : null}
         onClick={() => {
           SelectMessage(m.id);
         }}
-        key={m.id}
       >
         <div className="message_content_contaiener">
           {last && (
@@ -147,7 +150,7 @@ const Message = ({
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

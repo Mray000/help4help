@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./App.scss";
 import Header from "./Components/Header/Header.jsx";
-import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+} from "react-router-dom";
 // import Users from "./Compinents/Users/Users.jsx";
 // import ProfileContainer from "./Compinents/Profile/Profile-Container";
 // import BarContainer from "./Compinents/Bar/BarContainer";
@@ -30,6 +36,7 @@ const App = () => {
   )
     ? true
     : false;
+
   return (
     <BrowserRouter>
       <div className="app-wrapper">
@@ -40,19 +47,13 @@ const App = () => {
           <Route path="/dialogs" render={() => <Messanger mobile={mobile} />} />
           <Route path="/registration" render={WithSuspence(Registration)} />
           <Route path="/video" render={WithSuspence(Video)} />
+          <Route path="/*" render={() => <div> Page not found : </div>} />
+
+          <Route path="/" render={() => <Redirect to="/dialogs" />} />
         </div>
       </div>
     </BrowserRouter>
   );
 };
-
-// const mapStateToProps = (state) => ({
-//   initialized: state.App.initialized,
-// });
-
-// export default compose(
-//   withRouter,
-//   connect(mapStateToProps, { Initialing })
-// )(App);
 
 export default App;

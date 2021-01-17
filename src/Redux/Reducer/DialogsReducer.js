@@ -454,7 +454,7 @@ const DialogsReducer = (state = InintialState, action) => {
         reply: action.reply,
         date: action.message === "1" ? getData4() : getData3(),
       };
-      window.f = action.files ? action.files[0] : null;
+      // window.f = action.files ? action.files[0] : null;
       return {
         ...state,
         messages: [...state.messages, MessageElement],
