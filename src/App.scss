@@ -16,35 +16,44 @@ button:focus {
   padding: 0;
   color: black;
 }
-// .MuiInput-underline:after {
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   content: "";
-//   position: absolute;
-//   transform: scaleX(0);
-//   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-//   border-bottom: 2px solid #90caf2;
-//   pointer-events: none;
+// label {
+//   display: inline-block;
+//   position: relative;
+//   width: 150px;
+//   height: 150px;
+//   cursor: pointer;
+//   overflow: hidden;
 // }
 
-// input:-internal-autofill-selected {
-//   appearance: menulist-button;
-//   background-color: transparent;
-//   background-image: none !important;
-//   color: initial;
-// }
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
 
-// .modal-dialog {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   border: 0;
-//   margin: auto;
-//   height: 100% !important;
-// }
-// .modal-content {
-//   width: 100%;
-//   border: 0;
-//   background: transparent;
-// }
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* firefox */
+input[type="color"]::-moz-focus-inner {
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+  height: 40px;
+}

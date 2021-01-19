@@ -125,7 +125,6 @@ const MessageForm = ({
                     massOfImg.push(window.URL.createObjectURL(f));
                   }
                 });
-                console.log(massOfImg);
                 setSrcOfImg(massOfImg);
                 setSrcOfFiles(massOfFile);
                 handleShow();

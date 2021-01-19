@@ -17,6 +17,7 @@ const PhotosGroupMessage = ({
         {preview && (
           <FontAwesomeIcon
             icon={faEdit}
+            style={{ position: "absolute" }}
             onClick={() => setShowEditModal([true, src])}
           />
         )}
