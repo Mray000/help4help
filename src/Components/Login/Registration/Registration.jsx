@@ -47,9 +47,6 @@ const Registration = () => {
                 className={`registration_${mobile ? "mobile_" : ""}form ${
                   fade ? "fade" : ""
                 }`}
-                onClick={() => {
-                  window.pr = props;
-                }}
               >
                 <div className="registration_form__title">
                   <h1 className="title_content">Registration</h1>

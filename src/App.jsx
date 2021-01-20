@@ -47,9 +47,9 @@ const App = () => {
           <Route path="/dialogs" render={() => <Messanger mobile={mobile} />} />
           <Route path="/registration" render={WithSuspence(Registration)} />
           <Route path="/video" render={WithSuspence(Video)} />
-          <Route path="/*" render={() => <div> Page not found : </div>} />
+          {/* <Route path="/*" render={() => <div> Page not found : </div>} /> */}
 
-          <Route path="/" render={() => <Redirect to="/dialogs" />} />
+          {/* <Route path="/" render={() => <Redirect to="/dialogs" />} /> */}
         </div>
       </div>
     </BrowserRouter>

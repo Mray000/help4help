@@ -4,9 +4,6 @@ import React, { useRef, useState } from "react";
 import { truncate } from "../../../../utils/truncate";
 import document_icon from "./../../../../images/document.svg";
 import "./../../Messanger.scss";
-import { Button } from "bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const FilesGroupMessage = ({ files, preview = null }) => {
   let a = useRef();
@@ -15,11 +12,8 @@ const FilesGroupMessage = ({ files, preview = null }) => {
   if (!preview) {
     urls = files.map((f) => window.URL.createObjectURL(f));
   }
-  // const handleShow = () => setShowPhoto([true);
-  // const handleClose = () => setShowPhoto(false);
 
   return (
-    // <div className="message_files_container">
     <>
       {files.map((f) => {
         let image = f.type.indexOf("image") !== -1;
@@ -63,7 +57,7 @@ const FilesGroupMessage = ({ files, preview = null }) => {
               <div style={{ color: "white" }}>
                 {f.name.length > 40 ? truncate(f.name, 30) : f.name}
               </div>
-              <div style={{ color: "#5B5B5B" }}>{fileSize(f.size)}</div>
+              <div style={{ color: "#E1BEE1" }}>{fileSize(f.size)}</div>
             </div>
             {!preview && (
               <>

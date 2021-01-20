@@ -715,31 +715,15 @@
 .image_crop {
   position: absolute;
   background-color: rgba(214, 120, 120, 0.3);
-  // border: black 2px dashed;
   top: 0.00000000001%;
-  // display: flex;
-  // justify-content: space-between;
-  // flex-direction: column;
-  // border-radius: 2px;
-  // align-self: auto;
-  // align-content: space-around;
-  // align-items: flex-end;
-  // position: relative;
-  // left: 0;
-  // right: 0;
-  // background-color: rgba(165, 42, 42, 0.5);
-  min-width: 50px;
-  min-height: 50px;
+  min-width: 55px;
+  min-height: 55px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-
   .crop_top,
   .crop_bottom {
     display: flex;
-    // position: relative;
-
-    // flex-direction: column;
     justify-content: space-between;
   }
   .crop_left_top,
@@ -750,31 +734,16 @@
     height: 10px;
     background-color: black;
   }
-  // .crop_left_top {
-  //   border-left: pink 3px solid;
-  //   border-top: pink 3px solid;
-  // }
-  // .crop_right_top {
-  //   border-right: pink 3px solid;
-  //   border-top: pink 3px solid;
-  // }
-  // .crop_left_bottom {
-  //   border-left: pink 3px solid;
-  //   border-bottom: pink 3px solid;
-  // }
-  // .crop_right_bottom {
-  //   border-right: pink 3px solid;
-  //   border-bottom: pink 3px solid;
-  // }
-  .crop_left_top::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    // height: 100% !important;
-    // right: 1px;
-    z-index: 1000000;
-    // right: 1px;
-    color: peru;
-    background-color: peru;
+  .crop_left_bottom,
+  .crop_right_top {
+    cursor: nesw-resize;
   }
+  .crop_right_bottom,
+  .crop_left_top {
+    cursor: nwse-resize;
+  }
+}
+
+.svg-inline--fa {
+  cursor: pointer;
 }

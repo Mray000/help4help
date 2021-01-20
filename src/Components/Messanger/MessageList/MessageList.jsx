@@ -29,13 +29,6 @@ const MessageList = () => {
   const [imgIndex, setImgIndex] = useState(0);
   const [message_for_search, setMessageForSearch] = useState([]);
   const [display_none, setDisplayNone] = useState(false);
-  const [date, setDate] = useState(
-    moment(messages[messages.length - 1].date, "MMMM D YYYY h:mm").format(
-      "MMMM"
-    ) +
-      " " +
-      moment(messages[messages.length - 1].date, "MMMM D YYYY h:mm").format("D")
-  );
   const date_ref_index = useRef(0);
   const [show, setShow] = useState(false);
   let indexOfRef = useRef(-1);
@@ -77,7 +70,14 @@ const MessageList = () => {
     setTimeout(() => {
       top_date.current.style.opacity = "0";
     }, 4000);
-    // dispatch(MessagesListenner());
+    top_date.current.children[0].innerText =
+      moment(messages[messages.length - 1].date, "MMMM D YYYY h:mm").format(
+        "MMMM"
+      ) +
+      " " +
+      moment(messages[messages.length - 1].date, "MMMM D YYYY h:mm").format(
+        "D"
+      );
   }, []);
   const MessageToFind = (id) => {
     setMessageSearchId(id);
@@ -211,9 +211,16 @@ const MessageList = () => {
           ].current.getBoundingClientRect().top <
         0
       ) {
-        setDate(
-          date_refs.current[date_ref_index.current - 1].current.innerText
-        );
+        let NewDate =
+          date_refs.current[date_ref_index.current - 1].current.innerText;
+        console.log(moment(NewDate, "MMMM D").fromNow());
+        top_date.current.children[0].innerText =
+          moment(NewDate, "MMMM D").fromNow().indexOf("hour") !== -1
+            ? "today"
+            : moment(NewDate, "MMMM D").fromNow().indexOf("a day ago") !== -1 ||
+              moment(NewDate, "MMMM D").fromNow().indexOf("2 days ago") !== -1
+            ? "yesterday"
+            : NewDate;
         date_ref_index.current = date_ref_index.current - 1;
       }
     }
@@ -226,13 +233,19 @@ const MessageList = () => {
           ].current.getBoundingClientRect().top >
         0
       ) {
-        setDate(
-          date_refs.current[date_ref_index.current + 1].current.innerText
-        );
+        let NewDate =
+          date_refs.current[date_ref_index.current + 1].current.innerText;
+        top_date.current.children[0].innerText =
+          moment(NewDate, "MMMM D").fromNow().indexOf("hour") !== -1
+            ? "today"
+            : moment(NewDate, "MMMM D").fromNow().indexOf("a day ago") !== -1 ||
+              moment(NewDate, "MMMM D").fromNow().indexOf("2 days ago") !== -1
+            ? "yesterday"
+            : NewDate;
         date_ref_index.current = date_ref_index.current + 1;
       }
     }
-    clearTimeout(timer);
+    // clearTimeout(timer);
   };
   return (
     <div className="col-8 h-75  message_list_global_container">
@@ -262,16 +275,7 @@ const MessageList = () => {
       >
         <div className="message_list">
           <div className="top_date_container" ref={top_date}>
-            <div className="top_date">
-              {/* {moment(date, "MMMM D").fromNow().indexOf("hour") !== -1
-                ? "today"
-                : moment(date, "MMMM D").fromNow().indexOf("a day ago") !==
-                    -1 ||
-                  moment(date, "MMMM D").fromNow().indexOf("2 days ago") !== -1
-                ? "yesterday"
-                : date} */}
-              {moment(date, "MMMM D").fromNow()}
-            </div>
+            <div className="top_date"></div>
           </div>
           {messages.map((m) => {
             if (!messages[messages.indexOf(m) + 1]) {
