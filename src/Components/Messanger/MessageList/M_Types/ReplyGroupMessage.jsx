@@ -10,7 +10,7 @@ const ReplysGroupMessage = ({
   my_name,
   him_name,
   setImgIndex,
-  photos,
+  index_for_photos,
   setShow,
 }) => {
   let reply_message;
@@ -34,7 +34,7 @@ const ReplysGroupMessage = ({
                 <PhotosGroupMessage
                   photos={reply_message.photos}
                   setImgIndex={setImgIndex}
-                  photosForView={photos}
+                  index_for_photos={index_for_photos}
                   setShow={setShow}
                 />
               )}

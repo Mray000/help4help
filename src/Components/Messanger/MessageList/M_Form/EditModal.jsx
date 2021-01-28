@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@material-ui/core";
 import { Modal } from "react-bootstrap";
 import { faCropAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
+import { SetError } from "../../../../Redux/Reducer/AppReducer";
+import { useEventListener } from "../../../../utils/UseEventListener";
 const EditModal = ({
   SetShowEditModal,
   show_edit_modal,
@@ -26,15 +30,11 @@ const EditModal = ({
   let ImageTop = useRef();
   let ImageLeft = useRef();
   let firstRender = useRef();
-  useEffect(() => {
-    if (firstRender.current) {
-      ImageBottom.current = canvas.current.getBoundingClientRect().bottom;
-      ImageRight.current = canvas.current.getBoundingClientRect().right;
-      ImageTop.current = canvas.current.getBoundingClientRect().top;
-      ImageLeft.current = canvas.current.getBoundingClientRect().left;
-      firstRender.current = false;
-    }
-  }, [firstRender.current]);
+  const dispatch = useDispatch();
+  let crop_left_top = false;
+  let crop_right_top = false;
+  let crop_left_bottom = false;
+  let crop_right_bottom = false;
   useEffect(() => {
     if (show_edit_modal[1]) {
       canvas.current.width = image.current.width;
@@ -54,68 +54,15 @@ const EditModal = ({
       firstRender.current = true;
     }
   }, [show_edit_modal[1]]);
-  const PaintExampleCanvas = (strokeStyle, lineWidth) => {
-    example_ctx.current.clearRect(0, 0, 50, 25);
-    example_ctx.current.beginPath();
-    example_ctx.current.strokeStyle = strokeStyle;
-    example_ctx.current.lineWidth = lineWidth * 2;
-    example_ctx.current.moveTo(0, 0);
-    example_ctx.current.lineTo(50, 0);
-    example_ctx.current.stroke();
-  };
-  const SaveDrawPicture = () => {
-    setSrcOfImg((lastData) => {
-      lastData[
-        lastData.indexOf(show_edit_modal[1])
-      ] = canvas.current.toDataURL();
-      return [...lastData];
-    });
-    SetShowEditModal([false, ""]);
-  };
-  const SaveCropPicture = async () => {
-    let image = await getImage(show_edit_modal[1]);
-    canvas_submit.width = crop.current.style.width.slice(0, -2);
-    canvas_submit.height = crop.current.style.height.slice(0, -2);
-    ctx_submit.drawImage(
-      image,
-      (image.naturalWidth / canvas.current.width) *
-        -(ImageLeft.current - crop.current.getBoundingClientRect().left),
-      (image.naturalWidth / canvas.current.width) *
-        -(ImageTop.current - crop.current.getBoundingClientRect().top),
-      (image.naturalWidth / canvas.current.width) *
-        crop.current.style.width.slice(0, -2),
-      (image.naturalWidth / canvas.current.width) *
-        crop.current.style.height.slice(0, -2),
-      0,
-      0,
-      crop.current.style.width.slice(0, -2),
-      crop.current.style.height.slice(0, -2)
-    );
-    console.log(canvas_submit.toDataURL());
-    setSrcOfImg((lastData) => {
-      lastData[
-        lastData.indexOf(show_edit_modal[1])
-      ] = canvas_submit.toDataURL();
-      return [...lastData];
-    });
-    SetShowEditModal([false, ""]);
-  };
-  const onMouseMove = (e) => {
-    let x = e.clientX - ImageLeft.current;
-    let y = e.clientY - ImageTop.current;
-
-    if (canvas_for_drawing && MousePress) {
-      ctx.current.lineTo(x, y);
-      ctx.current.stroke();
-
-      ctx.current.beginPath();
-      ctx.current.arc(x, y, ctx.current.lineWidth / 2, 0, Math.PI * 2);
-      ctx.current.fill();
-
-      ctx.current.beginPath();
-      ctx.current.moveTo(x, y);
+  useEffect(() => {
+    if (firstRender.current) {
+      ImageBottom.current = canvas.current.getBoundingClientRect().bottom;
+      ImageRight.current = canvas.current.getBoundingClientRect().right;
+      ImageTop.current = canvas.current.getBoundingClientRect().top;
+      ImageLeft.current = canvas.current.getBoundingClientRect().left;
+      firstRender.current = false;
     }
-  };
+  }, [firstRender.current]);
   useEffect(() => {
     return () => {
       SetCanvasForDrawing(false);
@@ -136,42 +83,110 @@ const EditModal = ({
       crop.current.style.height = `${canvas.current.height}px`;
     }
   }, [canvas_for_crop]);
-  let crop_left_top = false;
-  let crop_right_top = false;
-  let crop_left_bottom = false;
-  let crop_right_bottom = false;
+  const SaveDrawPicture = () => {
+    setSrcOfImg((lastData) => {
+      lastData[
+        lastData.indexOf(show_edit_modal[1])
+      ] = canvas.current.toDataURL();
+      return [...lastData];
+    });
+    SetShowEditModal([false, ""]);
+  };
+  const SaveCropPicture = async () => {
+    let image = await getImage(show_edit_modal[1]);
+    canvas_submit.width = crop.current.style.width.slice(0, -2);
+    canvas_submit.height = crop.current.style.height.slice(0, -2);
+    if (canvas_submit.width / canvas_submit.height < 0.1) {
+      dispatch(SetError("Picture very small"));
+      SetShowEditModal([false, ""]);
+      return;
+    }
+    ctx_submit.drawImage(
+      image,
+      (image.naturalWidth / canvas.current.width) *
+        -(ImageLeft.current - crop.current.getBoundingClientRect().left),
+      (image.naturalWidth / canvas.current.width) *
+        -(ImageTop.current - crop.current.getBoundingClientRect().top),
+      (image.naturalWidth / canvas.current.width) *
+        crop.current.style.width.slice(0, -2),
+      (image.naturalWidth / canvas.current.width) *
+        crop.current.style.height.slice(0, -2),
+      0,
+      0,
+      crop.current.style.width.slice(0, -2),
+      crop.current.style.height.slice(0, -2)
+    );
+
+    setSrcOfImg((lastData) => {
+      lastData[
+        lastData.indexOf(show_edit_modal[1])
+      ] = canvas_submit.toDataURL();
+      return [...lastData];
+    });
+    SetShowEditModal([false, ""]);
+  };
+  useEventListener("mousemove", (e) => {
+    if (canvas_for_drawing && MousePress) {
+      DrowMouseMove(e);
+    }
+    if (
+      crop_left_top ||
+      crop_right_top ||
+      crop_left_bottom ||
+      crop_right_bottom
+    ) {
+      CropMouseMove(e);
+    }
+  });
+  const PaintExampleCanvas = (strokeStyle, lineWidth) => {
+    example_ctx.current.clearRect(0, 0, 50, 25);
+    example_ctx.current.beginPath();
+    example_ctx.current.strokeStyle = strokeStyle;
+    example_ctx.current.lineWidth = lineWidth * 2;
+    example_ctx.current.moveTo(0, 0);
+    example_ctx.current.lineTo(50, 0);
+    example_ctx.current.stroke();
+  };
+
+  const DrowMouseMove = (e) => {
+    let x = e.clientX - ImageLeft.current;
+    let y = e.clientY - ImageTop.current;
+
+    if (
+      x > 0 &&
+      y > 0 &&
+      e.clientX < ImageRight.current &&
+      e.clientY < ImageBottom.current
+    ) {
+      ctx.current.lineTo(x, y);
+      ctx.current.stroke();
+
+      ctx.current.beginPath();
+      ctx.current.arc(x, y, ctx.current.lineWidth / 2, 0, Math.PI * 2);
+      ctx.current.fill();
+
+      ctx.current.beginPath();
+      ctx.current.moveTo(x, y);
+    } else {
+      MousePress = false;
+      ctx.current.beginPath();
+    }
+  };
   const ChangeCrop = (t_b, l_r, e) => {
-    if (t_b === "top") {
-      crop.current.style.height =
-        canvas.current.height +
-        (ImageTop.current - e.clientY) -
-        crop.current.style.bottom.slice(0, -2) +
-        "px";
-    } else {
-      crop.current.style.height =
-        canvas.current.height -
-        (ImageBottom.current - e.clientY) -
-        crop.current.style.top.slice(0, -2) +
-        "px";
-    }
-    if (l_r === "left") {
-      crop.current.style.width =
-        canvas.current.width +
-        ImageLeft.current -
-        e.clientX -
-        crop.current.style.right.slice(0, -2) +
-        "px";
-    } else {
-      crop.current.style.width =
-        -(ImageLeft.current - e.clientX) -
-        crop.current.style.left.slice(0, -2) +
-        "px";
-    }
+    if (e.clientY < ImageLeft.current) crop.current.style.left = "0px";
+    if (e.clientX < ImageTop.current) crop.current.style.top = "0px";
+    if (e.clientX > ImageRight.current) crop.current.style.right = "0px";
+    if (e.clientX < ImageBottom.current) crop.current.style.bottom = "0px";
     if (t_b === "top") {
       if (
         e.clientY > ImageTop.current &&
         e.clientY < ImageBottom.current - 50
       ) {
+        crop.current.style.height =
+          canvas.current.height +
+          (ImageTop.current - e.clientY) -
+          crop.current.style.bottom.slice(0, -2) +
+          "px";
         crop.current.style.top = e.clientY - ImageTop.current + "px";
       } else {
         crop_left_top = false;
@@ -182,6 +197,10 @@ const EditModal = ({
         e.clientY > ImageTop.current + 50 &&
         e.clientY < ImageBottom.current
       ) {
+        crop.current.style.height =
+          -(ImageTop.current - e.clientY) -
+          crop.current.style.top.slice(0, -2) +
+          "px";
         crop.current.style.bottom = ImageBottom.current - e.clientY + "px";
       } else {
         crop_left_bottom = false;
@@ -193,7 +212,13 @@ const EditModal = ({
         e.clientX > ImageLeft.current &&
         e.clientX < ImageRight.current - 50
       ) {
-        crop.current.style.left = -(ImageLeft.current - e.clientX) + "px";
+        crop.current.style.width =
+          canvas.current.width +
+          ImageLeft.current -
+          e.clientX -
+          crop.current.style.right.slice(0, -2) +
+          "px";
+        crop.current.style.left = e.clientX - ImageLeft.current + "px";
       } else {
         crop_left_top = false;
         crop_left_bottom = false;
@@ -203,6 +228,10 @@ const EditModal = ({
         e.clientX < ImageRight.current &&
         e.clientX > ImageLeft.current + 50
       ) {
+        crop.current.style.width =
+          -(ImageLeft.current - e.clientX) -
+          crop.current.style.left.slice(0, -2) +
+          "px";
         crop.current.style.right = ImageRight.current - e.clientX + "px";
       } else {
         crop_right_top = false;
@@ -231,7 +260,6 @@ const EditModal = ({
       }
     }
   };
-
   return (
     <Modal
       show={show_edit_modal[0]}
@@ -240,17 +268,17 @@ const EditModal = ({
     >
       <Modal.Body className="preview_photo_modal_body">
         <div className="photo_preview_modal_images_container">
-          <img src={show_edit_modal[1]} ref={image} />
+          <img src={show_edit_modal[1]} ref={image} alt="буба" />
         </div>
         <div onMouseMove={CropMouseMove}>
           <canvas
             ref={canvas}
-            onMouseMove={onMouseMove}
             onMouseDown={() => (MousePress = true)}
             onMouseUp={() => {
               MousePress = false;
               ctx.current.beginPath();
             }}
+            // onCLick={() => (MousePress = true)}
           ></canvas>
           {canvas_for_crop && (
             <div ref={crop} className="image_crop">

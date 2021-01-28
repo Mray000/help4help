@@ -1,9 +1,12 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { SignIn } from "../../../Redux/Reducer/AuthReducer";
 
-const DnD = ({ fade, setFade, setPageNumber }) => {
+const DnD = ({ fade, setFade, setPageNumber, data }) => {
   const [LessonsForHelping, setLessonsForHelping] = useState([]);
   const [LessonsForLearning, setLessonsForLearning] = useState([]);
+  const dispatch = useDispatch();
   const lessons = [
     { id: 1, lesson: "Math", img: "" },
     { id: 2, lesson: "Lang", img: "" },
@@ -18,13 +21,10 @@ const DnD = ({ fade, setFade, setPageNumber }) => {
     { id: 11, lesson: "English", img: "" },
     { id: 12, lesson: "Music", img: "" },
   ];
-  const draggable_elements = [3, 6, 9, 12];
   const DragStart = (ev, e) => {
     ev.dataTransfer.setData("id", e.id);
   };
-  const DragOver = (ev) => {
-    ev.preventDefault();
-  };
+
   const Drop = (ev, hl) => {
     ev.preventDefault();
     let DraggingEl = lessons.find(
@@ -41,21 +41,19 @@ const DnD = ({ fade, setFade, setPageNumber }) => {
       massForHL.length < 6 &&
       !massForHL.find((e) => e.id === DraggingEl.id)
     ) {
-      setMassForFilter((lastData) => {
-        return lastData.filter((e) => e.id !== DraggingEl.id);
-      });
-      setMassForHL((lastData) => {
-        return [...lastData, DraggingEl];
-      });
+      setMassForFilter((lastData) =>
+        lastData.filter((e) => e.id !== DraggingEl.id)
+      );
+      setMassForHL((lastData) => [...lastData, DraggingEl]);
     }
     if (hl === "r") {
       if (DraggingEl) {
-        setLessonsForHelping((lastData) => {
-          return lastData.filter((e) => e.id !== DraggingEl.id);
-        });
-        setLessonsForLearning((lastData) => {
-          return lastData.filter((e) => e.id !== DraggingEl.id);
-        });
+        setLessonsForHelping((lastData) =>
+          lastData.filter((e) => e.id !== DraggingEl.id)
+        );
+        setLessonsForLearning((lastData) =>
+          lastData.filter((e) => e.id !== DraggingEl.id)
+        );
       }
     }
   };
@@ -93,9 +91,7 @@ const DnD = ({ fade, setFade, setPageNumber }) => {
         <div className="droppable_e_g_container">
           <div
             className="droppable_e_container_1"
-            onDragOver={(ev) => {
-              DragOver(ev);
-            }}
+            onDragOver={(e) => e.preventDefault()}
             onDrop={(ev) => {
               Drop(ev, hl);
             }}
@@ -118,9 +114,7 @@ const DnD = ({ fade, setFade, setPageNumber }) => {
           </div>
           <div
             className="droppable_e_container_2"
-            onDragOver={(ev) => {
-              DragOver(ev);
-            }}
+            onDragOver={(e) => e.preventDefault()}
             onDrop={(ev) => {
               Drop(ev, hl);
             }}
@@ -152,21 +146,19 @@ const DnD = ({ fade, setFade, setPageNumber }) => {
       <div className="tittle">Сhoose a lessons</div>
       <section
         className="draggable_elements"
-        onDragOver={(ev) => {
-          DragOver(ev);
-        }}
+        onDragOver={(e) => e.preventDefault()}
         onDrop={(ev) => {
           Drop(ev, "r");
         }}
       >
-        {draggable_elements.map((i) => {
+        {[3, 6, 9, 12].map((i) => {
           return (
             <div className="draggable_elements_i">
               {lessons
                 .filter((e) => e.id > i - 3 && e.id <= i)
-                .map((e) => {
-                  return <DraggableElement e={e} />;
-                })}
+                .map((e) => (
+                  <DraggableElement e={e} />
+                ))}
             </div>
           );
         })}
@@ -186,7 +178,23 @@ const DnD = ({ fade, setFade, setPageNumber }) => {
         >
           Go back
         </Button>
-        <Button>Submit</Button>
+        <Button
+          onClick={() => {
+            dispatch(
+              SignIn(
+                data.email,
+                data.password,
+                data.name,
+                data.surname,
+                data.bd,
+                LessonsForHelping.map((e) => e.lesson),
+                LessonsForLearning.map((e) => e.lesson)
+              )
+            );
+          }}
+        >
+          Submit
+        </Button>
       </div>
     </div>
   );

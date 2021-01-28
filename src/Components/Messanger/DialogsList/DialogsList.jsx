@@ -1,3 +1,4 @@
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik } from "formik";
 import React, { useState } from "react";
@@ -61,7 +62,7 @@ const DialogsListSearch = ({ FilterDialogs }) => {
             <InputGroup.Prepend>
               <InputGroup.Text className="search_prepend_in">
                 <FontAwesomeIcon
-                  icon="search"
+                  icon={faSearch}
                   color="white"
                   size={mobile ? `3x` : null}
                 />

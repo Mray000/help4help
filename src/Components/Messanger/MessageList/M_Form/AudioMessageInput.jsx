@@ -1,7 +1,4 @@
-import {
-  faArrowCircleRight,
-  faPaperPlane,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMicrophone, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { ReactMic } from "react-mic";
@@ -81,14 +78,14 @@ const AudioMessageInput = ({
           className="icon_add_message"
           ref={icon_add_message}
         >
-          <FontAwesomeIcon icon={faPaperPlane} color="white" size={"md"} />
+          <FontAwesomeIcon icon={faPaperPlane} color="white" />
         </div>
         <div
           onClick={changeRecording}
           className="icon_in_audio"
           ref={icon_audio}
         >
-          <FontAwesomeIcon icon="microphone" color="white" size={"lg"} />
+          <FontAwesomeIcon icon={faMicrophone} color="white" size={"lg"} />
         </div>
       </div>
     </div>

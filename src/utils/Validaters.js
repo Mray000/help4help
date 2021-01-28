@@ -13,5 +13,7 @@ export const link = (value) =>
   value && /[A-Z0-9._%+-]\.[A-Z]{2,4}\/?[A-Z0-9._%+-]+$/i.test(value)
     ? undefined
     : "Invalid link";
+export const password = (value) =>
+  value && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i.test(value);
 
 export const formError = (err) => (err ? { err } : undefined);

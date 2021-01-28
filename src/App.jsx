@@ -1,13 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import "./App.scss";
 import Header from "./Components/Header/Header.jsx";
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-  withRouter,
-} from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 // import Users from "./Compinents/Users/Users.jsx";
 // import ProfileContainer from "./Compinents/Profile/Profile-Container";
 // import BarContainer from "./Compinents/Bar/BarContainer";
@@ -20,6 +14,7 @@ import {
 import WithSuspence from "./utils/WithSuspence";
 import Profile from "./Components/Profile/Profile";
 import Messanger from "./Components/Messanger/Messanger";
+import Error from "./mini-components/Error";
 const Login = React.lazy(() => import("./Components/Login/Login.jsx"));
 const Registration = React.lazy(() =>
   import("./Components/Login/Registration/Registration.jsx")
@@ -47,10 +42,9 @@ const App = () => {
           <Route path="/dialogs" render={() => <Messanger mobile={mobile} />} />
           <Route path="/registration" render={WithSuspence(Registration)} />
           <Route path="/video" render={WithSuspence(Video)} />
-          {/* <Route path="/*" render={() => <div> Page not found : </div>} /> */}
-
-          {/* <Route path="/" render={() => <Redirect to="/dialogs" />} /> */}
+          {/* <Route path="*" render={() => <div>{"Page not found :("}</div>} /> */}
         </div>
+        <Error />
       </div>
     </BrowserRouter>
   );

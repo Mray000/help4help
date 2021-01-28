@@ -1,12 +1,12 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef } from "react";
+import React from "react";
 import "./../../Messanger.scss";
 
 const PhotosGroupMessage = ({
   photos,
   setImgIndex = null,
-  photosForView = null,
+  index_for_photos = null,
   setShow = null,
   preview = null,
   setShowEditModal = null,
@@ -33,9 +33,7 @@ const PhotosGroupMessage = ({
           onClick={(e) => {
             if (!preview) {
               e.stopPropagation();
-              setImgIndex(() => {
-                return photosForView.indexOf(src);
-              });
+              setImgIndex(() => index_for_photos + photos.indexOf(src));
               setShow(true);
             }
           }}
@@ -127,4 +125,4 @@ const PhotosGroupMessage = ({
   );
 };
 
-export default PhotosGroupMessage;
+export default React.memo(PhotosGroupMessage);

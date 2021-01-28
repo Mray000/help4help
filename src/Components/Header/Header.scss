@@ -6,11 +6,12 @@
   // background-color: #4c4c4c;
   background-color: black;
   color: white;
+  font-weight: 600;
   .nav-link {
     color: white;
   }
   .nav-link:hover {
-    color: #c4dfe6;
+    color: #0075ff;
   }
   #navbarSupportedContent {
     margin-left: 3%;
@@ -33,7 +34,7 @@
 .search_in_group {
   border-radius: 100%;
   .search_in {
-    border-radius: 2vw;
+    border-radius: 10px;
     border: none;
   }
   .form-control:focus {
@@ -41,7 +42,7 @@
   }
   .search_prepend_in {
     background-color: white;
-    border-radius: 2vw;
+    border-radius: 10px;
     border: none;
   }
 }
@@ -54,10 +55,11 @@
 }
 
 .navbar-nav {
-  width: 74%;
+  // width: 74%;
+  width: 100%;
   justify-content: space-around;
   .dropdown-menu {
-    background-color: #06575b;
+    background-color: black;
   }
   .dropdown-toggle::after {
     color: white;

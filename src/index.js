@@ -1,6 +1,4 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import $ from "jquery";
-import Popper from "popper.js";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
@@ -10,28 +8,6 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Redux/redux-store";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCheckSquare,
-  faCoffee,
-  faSearch,
-  faPaperclip,
-  faSmile,
-  faMicrophone,
-  faAngleDoubleLeft,
-  faAngleDoubleRight,
-} from "@fortawesome/free-solid-svg-icons";
-
-library.add(
-  faCheckSquare,
-  faCoffee,
-  faSearch,
-  faPaperclip,
-  faSmile,
-  faMicrophone,
-  faAngleDoubleLeft,
-  faAngleDoubleRight
-);
 
 ReactDOM.render(
   <BrowserRouter>

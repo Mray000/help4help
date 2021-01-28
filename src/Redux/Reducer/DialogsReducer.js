@@ -1,7 +1,7 @@
 // import src from "*.bmp";
 
 import moment from "moment";
-import { onNewMessage } from "../../axios/axios";
+// import { onNewMessage } from "../../axios/axios";
 
 const NEW_MESSAGE = "NEW-MESSAGE";
 const DELETE_MESSAGE = "DELETE_MESSAGE";
@@ -40,20 +40,11 @@ const getData4 = () => {
     date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
   }`;
   let basic = moment(moment().format("MMMM D YYYY"), "MMMM D YYYY")
-    .add(35, "days")
+    .add(30, "days")
     .format("MMMM D YYYY");
   return basic + " " + h_m;
 };
-const getData0 = () => {
-  let date = new Date(Date.now());
-  let h_m = `${date.getHours()}:${
-    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-  }`;
-  let basic = moment(moment().format("MMMM D YYYY"), "MMMM D YYYY")
-    .subtract(1, "days")
-    .format("MMMM D YYYY");
-  return basic + " " + h_m;
-};
+
 let InintialState = {
   people: [
     { id: 1, name: "Amir" },
@@ -86,7 +77,7 @@ let InintialState = {
       message: "Hi",
       whom: "my",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -94,7 +85,7 @@ let InintialState = {
       message: "What are u doing?",
       whom: "my",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -102,7 +93,7 @@ let InintialState = {
       message: "Я хочу кушать",
       whom: "my",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -110,7 +101,7 @@ let InintialState = {
       message: "ааааааааа да?",
       whom: "my",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -118,7 +109,7 @@ let InintialState = {
       message: "может пук пук?",
       whom: "my",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -126,7 +117,7 @@ let InintialState = {
       message: "Hehe",
       whom: "him",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -134,7 +125,7 @@ let InintialState = {
       message: "LoKwegwEG Cheburek",
       whom: "him",
       photos: null,
-      date: getData0(),
+      date: getData(),
       files: null,
     },
     {
@@ -350,7 +341,7 @@ let InintialState = {
       message: "пук",
       whom: "my",
       photos: null,
-      date: getData2(),
+      date: getData3(),
       files: null,
     },
     {
@@ -358,7 +349,7 @@ let InintialState = {
       message: "птмуклоам",
       whom: "him",
       photos: null,
-      date: getData2(),
+      date: getData3(),
       files: null,
     },
     {
@@ -366,7 +357,7 @@ let InintialState = {
       message: "никогла",
       whom: "my",
       photos: null,
-      date: getData2(),
+      date: getData3(),
       files: null,
     },
     {
@@ -374,7 +365,7 @@ let InintialState = {
       message: "лололо",
       whom: "him",
       photos: null,
-      date: getData2(),
+      date: getData3(),
       files: null,
     },
     {
@@ -382,7 +373,7 @@ let InintialState = {
       message: "ло",
       whom: "my",
       photos: null,
-      date: getData2(),
+      date: getData4(),
       files: null,
     },
     {
@@ -390,7 +381,7 @@ let InintialState = {
       message: "лошка",
       whom: "him",
       photos: null,
-      date: getData2(),
+      date: getData4(),
       files: null,
     },
     {
@@ -398,7 +389,7 @@ let InintialState = {
       message: "ка",
       whom: "my",
       photos: null,
-      date: getData2(),
+      date: getData4(),
       files: null,
     },
     {
@@ -406,7 +397,7 @@ let InintialState = {
       message: "лbлvdvsошка",
       whom: "him",
       photos: null,
-      date: getData2(),
+      date: getData4(),
       files: null,
     },
     {
@@ -414,7 +405,7 @@ let InintialState = {
       message: "wmy&dfdf",
       whom: "my",
       photos: null,
-      date: getData2(),
+      date: getData4(),
       files: null,
     },
     {
@@ -426,7 +417,47 @@ let InintialState = {
         "https://fotogora.ru/wp-content/uploads/2016/12/abstract-1846401_1280.jpg",
         "https://cameralabs.org/media/k2/items/cache/f83c9c315cf89e75d4d5b66c3e25f60b_L.jpg",
       ],
-      date: getData2(),
+      date: getData4(),
+      files: null,
+    },
+    {
+      id: 45,
+      message: "бубу",
+      whom: "my",
+      photos: null,
+      date: getData4(),
+      files: null,
+    },
+    {
+      id: 46,
+      message: "бубу",
+      whom: "my",
+      photos: null,
+      date: getData4(),
+      files: null,
+    },
+    {
+      id: 47,
+      message: "бубу",
+      whom: "my",
+      photos: null,
+      date: getData4(),
+      files: null,
+    },
+    {
+      id: 48,
+      message: "бубу",
+      whom: "my",
+      photos: null,
+      date: getData4(),
+      files: null,
+    },
+    {
+      id: 49,
+      message: "бубу",
+      whom: "my",
+      photos: null,
+      date: getData4(),
       files: null,
     },
     // {
@@ -452,7 +483,8 @@ const DialogsReducer = (state = InintialState, action) => {
         files: action.files ? [...action.files] : null,
         audio: action.audio,
         reply: action.reply,
-        date: action.message === "1" ? getData4() : getData3(),
+        // date: action.message === "1" ? getData4() : getData3(),
+        date: getData4(),
       };
       // window.f = action.files ? action.files[0] : null;
       return {
@@ -461,7 +493,7 @@ const DialogsReducer = (state = InintialState, action) => {
       };
     case DELETE_MESSAGE:
       let messages1 = state.messages.slice();
-      action.id.map((id) => {
+      action.id.forEach((id) => {
         messages1 = messages1.filter((m) => m.id !== id);
       });
       return {

@@ -1,9 +1,9 @@
 import { AuthAPI, SecurityAPI } from "../../axios/axios";
 import { stopSubmit } from "redux-form";
+import { SetError } from "./AppReducer";
 
 const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
 const SET_CAPTCHA = "auth/SET_CAPTCHA";
-const SET_PRE_SUBMIT_VALUES = "auth/SET_PRE_SUBMIT_VALUES";
 
 let InintialState = {
   id: null,
@@ -47,7 +47,30 @@ export const GetMeData = () => async (dispatch) => {
     dispatch(SetAuthData(id, email, login, true));
   }
 };
-
+export const SignIn = (
+  email,
+  password,
+  name,
+  surname,
+  age,
+  LessonsForHelping,
+  LessonsForLearning
+) => async (dispatch) => {
+  let data = await AuthAPI.signIn(
+    email,
+    password,
+    name,
+    surname,
+    age,
+    LessonsForHelping,
+    LessonsForLearning
+  );
+  if (data.error) {
+    dispatch(SetError(data.error));
+    return;
+  }
+  console.log(data);
+};
 export const LoginAuth = (email, password, rememberMe, captcha) => async (
   dispatch
 ) => {

@@ -19,13 +19,16 @@ const FilesGroupMessage = ({ files, preview = null }) => {
         let image = f.type.indexOf("image") !== -1;
         return (
           <div
+            key={files.indexOf(f)}
             className="message_file"
             style={{
               width: `${
                 50 +
-                (f.name.length > 40
-                  ? truncate(f.name, 30).length
-                  : f.name.length) *
+                (f.name.length > f.size.length
+                  ? f.name.length > 40
+                    ? truncate(f.name, 30).length
+                    : f.name.length
+                  : f.size.length) *
                   6
               }px`,
             }}

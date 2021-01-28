@@ -1,34 +1,67 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Registration.scss";
 import DnD from "./DnD";
 import { Button } from "@material-ui/core";
-import { email } from "../../../utils/Validaters";
+// import { email, password } from "../../../utils/Validaters";
 // import { setPreSubmitValues } from "../../../Redux/Reducer/AuthReducer";
 import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import moment from "moment";
+
+const SignupSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string()
+    .min(8, "Too Short!")
+    .max(20, "Too Long!")
+    .required("Required"),
+  name: Yup.string()
+    .min(2, "Too Short!")
+    .max(20, "Too Long!")
+    .required("Required"),
+
+  surname: Yup.string()
+    .min(2, "Too Short!")
+    .max(20, "Too Long!")
+    .required("Required"),
+  bd: Yup.string()
+    .test(
+      "DOB",
+      "very young :)",
+      (value) => !(moment().diff(moment(value), "years") <= 7)
+    )
+    .test(
+      "DOB",
+      "very old :)",
+      (value) => moment().diff(moment(value), "years") <= 100
+    )
+    .required("Required"),
+});
 
 const Registration = () => {
   const mobile = false;
   const [pageNumber, setPageNumber] = useState(1);
-  const [preSubmitValues, setPreSubmitValues] = useState({});
   const [fade, setFade] = useState(false);
+  let pre_submit_values = useRef({});
+
   return (
     <Formik
       onSubmit={(values) => {
+        pre_submit_values.current = values;
         setFade(true);
         setTimeout(() => {
           setPageNumber(2);
         }, 1000);
-        setPreSubmitValues(values);
       }}
-      initialValues={preSubmitValues}
+      validationSchema={SignupSchema}
+      initialValues={pre_submit_values}
     >
       {({
         handleSubmit,
         handleChange,
         touched,
         values,
+        errors,
         initialValues,
-        ...props
       }) => (
         <Form
           onSubmit={handleSubmit}
@@ -51,74 +84,85 @@ const Registration = () => {
                 <div className="registration_form__title">
                   <h1 className="title_content">Registration</h1>
                 </div>
-                <div className="field_label">Email</div>
-                <Field
-                  required
-                  type="email"
-                  name="email"
-                  onChange={handleChange}
-                  className="registration_form_in"
-                  isValid={touched.email && values.email}
-                  isInvalid={touched.email && !values.email}
-                />
-                <div className="field_label">Password</div>
-                <Field
-                  required
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  className="registration_form_in"
-                  isValid={touched.password && values.password}
-                  isInvalid={touched.password && !values.password}
-                />
-                <div className="field_label">Name</div>
+                <div className="registration_form_in_container">
+                  <div className="field_label">Email</div>
+                  <Field
+                    name="email"
+                    onChange={handleChange}
+                    className="registration_form_in"
+                  />
 
-                <Field
-                  required
-                  name="name"
-                  onChange={handleChange}
-                  className="registration_form_in"
-                  isValid={touched.name && values.name}
-                />
-                <div className="field_label">Surname</div>
-
-                <Field
-                  required
-                  name="surname"
-                  onChange={handleChange}
-                  className="registration_form_in"
-                  isValid={touched.surname && values.surname}
-                />
-                <div className="field_label">Birthday</div>
-                <Field
-                  required
-                  type="date"
-                  name="bd"
-                  className="form-control"
-                  onChange={handleChange}
-                />
+                  {errors.email && touched.email && (
+                    <div className="registration_valid_error">
+                      {errors.email}
+                    </div>
+                  )}
+                </div>
+                <div className="registration_form_in_container">
+                  <div className="field_label">Password</div>
+                  <Field
+                    type="password"
+                    name="password"
+                    onChange={handleChange}
+                    className="registration_form_in"
+                  />
+                  {errors.password && touched.password && (
+                    <div className="registration_valid_error">
+                      {errors.password}
+                    </div>
+                  )}
+                </div>
+                <div className="registration_form_in_container">
+                  <div className="field_label">Name</div>
+                  <Field
+                    name="name"
+                    onChange={handleChange}
+                    className="registration_form_in"
+                  />
+                  {errors.name && touched.name && (
+                    <div className="registration_valid_error">
+                      {errors.name}
+                    </div>
+                  )}
+                </div>
+                <div className="registration_form_in_container">
+                  <div className="field_label">Surname</div>
+                  <Field
+                    name="surname"
+                    onChange={handleChange}
+                    className="registration_form_in"
+                  />
+                  {errors.surname && touched.surname && (
+                    <div className="registration_valid_error">
+                      {errors.surname}
+                    </div>
+                  )}
+                </div>
+                <div className="registration_form_in_container">
+                  <div className="field_label">Birthday</div>
+                  <Field
+                    type="date"
+                    name="bd"
+                    className="form-control"
+                    onChange={handleChange}
+                  />
+                  {errors.bd && touched.bd && (
+                    <div className="registration_valid_error">{errors.bd}</div>
+                  )}
+                </div>
                 <Button
                   type="submit"
                   className={`registration_form_${
                     mobile ? "mobile_" : ""
                   }button_submit`}
-                  onClick={() => {
-                    if (
-                      values.email &&
-                      values.password &&
-                      values.name &&
-                      values.surname &&
-                      values.bd
-                    ) {
-                      handleSubmit();
-                    }
-                  }}
+                  onClick={handleSubmit}
                 >
                   Submit
                 </Button>
               </div>
             ) : (
               <DnD
+                data={pre_submit_values.current}
                 fade={fade}
                 setFade={setFade}
                 setPageNumber={setPageNumber}

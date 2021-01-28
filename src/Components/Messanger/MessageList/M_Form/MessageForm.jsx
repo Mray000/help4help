@@ -10,6 +10,7 @@ import AudioMessageInput from "./AudioMessageInput";
 import PreviewModal from "./PreviewModal";
 import "emoji-mart/css/emoji-mart.css";
 import "./../../Messanger.scss";
+import { faPaperclip, faSmile } from "@fortawesome/free-solid-svg-icons";
 
 const MessageForm = ({
   display_global_none,
@@ -29,17 +30,14 @@ const MessageForm = ({
   const [display_none, setDisplay] = useState(false);
   let form = React.useRef(null);
   useEffect(() => {
-    if (form.current && reply_messages_id.length) {
-      form.current[1].focus();
-    }
+    if (form.current && reply_messages_id.length) form.current[1].focus();
   }, [reply_messages_id]);
   useEffect(() => {
     if (edit_message != null && form.current) {
-      var reactHandlerKey = Object.keys(form.current).filter(function (item) {
-        return item.indexOf("__reactEventHandlers") >= 0;
-      });
-      var reactHandler = form.current[reactHandlerKey[0]];
-      reactHandler.setMessageValue();
+      let reactHandlerKey = Object.keys(form.current).filter(
+        (item) => item.indexOf("__reactEventHandlers") >= 0
+      );
+      form.current[reactHandlerKey[0]].setMessageValue();
       form.current[1].focus();
     }
   }, [edit_message]);
@@ -94,7 +92,7 @@ const MessageForm = ({
           <div className="add_photo_container">
             <label htmlFor="add_photo" className="icon_add_photo">
               <FontAwesomeIcon
-                icon="paperclip"
+                icon={faPaperclip}
                 color="white"
                 size={mobile ? "6x" : "lg"}
                 className={`${display_none && "display_none"}`}
@@ -109,7 +107,7 @@ const MessageForm = ({
               onChange={(e) => {
                 let massOfImg = [];
                 let massOfFile = [];
-                [...e.target.files].map((f) => {
+                [...e.target.files].forEach((f) => {
                   let extension = f.name.slice(
                     f.name.lastIndexOf(".") + 1,
                     f.name.length
@@ -133,8 +131,6 @@ const MessageForm = ({
           </div>
           <Field
             name="message"
-            // cols="40"
-            // row="8"
             placeholder="type..."
             as="textarea"
             className={`add_message ${display_none && "display_none"}`}
@@ -162,7 +158,7 @@ const MessageForm = ({
             </div>
             <div className="icon_in_smile">
               <FontAwesomeIcon
-                icon="smile"
+                icon={faSmile}
                 color="white"
                 size={mobile ? "6x" : "lg"}
                 className={`${display_none && "display_none"}`}

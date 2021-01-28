@@ -9,6 +9,10 @@ const Video = () => {
   useEffect(() => {
     canvas = document.createElement("canvas");
     ctx = canvas.getContext("2d");
+    return () => {
+      video.current.stop();
+      clearInterval(cameraInterval);
+    };
   }, []);
   const onCameraFail = function (e) {
     console.log("Camera did not work.", e); // Исключение на случай, если камера не работает
@@ -36,7 +40,7 @@ const Video = () => {
       // canvas.width = video.current.naturalHeight;
       // canvas.height = video.current.naturalHeight;
       ctx.drawImage(video.current, 0, 0);
-      console.log(canvas.toDataURL("image/webp", 0.00001));
+      console.log(canvas.toDataURL("image/webp", 0.001));
     }
   }
   return (

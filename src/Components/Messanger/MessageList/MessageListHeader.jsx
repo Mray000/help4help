@@ -7,7 +7,7 @@ import "./../Messanger.scss";
 const MessageListHeader = ({
   FilterMessage,
   select_messages_id,
-  message_for_search,
+  messages_for_search,
   DeleteMessage,
   setSelectMessage,
   setReplyMessage,
@@ -24,11 +24,11 @@ const MessageListHeader = ({
     return (
       <div className="message_list_header_global_container">
         <div>
-          <div>{"Name Surname"}</div>
+          <div>Name Surname</div>
         </div>
         <MessageListSearchForm
           FilterMessage={FilterMessage}
-          message_for_search={message_for_search}
+          messages_for_search={messages_for_search}
         />
         <img src={message_ava} alt=":B" />
       </div>
@@ -47,14 +47,14 @@ const MessageListHeader = ({
   }
 };
 
-const MessageListSearchForm = ({ FilterMessage, message_for_search }) => {
+const MessageListSearchForm = ({ FilterMessage, messages_for_search }) => {
   let mobile = false;
   let formik = useRef(null);
   useEffect(() => {
-    if (message_for_search.find((e) => e === 0) === 0) {
+    if (messages_for_search.find((e) => e === 0) === 0) {
       formik.current.value = "";
     }
-  }, [message_for_search]);
+  }, [messages_for_search]);
   return (
     <Formik
       onSubmit={(values) => {
@@ -74,9 +74,8 @@ const MessageListSearchForm = ({ FilterMessage, message_for_search }) => {
               onChange={handleChange}
               placeholder="Search"
               type="text"
-              autoСomplete="off"
               ref={formik}
-              autocomplete="off"
+              autoComplete="off"
             />
           </Form.Group>
         </Form>
@@ -86,4 +85,3 @@ const MessageListSearchForm = ({ FilterMessage, message_for_search }) => {
 };
 
 export default React.memo(MessageListHeader);
-// export default MessageListHeader;

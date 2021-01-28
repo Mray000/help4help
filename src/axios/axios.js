@@ -83,6 +83,31 @@ export const ProfileAPI = {
 };
 
 export const AuthAPI = {
+  signIn(
+    email,
+    password,
+    name,
+    surname,
+    LessonsForLearning,
+    LessonsForHelping
+  ) {
+    return axios
+      .post("https://morning-shore-22478.herokuapp.com/api/users/", {
+        user: {
+          name: name,
+          surname: surname,
+          email: email,
+          country: "Russia",
+          age: 16,
+          password: password,
+          subjects: {
+            to_learn: LessonsForLearning,
+            to_teach: LessonsForHelping,
+          },
+        },
+      })
+      .then((promise) => promise.data);
+  },
   getMe() {
     return instance.get(`auth/me`).then((promise) => promise.data);
   },
@@ -111,11 +136,6 @@ export const SecurityAPI = {
 
 export const onNewMessage = async function () {
   // let dispatch = useDispatch();
-  let a = await AuthAPI.login(
-    "ainurhabibullin0@gmail.com",
-    "hwGtg_CBVsC2G88",
-    true
-  );
   let websocket = new WebSocket(
     "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
   );

@@ -9,11 +9,13 @@ import FilesGroupMessage from "../M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "../M_Types/PhotosGroupsMessage";
 
 import EditModal from "./EditModal";
+import { SetError } from "../../../../Redux/Reducer/AppReducer";
 
 const getImage = (dataUrl, b = null) => {
   return new Promise((resolve, reject) => {
     let image = new Image();
     image.src = dataUrl;
+
     image.onload = () => {
       resolve(image);
     };
@@ -43,7 +45,7 @@ const PreviewModal = ({
         .then((res) => new File([res], "Photo", { type: res.type }));
       return file;
     } catch (error) {
-      console.log(error);
+      dispatch(SetError(error));
     }
   };
   return (
@@ -77,7 +79,7 @@ const PreviewModal = ({
                   canvas.width = image.naturalWidth;
                   canvas.height = image.naturalHeight;
                   ctx.drawImage(image, 0, 0);
-                  let newDataUrl = canvas.toDataURL("image/jpeg", 0.5);
+                  let newDataUrl = canvas.toDataURL("image/jpeg", 0.1);
                   massOfCompressImg.push(newDataUrl);
                 }
                 dispatch(
@@ -136,7 +138,6 @@ const PreviewModal = ({
                 <Field
                   component={TextField}
                   multiline
-                  color="white"
                   name="preview_message"
                   placeholder="type..."
                   className="preview_add_message_in"

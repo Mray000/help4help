@@ -1,6 +1,6 @@
 import { faEdit, faReply, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useMemo } from "react";
+import React from "react";
 import AudioMessage from "./M_Types/AudioMessage";
 import FilesGroupMessage from "./M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage";
@@ -9,32 +9,35 @@ import classNames from "classnames";
 
 const Message = ({
   m,
-  NextDay,
-  last,
-  search_message_id,
-  select_messages_id,
-  message_to_find,
-  SelectMessage,
-  setImgIndex,
-  setShow,
-  photos,
-  FindReplyM,
-  MessageToFind,
-  my_name,
-  him_name,
-  setEditMessage,
-  setReplyMessage,
+  NextDay = null,
+  last = null,
+  search_message_id = null,
+  select_messages_id = null,
+  message_to_find = null,
+  SelectMessage = null,
+  setImgIndex = null,
+  setShow = null,
+  index_for_photos = null,
+  FindReplyM = null,
+  MessageToFind = null,
+  my_name = null,
+  him_name = null,
+  setEditMessage = null,
+  setReplyMessage = null,
+  previous_message_date = null,
 }) => {
-  var MessageClass = classNames({
+  let MessageClass = classNames({
     my_m: m.whom === "my",
     him_m: m.whom === "him",
     last: last && !m.audio,
     search: search_message_id === m.id,
     select: select_messages_id.includes(m.id),
   });
+  console.log("render");
   return (
     <div>
-      {NextDay(m)}
+      {NextDay(m, null, previous_message_date)}
+
       <div
         className={MessageClass}
         ref={search_message_id === m.id ? message_to_find : null}
@@ -74,7 +77,7 @@ const Message = ({
                 <PhotosGroupMessage
                   photos={m.photos}
                   setImgIndex={setImgIndex}
-                  photosForView={photos}
+                  index_for_photos={index_for_photos}
                   setShow={setShow}
                 />
               )}
@@ -96,7 +99,7 @@ const Message = ({
                   my_name={my_name}
                   him_name={him_name}
                   setImgIndex={setImgIndex}
-                  photos={photos}
+                  index_for_photos={index_for_photos}
                   setShow={setShow}
                 />
               )}

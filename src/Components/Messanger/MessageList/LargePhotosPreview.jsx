@@ -1,3 +1,7 @@
+import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
@@ -54,11 +58,11 @@ const LargePhotosPreview = ({
           className="photos_preview_content"
         >
           <button onClick={ImgIndexMinus} id="left_bottom_photos_preview">
-            <FontAwesomeIcon icon="angle-double-left" color="grey" size="2x" />
+            <FontAwesomeIcon icon={faAngleDoubleLeft} color="grey" size="2x" />
           </button>
           <img src={photos[imgIndex]} alt="" />
           <button onClick={ImgIndexPlus} id="right_bottom_photos_preview">
-            <FontAwesomeIcon icon="angle-double-right" color="grey" size="2x" />
+            <FontAwesomeIcon icon={faAngleDoubleRight} color="grey" size="2x" />
           </button>
         </div>
       </Modal.Body>

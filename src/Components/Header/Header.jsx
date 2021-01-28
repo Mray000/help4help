@@ -1,24 +1,41 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
+// /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import "./Header.scss";
-// import help4help from "./../../images/лого2.png";
 import help4help from "./../../images/лого4.jpg";
 import { Formik } from "formik";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-// import lupa from "./../../images/magnifier.png";
 import ava from "./../../images/ava.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink, withRouter } from "react-router-dom";
-// import { search } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ mobile, location }) => {
   // if (location.pathname === "/dialogs") return null;
+
+  // useEffect(() => {
+  //   if (error) {
+  //     // window.p = modal.current;
+  //     setTimeout(() => {
+  //       modal.current._modal.dialog.classList.remove("fade");
+  //     }, 100);
+  //   }
+  // }, [error]);
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"
       id={`global_header_${mobile ? "mobile_" : ""}container`}
+      style={{ height: "20% !important" }}
     >
+      {/* <Modal
+        show={Boolean(error)}
+        onHide={() => dispatch(SetError(""))}
+        ref={modal}
+      >
+        <ModalBody>
+          <div style={{ color: "pink" }}>{error}</div>
+        </ModalBody>
+      </Modal> */}
       <img src={help4help} alt="Наша ава!" id="help4help_header_img" />
       <button
         className="navbar-toggler"
@@ -32,17 +49,13 @@ const Header = ({ mobile, location }) => {
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <Search mobile={mobile} />
+        {/* <Search mobile={mobile} /> */}
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              User
-            </a>
+            <span className="nav-link">User</span>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              Questions
-            </a>
+            <span className="nav-link">Questions</span>
           </li>
           <li className="nav-item">
             <NavLink to="/dialogs" className="nav-link">
@@ -50,7 +63,7 @@ const Header = ({ mobile, location }) => {
             </NavLink>
           </li>
           <li className="nav-item dropdown">
-            <a
+            <span
               className="nav-link dropdown-toggle"
               id="navbarDropdown"
               role="button"
@@ -59,13 +72,13 @@ const Header = ({ mobile, location }) => {
               aria-expanded="false"
             >
               <img src={ava} alt="" id="user_avatar_img" />
-            </a>
+            </span>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <NavLink to="/profile" className="dropdown-item">
                 Profile
               </NavLink>
-              <a className="dropdown-item">Another action</a>
-              <a className="dropdown-item">Something else here</a>
+              <span className="dropdown-item">Another action</span>
+              <span className="dropdown-item">Something else here</span>
             </div>
           </li>
         </ul>
@@ -74,37 +87,37 @@ const Header = ({ mobile, location }) => {
   );
 };
 
-const Search = ({ mobile }) => {
-  return (
-    <Formik onSubmit={console.log} initialValues={Object}>
-      {({ handleSubmit, handleChange, touched, errors }) => (
-        <Form
-          onChange={handleSubmit}
-          className={`search_in_${mobile ? "mobile_" : ""}group`}
-        >
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text className="search_prepend_in">
-                <FontAwesomeIcon
-                  icon="search"
-                  color="blue"
-                  size={mobile ? `3x` : null}
-                />
-              </InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              required
-              name="user"
-              onChange={handleChange}
-              placeholder="Search"
-              className="search_in"
-              type="search"
-            />
-          </InputGroup>
-        </Form>
-      )}
-    </Formik>
-  );
-};
+// const Search = ({ mobile }) => {
+//   return (
+//     <Formik onSubmit={console.log} initialValues={Object}>
+//       {({ handleSubmit, handleChange, touched, errors }) => (
+//         <Form
+//           onChange={handleSubmit}
+//           className={`search_in_${mobile ? "mobile_" : ""}group`}
+//         >
+//           <InputGroup>
+//             <InputGroup.Prepend>
+//               <InputGroup.Text className="search_prepend_in">
+//                 <FontAwesomeIcon
+//                   icon={faSearch}
+//                   color="blue"
+//                   size={mobile ? `3x` : null}
+//                 />
+//               </InputGroup.Text>
+//             </InputGroup.Prepend>
+//             <Form.Control
+//               required
+//               name="user"
+//               onChange={handleChange}
+//               placeholder="Search"
+//               className="search_in"
+//               type="search"
+//             />
+//           </InputGroup>
+//         </Form>
+//       )}
+//     </Formik>
+//   );
+// };
 
 export default withRouter(Header);
