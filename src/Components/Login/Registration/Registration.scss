@@ -1,16 +1,16 @@
 .g_global_registration_container {
   display: flex;
-  height: 100% !important;
+  height: 90vh;
+  align-items: center;
 }
 .global_registration_container {
   background-color: #05396b;
   align-items: center;
   text-align: center;
-  border-radius: 1vw;
-  margin-top: 2vw;
-  padding: 2vw;
+  border-radius: 10px;
+  padding: 20px;
   color: white;
-  height: 85% !important;
+  height: 95% !important;
 }
 
 .registration_form {
@@ -64,7 +64,8 @@
   height: 100% !important;
   // background-color: brown;
   .tittle {
-    height: 6% !important;
+    font-size: 20px;
+    margin-bottom: 10px;
     font-weight: 700;
     text-transform: uppercase;
   }

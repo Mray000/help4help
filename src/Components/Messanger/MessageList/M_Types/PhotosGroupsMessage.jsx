@@ -12,13 +12,14 @@ const PhotosGroupMessage = ({
   setShowEditModal = null,
 }) => {
   const PhotoMessage = ({ src, width }) => {
+    console.log("render");
     return (
       <>
         {preview && (
           <FontAwesomeIcon
             icon={faEdit}
             style={{ position: "absolute" }}
-            onClick={() => setShowEditModal([true, src])}
+            onClick={() => setShowEditModal(src)}
           />
         )}
         <img

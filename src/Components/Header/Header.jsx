@@ -2,13 +2,8 @@
 import React from "react";
 import "./Header.scss";
 import help4help from "./../../images/лого4.jpg";
-import { Formik } from "formik";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import ava from "./../../images/ava.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink, withRouter } from "react-router-dom";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ mobile, location }) => {
   // if (location.pathname === "/dialogs") return null;
@@ -25,7 +20,7 @@ const Header = ({ mobile, location }) => {
     <nav
       className="navbar navbar-expand-lg navbar-light"
       id={`global_header_${mobile ? "mobile_" : ""}container`}
-      style={{ height: "20% !important" }}
+      style={{ height: "10vh" }}
     >
       {/* <Modal
         show={Boolean(error)}

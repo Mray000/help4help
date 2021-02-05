@@ -5,21 +5,16 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import registration_ava from "./../../images/registration_ava2.png";
 import { email } from "../../utils/Validaters";
-import { NavLink, Redirect } from "react-router-dom";
-// import { connect } from "react-redux";
-// import { LoginAuth } from "./../../Redux/Reducer/AuthReducer";
-// import { Redirect } from "react-router-dom";
-
-//   const onSubmit = (formData) => {
-//     let { email, password, rememberMe, captcha = null } = formData;
-//     props.LoginAuth(email, password, rememberMe, captcha);
-//   };
-
-//   if (props.isAuth) return <Redirect to="/profile" />;
-
+import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SignIn } from "./../../Redux/Reducer/AuthReducer";
 const Login = ({ mobile }) => {
+  const dispatch = useDispatch();
   return (
-    <Formik onSubmit={console.log} initialValues={Object}>
+    <Formik
+      initialValues={Object}
+      onSubmit={(values) => dispatch(SignIn("ainur", "aue12345"))}
+    >
       {({ handleSubmit, handleChange, touched, errors, values }) => (
         <Form onSubmit={handleSubmit}>
           <div id={`global_login_${mobile ? "mobile_" : ""}container`}>
@@ -77,9 +72,7 @@ const Login = ({ mobile }) => {
                   </div>
                   <Button
                     type="submit"
-                    onClick={() => {
-                      return <Redirect to="/dialogs" />;
-                    }}
+                    onClick={handleSubmit}
                     className={`login_form_${
                       mobile ? "mobile_" : ""
                     }button_submit`}
@@ -115,16 +108,4 @@ const Login = ({ mobile }) => {
     </Formik>
   );
 };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     isAuth: state.Auth.isAuth,
-//     captcha: state.Auth.captcha,
-//   };
-// };
-
-// export default connect(mapStateToProps, {
-//   LoginAuth,
-// })(Login);
-
 export default Login;

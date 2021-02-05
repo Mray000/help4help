@@ -11,14 +11,14 @@ const Message = ({
   m,
   NextDay = null,
   last = null,
-  search_message_id = null,
-  select_messages_id = null,
+  search = null,
+  select = null,
   message_to_find = null,
   SelectMessage = null,
   setImgIndex = null,
   setShow = null,
   index_for_photos = null,
-  FindReplyM = null,
+  reply_messages = null,
   MessageToFind = null,
   my_name = null,
   him_name = null,
@@ -30,17 +30,15 @@ const Message = ({
     my_m: m.whom === "my",
     him_m: m.whom === "him",
     last: last && !m.audio,
-    search: search_message_id === m.id,
-    select: select_messages_id.includes(m.id),
+    search: search,
+    select: select,
   });
-  console.log("render");
   return (
     <div>
       {NextDay(m, null, previous_message_date)}
-
       <div
         className={MessageClass}
-        ref={search_message_id === m.id ? message_to_find : null}
+        ref={message_to_find}
         onClick={() => {
           SelectMessage(m.id);
         }}
@@ -85,21 +83,19 @@ const Message = ({
               {m.audio && (
                 <AudioMessage src={m.audio} date={m.date} last={last} />
               )}
-              {m.message && (
+              {m.text && (
                 <div className="message_text">
-                  <div>{m.message}</div>
+                  <div>{m.text}</div>
                 </div>
               )}
 
               {m.reply && (
                 <ReplysGroupMessage
-                  m={m}
-                  FindReplyM={FindReplyM}
+                  reply_messages={reply_messages}
                   MessageToFind={MessageToFind}
                   my_name={my_name}
                   him_name={him_name}
                   setImgIndex={setImgIndex}
-                  index_for_photos={index_for_photos}
                   setShow={setShow}
                 />
               )}

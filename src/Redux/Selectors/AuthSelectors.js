@@ -1,3 +1,1 @@
-export const GetFromAuth = (state, el) => {
-  return state.Auth[el];
-};
+export const GetFromAuth = (state, el) => state.Auth[el];

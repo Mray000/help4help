@@ -9,42 +9,27 @@ const Profile = ({
 }) => {
   const [show, setShow] = useState(false);
   const photo = "https://mir-avatarok.3dn.ru/_si/0/84829236.jpg";
-  const [mouseOnChild, setMouseOnChild] = useState(false);
 
   return (
     <div id="global_profile_container">
       <div className="row">
-        <div className="profile_avatar_edit col-4">
+        <div className="profile_avatar_edit col-md-4 col-sm-12">
           <div className="avatar_container_g">
             <div className="avatar_container">
               <img
                 src={user_ava}
                 alt="📷"
                 className="avatar"
-                onClick={() => setShow(true)}
-              />
-              <div
-                className="down"
-                onClick={() => {
-                  if (!mouseOnChild) {
-                    setShow(true);
-                  }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShow(true);
                 }}
-              >
+              />
+              <div className="down" onClick={() => setShow(true)}>
                 <div className="photo_delete_icon">
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    size="1x"
-                    // color="grey"
-                    onMouseEnter={() => setMouseOnChild(true)}
-                    onMouseLeave={() => setMouseOnChild(false)}
-                  />
+                  <FontAwesomeIcon icon={faTimes} size="1x" />
                 </div>
-                <label
-                  htmlFor="update_photo"
-                  onMouseEnter={() => setMouseOnChild(true)}
-                  onMouseLeave={() => setMouseOnChild(false)}
-                >
+                <label htmlFor="update_photo">
                   <div>
                     <FontAwesomeIcon
                       icon={faArrowAltCircleUp}
@@ -58,16 +43,37 @@ const Profile = ({
                   id="update_photo"
                   type="file"
                   name="update_photo"
-                  onChange={(e) => {
-                    console.log(e);
-                  }}
+                  onChange={(e) => console.log(e)}
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className="col-8">
-          <div>ewdf</div>
+        <div className="col-lg-8 col-md-12">
+          <div className="user_info">
+            <div className="name">Basic</div>
+          </div>
+
+          <div className="name_user_form">
+            <div className="name_surname">
+              <div className="user_form">
+                <div className="name_form_title">First name</div>
+                <div className="name_form_value">Ainur</div>
+              </div>
+              <div className="user_form">
+                <div className="name_form_title">Last name</div>
+                <div className="name_form_value">Habib</div>
+              </div>
+            </div>
+            <div className="full_user_form">
+              <div className="full_user_title">Country</div>
+              <div className="full_user_value">Russia</div>
+            </div>
+            <div className="full_user_form">
+              <div className="full_user_title">Email</div>
+              <div className="full_user_value">Ainur@gmail.com</div>
+            </div>
+          </div>
         </div>
       </div>
       <ProfileAvaPreview show={show} setShow={setShow} photo={photo} />

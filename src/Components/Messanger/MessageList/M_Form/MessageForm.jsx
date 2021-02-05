@@ -45,9 +45,9 @@ const MessageForm = ({
     <Formik
       onSubmit={(values, actions) => {
         if (values.message) {
-          if (edit_message != null) {
+          if (edit_message !== 0) {
             dispatch(EditMessage(edit_message.id, values.message));
-            setEditMessage(null);
+            setEditMessage(0);
             actions.resetForm();
           } else
             dispatch(
@@ -77,7 +77,7 @@ const MessageForm = ({
           className={`add_message_in_${mobile ? "mobile_" : ""}container ${
             display_global_none ? "display_none" : ""
           }`}
-          setMessageValue={() => setFieldValue("message", edit_message.message)}
+          setMessageValue={() => setFieldValue("message", edit_message.text)}
           ref={form}
         >
           <PreviewModal
@@ -180,7 +180,7 @@ const MessageForm = ({
   );
 };
 
-export default React.memo(MessageForm);
+export default MessageForm;
 
 // if (values.message.length > 30) {
 // let message = values.message.split("");

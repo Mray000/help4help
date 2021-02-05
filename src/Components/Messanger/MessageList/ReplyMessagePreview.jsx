@@ -13,7 +13,7 @@ const ReplyMessagePreview = ({
     return (
       <div className="reply_message_pre_input_container">
         <div className="reply_icon">
-          <FontAwesomeIcon icon={faReply} size={"2x"} />
+          <FontAwesomeIcon icon={faReply} size="2x" />
         </div>
         {reply_messages_id.length < 2 && FindReplyM(1).photos ? (
           <div className="reply_img">
@@ -30,8 +30,8 @@ const ReplyMessagePreview = ({
           </div>
           <div className="reply_message">
             {reply_messages_id.length < 2
-              ? FindReplyM(0).message
-                ? FindReplyM(0).message.substring(0, 16) + "..."
+              ? FindReplyM(0).text
+                ? FindReplyM(0).text.substring(0, 16) + "..."
                 : FindReplyM(0).photo
                 ? "Photo"
                 : FindReplyM(0).audio

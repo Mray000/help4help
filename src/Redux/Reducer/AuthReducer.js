@@ -1,6 +1,5 @@
-import { AuthAPI, SecurityAPI } from "../../axios/axios";
-import { stopSubmit } from "redux-form";
-import { SetError } from "./AppReducer";
+import { AuthAPI } from "../../axios/axios";
+import { SetError, SetRedirect } from "./AppReducer";
 
 const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
 const SET_CAPTCHA = "auth/SET_CAPTCHA";
@@ -39,7 +38,6 @@ export const SetCaptcha = (img) => ({
   type: SET_CAPTCHA,
   img: img,
 });
-
 export const GetMeData = () => async (dispatch) => {
   let data = await AuthAPI.getMe();
   let { id, email, login } = data.data;
@@ -47,7 +45,7 @@ export const GetMeData = () => async (dispatch) => {
     dispatch(SetAuthData(id, email, login, true));
   }
 };
-export const SignIn = (
+export const SignUp = (
   email,
   password,
   name,
@@ -56,6 +54,7 @@ export const SignIn = (
   LessonsForHelping,
   LessonsForLearning
 ) => async (dispatch) => {
+  dispatch(SetRedirect("/dialogs"));
   let data = await AuthAPI.signIn(
     email,
     password,
@@ -65,49 +64,49 @@ export const SignIn = (
     LessonsForHelping,
     LessonsForLearning
   );
-  if (data.error) {
-    dispatch(SetError(data.error));
-    return;
-  }
-  console.log(data);
+  if (data.error) dispatch(SetError(data.error));
 };
-export const LoginAuth = (email, password, rememberMe, captcha) => async (
-  dispatch
-) => {
-  let data = await AuthAPI.login(email, password, rememberMe, captcha);
-  console.log(data);
-  switch (data.resultCode) {
-    case 0:
-      dispatch(GetMeData());
-      dispatch(SetCaptcha(null));
-      break;
-    case 1:
-      dispatch(
-        stopSubmit("login", {
-          _error: data.messages[0],
-        })
-      );
-      dispatch(SetCaptcha(null));
-      break;
-    case 10:
-      let captchaData = await SecurityAPI.getCaptcha();
-      dispatch(
-        stopSubmit("login", {
-          _error: data.messages[0],
-        })
-      );
-      dispatch(SetCaptcha(captchaData.url));
-      break;
-    default:
-      return;
-  }
+// export const LoginAuth = (email, password, rememberMe, captcha) => async (
+//   dispatch
+// ) => {
+//   let data = await AuthAPI.login(email, password, rememberMe, captcha);
+//   console.log(data);
+//   switch (data.resultCode) {
+//     case 0:
+//       dispatch(GetMeData());
+//       dispatch(SetCaptcha(null));
+//       break;
+//     case 1:
+//       dispatch(
+//         stopSubmit("login", {
+//           _error: data.messages[0],
+//         })
+//       );
+//       dispatch(SetCaptcha(null));
+//       break;
+//     case 10:
+//       let captchaData = await SecurityAPI.getCaptcha();
+//       dispatch(
+//         stopSubmit("login", {
+//           _error: data.messages[0],
+//         })
+//       );
+//       dispatch(SetCaptcha(captchaData.url));
+//       break;
+//     default:
+//       return;
+//   }
+// };
+
+export const SignOut = () => async (dispatch) => {
+  let data = await AuthAPI.logout();
+  if (data.resultCode === 0) dispatch(SetAuthData(null, null, null, false));
 };
 
-export const LogoutAuth = () => async (dispatch) => {
-  let data = await AuthAPI.logout();
-  if (data.resultCode === 0) {
-    dispatch(SetAuthData(null, null, null, false));
-  }
+export const SignIn = (email, password) => async (dispatch) => {
+  dispatch(SetRedirect("/dialogs"));
+  let data = await AuthAPI.login(email, password);
+  console.log(data);
 };
 
 export default AuthReducer;

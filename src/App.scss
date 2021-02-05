@@ -1,31 +1,15 @@
 .app-wrapper {
   // background-color: #f5f5f5;
+  height: 100vh;
   background-color: #dadada;
 }
-
 .row {
   margin-left: 0;
   margin-right: 0;
 }
-
 button:focus {
   outline: none;
 }
-
-.app_wraper_content {
-  height: 100vh;
-  padding: 0;
-  color: black;
-}
-// label {
-//   display: inline-block;
-//   position: relative;
-//   width: 150px;
-//   height: 150px;
-//   cursor: pointer;
-//   overflow: hidden;
-// }
-
 input[type="color"] {
   -webkit-appearance: none;
   border: none;
@@ -75,7 +59,8 @@ input[type="color"]::-moz-color-swatch {
   align-items: center;
   border: 0;
   img {
-    max-width: 100% !important;
+    // max-width: 100% !;
+    max-height: 50vh;
   }
 }
 
@@ -89,4 +74,8 @@ input[type="color"]::-moz-color-swatch {
 }
 .MuiInput-underline:after {
   border-bottom: 2px solid rgb(10, 160, 206);
+}
+
+label {
+  margin-bottom: 0;
 }

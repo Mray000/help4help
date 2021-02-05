@@ -11,14 +11,11 @@ import PhotosGroupMessage from "../M_Types/PhotosGroupsMessage";
 import EditModal from "./EditModal";
 import { SetError } from "../../../../Redux/Reducer/AppReducer";
 
-const getImage = (dataUrl, b = null) => {
+const getImage = (dataUrl) => {
   return new Promise((resolve, reject) => {
     let image = new Image();
     image.src = dataUrl;
-
-    image.onload = () => {
-      resolve(image);
-    };
+    image.onload = () => resolve(image);
   });
 };
 
@@ -32,7 +29,7 @@ const PreviewModal = ({
   handleClose,
   mobile = false,
 }) => {
-  const [show_edit_modal, SetShowEditModal] = useState([false, ""]);
+  const [show_edit_modal, SetShowEditModal] = useState("");
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
 
@@ -51,13 +48,13 @@ const PreviewModal = ({
   return (
     <Modal
       show={show}
-      onHide={handleClose}
+      onHide={() => {}}
       className="photo_preview_modal_global_container"
     >
-      {!show_edit_modal[0] && (
+      {!show_edit_modal && (
         <Modal.Body className="preview_photo_modal_body">
           <div className="photo_preview_modal_images_container">
-            {srcOfImg.length ? (
+            {srcOfImg.length && (
               <div className="photo_preview_modal_image_container">
                 <PhotosGroupMessage
                   photos={srcOfImg}
@@ -65,22 +62,21 @@ const PreviewModal = ({
                   setShowEditModal={SetShowEditModal}
                 />
               </div>
-            ) : null}
-            {srcOfFiles.length ? (
+            )}
+            {srcOfFiles.length && (
               <FilesGroupMessage files={srcOfFiles} preview={true} />
-            ) : null}
+            )}
           </div>
           <Formik
             onSubmit={async (values, actions) => {
               if (srcOfImg.length && values.compress) {
                 let massOfCompressImg = [];
-                for (let i = 0; i < srcOfImg.length; i++) {
-                  let image = await getImage(srcOfImg[i]);
+                for (let i of srcOfImg) {
+                  let image = await getImage(i);
                   canvas.width = image.naturalWidth;
                   canvas.height = image.naturalHeight;
                   ctx.drawImage(image, 0, 0);
-                  let newDataUrl = canvas.toDataURL("image/jpeg", 0.1);
-                  massOfCompressImg.push(newDataUrl);
+                  massOfCompressImg.push(canvas.toDataURL("image/jpeg", 0.1));
                 }
                 dispatch(
                   AddMessage(
@@ -93,9 +89,8 @@ const PreviewModal = ({
               if (srcOfFiles.length || !values.compress) {
                 let massOfImgFiles = [];
                 if (!values.compress) {
-                  for (let i = 0; i < srcOfImg.length; i++) {
-                    let file = await getFileImg(srcOfImg[i]);
-                    massOfImgFiles.push(file);
+                  for (let i of srcOfImg) {
+                    massOfImgFiles.push(await getFileImg(i));
                   }
                 }
                 dispatch(
@@ -108,6 +103,7 @@ const PreviewModal = ({
                 setSrcOfFiles([]);
                 setSrcOfImg([]);
               }
+              handleClose();
               actions.resetForm();
             }}
             initialValues={{ preview_message: "" }}
@@ -120,11 +116,13 @@ const PreviewModal = ({
                 }container`}
               >
                 {srcOfImg.length && (
-                  <label
+                  <div
                     style={{
-                      color: "white",
+                      display: "flex",
                       width: "100%",
-                      textAlign: "center",
+                      color: "white",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
                     <Field
@@ -132,8 +130,8 @@ const PreviewModal = ({
                       name="compress"
                       style={{ marginRight: "4px" }}
                     />
-                    COMPRESS IMAGE
-                  </label>
+                    <label htmlFor="compress">COMPRESS IMAGE</label>
+                  </div>
                 )}
                 <Field
                   component={TextField}
@@ -152,14 +150,7 @@ const PreviewModal = ({
 
                 <Modal.Footer>
                   <Button onClick={handleClose}>Close</Button>
-                  <Button
-                    onClick={() => {
-                      handleSubmit();
-                      handleClose();
-                    }}
-                  >
-                    Send
-                  </Button>
+                  <Button onClick={handleSubmit}>Send</Button>
                 </Modal.Footer>
               </Form>
             )}

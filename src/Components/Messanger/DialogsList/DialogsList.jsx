@@ -13,14 +13,12 @@ const DialogsList = () => {
   let people_list_global = useSelector(getDialogsList);
   const [people_list, setPeople_list] = useState(people_list_global);
   const FilterDialogs = (s) => {
-    setPeople_list(() => {
-      return people_list_global.filter(
-        (e) => e.name.toLowerCase().indexOf(s) !== -1
-      );
-    });
+    setPeople_list(() =>
+      people_list_global.filter((e) => e.name.toLowerCase().includes(s))
+    );
   };
   return (
-    <div className="col-3 h-75 dialogs_list_global_container">
+    <div className="col-3 dialogs_list_global_container">
       <DialogsListSearch FilterDialogs={FilterDialogs} />
       {people_list.map((p) => {
         return (

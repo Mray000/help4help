@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { SignIn } from "../../../Redux/Reducer/AuthReducer";
+import { SignUp } from "../../../Redux/Reducer/AuthReducer";
 
 const DnD = ({ fade, setFade, setPageNumber, data }) => {
   const [LessonsForHelping, setLessonsForHelping] = useState([]);
@@ -171,9 +171,7 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
         <Button
           onClick={() => {
             setFade(false);
-            setTimeout(() => {
-              setPageNumber(1);
-            }, 1000);
+            setTimeout(() => setPageNumber(1), 1000);
           }}
         >
           Go back
@@ -181,7 +179,7 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
         <Button
           onClick={() => {
             dispatch(
-              SignIn(
+              SignUp(
                 data.email,
                 data.password,
                 data.name,

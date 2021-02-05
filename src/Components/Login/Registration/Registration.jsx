@@ -2,8 +2,6 @@ import React, { useRef, useState } from "react";
 import "./Registration.scss";
 import DnD from "./DnD";
 import { Button } from "@material-ui/core";
-// import { email, password } from "../../../utils/Validaters";
-// import { setPreSubmitValues } from "../../../Redux/Reducer/AuthReducer";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
@@ -17,6 +15,7 @@ const SignupSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Too Short!")
     .max(20, "Too Long!")
+    .test("DOB", "you are 🤡", (value) => !["admin", "god"].includes(value))
     .required("Required"),
 
   surname: Yup.string()
@@ -42,27 +41,17 @@ const Registration = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [fade, setFade] = useState(false);
   let pre_submit_values = useRef({});
-
   return (
     <Formik
       onSubmit={(values) => {
         pre_submit_values.current = values;
         setFade(true);
-        setTimeout(() => {
-          setPageNumber(2);
-        }, 1000);
+        setTimeout(() => setPageNumber(2), 1000);
       }}
       validationSchema={SignupSchema}
       initialValues={pre_submit_values}
     >
-      {({
-        handleSubmit,
-        handleChange,
-        touched,
-        values,
-        errors,
-        initialValues,
-      }) => (
+      {({ handleSubmit, handleChange, touched, errors }) => (
         <Form
           onSubmit={handleSubmit}
           className={`g_global_registration_${

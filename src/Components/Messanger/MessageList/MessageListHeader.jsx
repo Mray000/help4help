@@ -60,7 +60,7 @@ const MessageListSearchForm = ({ FilterMessage, messages_for_search }) => {
       onSubmit={(values) => {
         FilterMessage(values.messages_filter_s.toLowerCase());
       }}
-      initialValues={{ messages_filter_s: " " }}
+      initialValues={{ messages_filter_s: "" }}
     >
       {({ handleSubmit, handleChange }) => (
         <Form

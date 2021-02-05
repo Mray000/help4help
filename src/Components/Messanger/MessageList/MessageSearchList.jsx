@@ -86,12 +86,11 @@ const Message = ({
               {m.audio && (
                 <AudioMessage src={m.audio} date={m.date} last={true} />
               )}
-              {m.message && (
+              {m.text && (
                 <div className="message_text">
-                  <div>{m.message}</div>
+                  <div>{m.text}</div>
                 </div>
               )}
-
               {/* {m.reply && (
                 <ReplysGroupMessage
                   m={m}

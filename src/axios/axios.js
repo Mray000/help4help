@@ -1,18 +1,10 @@
 import * as axios from "axios";
 
-const instance = axios.create({
-  baseURL: "https://social-network.samuraijs.com/api/1.0/",
-  withCredentials: true,
-  headers: {
-    "API-KEY": "2e37b6a6-93bb-44bd-9465-737ce93e0752",
-  },
-});
+let instance;
 
 export const UsersAPI = {
   getUsers(currentPage, pageSize) {
-    return instance
-      .get(`users?page=${currentPage}&count=${pageSize}`)
-      .then((promise) => promise.data);
+    return instance.get(`api/users/`).then((promise) => promise.data);
   },
 };
 
@@ -111,15 +103,22 @@ export const AuthAPI = {
   getMe() {
     return instance.get(`auth/me`).then((promise) => promise.data);
   },
-  login(email, password, rememberMe, captcha = null) {
-    return instance
-      .post(`auth/login`, {
-        email: email,
-        password: password,
-        rememberMe: rememberMe,
-        captcha: captcha,
+  login(email, password) {
+    return axios
+      .post(`https://afternoon-scrubland-20123.herokuapp.com/api-token-auth/`, {
+        username: "user",
+        password: "useruser",
       })
-      .then((promise) => promise.data);
+      .then((promise) => {
+        instance = axios.create({
+          baseURL: "https://afternoon-scrubland-20123.herokuapp.com/",
+          withCredentials: true,
+          headers: {
+            Authorization: `Token ${promise.data.token}`,
+          },
+        });
+        return promise.data;
+      });
   },
   logout() {
     return instance.delete(`auth/login`).then((promise) => promise.data);

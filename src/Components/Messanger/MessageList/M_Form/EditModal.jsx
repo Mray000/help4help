@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { SetError } from "../../../../Redux/Reducer/AppReducer";
 import { useEventListener } from "../../../../utils/UseEventListener";
+import { GetPosition } from "../../../../utils/GetPosition";
 const EditModal = ({
   SetShowEditModal,
   show_edit_modal,
   setSrcOfImg,
   getImage,
 }) => {
-  // console.log(show_edit_modal[1]);
   const [canvas_for_drawing, SetCanvasForDrawing] = useState(false);
   const [canvas_for_crop, SetCanvasForCrop] = useState(false);
   let canvas_submit = document.createElement("canvas");
@@ -36,7 +36,7 @@ const EditModal = ({
   let crop_left_bottom = false;
   let crop_right_bottom = false;
   useEffect(() => {
-    if (show_edit_modal[1]) {
+    if (show_edit_modal) {
       canvas.current.width = image.current.width;
       canvas.current.height = image.current.height;
       ctx.current = canvas.current.getContext("2d");
@@ -53,13 +53,13 @@ const EditModal = ({
       ctx.current.lineWidth = 25;
       firstRender.current = true;
     }
-  }, [show_edit_modal[1]]);
+  }, [show_edit_modal]);
   useEffect(() => {
     if (firstRender.current) {
-      ImageBottom.current = canvas.current.getBoundingClientRect().bottom;
-      ImageRight.current = canvas.current.getBoundingClientRect().right;
-      ImageTop.current = canvas.current.getBoundingClientRect().top;
-      ImageLeft.current = canvas.current.getBoundingClientRect().left;
+      ImageBottom.current = GetPosition(canvas, "bottom");
+      ImageRight.current = GetPosition(canvas, "right");
+      ImageTop.current = GetPosition(canvas, "top");
+      ImageLeft.current = GetPosition(canvas, "left");
       firstRender.current = false;
     }
   }, [firstRender.current]);
@@ -68,7 +68,7 @@ const EditModal = ({
       SetCanvasForDrawing(false);
       SetCanvasForCrop(false);
     };
-  }, [show_edit_modal[0]]);
+  }, [show_edit_modal]);
   useEffect(() => {
     if (canvas_for_drawing) {
       example_ctx.current = example_canvas.current.getContext("2d");
@@ -85,28 +85,26 @@ const EditModal = ({
   }, [canvas_for_crop]);
   const SaveDrawPicture = () => {
     setSrcOfImg((lastData) => {
-      lastData[
-        lastData.indexOf(show_edit_modal[1])
-      ] = canvas.current.toDataURL();
+      lastData[lastData.indexOf(show_edit_modal)] = canvas.current.toDataURL();
       return [...lastData];
     });
-    SetShowEditModal([false, ""]);
+    SetShowEditModal("");
   };
   const SaveCropPicture = async () => {
-    let image = await getImage(show_edit_modal[1]);
+    let image = await getImage(show_edit_modal);
     canvas_submit.width = crop.current.style.width.slice(0, -2);
     canvas_submit.height = crop.current.style.height.slice(0, -2);
     if (canvas_submit.width / canvas_submit.height < 0.1) {
       dispatch(SetError("Picture very small"));
-      SetShowEditModal([false, ""]);
+      SetShowEditModal("");
       return;
     }
     ctx_submit.drawImage(
       image,
       (image.naturalWidth / canvas.current.width) *
-        -(ImageLeft.current - crop.current.getBoundingClientRect().left),
+        -(ImageLeft.current - GetPosition(crop, "left")),
       (image.naturalWidth / canvas.current.width) *
-        -(ImageTop.current - crop.current.getBoundingClientRect().top),
+        -(ImageTop.current - GetPosition(crop, "top")),
       (image.naturalWidth / canvas.current.width) *
         crop.current.style.width.slice(0, -2),
       (image.naturalWidth / canvas.current.width) *
@@ -118,25 +116,20 @@ const EditModal = ({
     );
 
     setSrcOfImg((lastData) => {
-      lastData[
-        lastData.indexOf(show_edit_modal[1])
-      ] = canvas_submit.toDataURL();
+      lastData[lastData.indexOf(show_edit_modal)] = canvas_submit.toDataURL();
       return [...lastData];
     });
-    SetShowEditModal([false, ""]);
+    SetShowEditModal("");
   };
   useEventListener("mousemove", (e) => {
-    if (canvas_for_drawing && MousePress) {
-      DrowMouseMove(e);
-    }
+    if (canvas_for_drawing && MousePress) DrowMouseMove(e);
     if (
       crop_left_top ||
       crop_right_top ||
       crop_left_bottom ||
       crop_right_bottom
-    ) {
+    )
       CropMouseMove(e);
-    }
   });
   const PaintExampleCanvas = (strokeStyle, lineWidth) => {
     example_ctx.current.clearRect(0, 0, 50, 25);
@@ -173,10 +166,26 @@ const EditModal = ({
     }
   };
   const ChangeCrop = (t_b, l_r, e) => {
-    if (e.clientY < ImageLeft.current) crop.current.style.left = "0px";
-    if (e.clientX < ImageTop.current) crop.current.style.top = "0px";
-    if (e.clientX > ImageRight.current) crop.current.style.right = "0px";
-    if (e.clientX < ImageBottom.current) crop.current.style.bottom = "0px";
+    if (e.clientX < ImageLeft.current) {
+      crop.current.style.width =
+        canvas.current.width - crop.current.style.right.slice(0, -2) + "px";
+      crop.current.style.left = "0px";
+    }
+    if (e.clientY < ImageTop.current) {
+      crop.current.style.height =
+        canvas.current.height - crop.current.style.bottom.slice(0, -2) + "px";
+      crop.current.style.top = "0px";
+    }
+    if (e.clientX > ImageRight.current) {
+      crop.current.style.width =
+        canvas.current.width - crop.current.style.left.slice(0, -2) + "px";
+      crop.current.style.right = "0px";
+    }
+    if (e.clientY > ImageBottom.current) {
+      crop.current.style.height =
+        canvas.current.height - crop.current.style.top.slice(0, -2) + "px";
+      crop.current.style.bottom = "0px";
+    }
     if (t_b === "top") {
       if (
         e.clientY > ImageTop.current &&
@@ -184,7 +193,8 @@ const EditModal = ({
       ) {
         crop.current.style.height =
           canvas.current.height +
-          (ImageTop.current - e.clientY) -
+          (ImageTop.current - e.clientY) +
+          5 -
           crop.current.style.bottom.slice(0, -2) +
           "px";
         crop.current.style.top = e.clientY - ImageTop.current + "px";
@@ -198,7 +208,8 @@ const EditModal = ({
         e.clientY < ImageBottom.current
       ) {
         crop.current.style.height =
-          -(ImageTop.current - e.clientY) -
+          -(ImageTop.current - e.clientY) +
+          5 -
           crop.current.style.top.slice(0, -2) +
           "px";
         crop.current.style.bottom = ImageBottom.current - e.clientY + "px";
@@ -215,7 +226,8 @@ const EditModal = ({
         crop.current.style.width =
           canvas.current.width +
           ImageLeft.current -
-          e.clientX -
+          e.clientX +
+          5 -
           crop.current.style.right.slice(0, -2) +
           "px";
         crop.current.style.left = e.clientX - ImageLeft.current + "px";
@@ -229,7 +241,8 @@ const EditModal = ({
         e.clientX > ImageLeft.current + 50
       ) {
         crop.current.style.width =
-          -(ImageLeft.current - e.clientX) -
+          -(ImageLeft.current - e.clientX) +
+          5 -
           crop.current.style.left.slice(0, -2) +
           "px";
         crop.current.style.right = ImageRight.current - e.clientX + "px";
@@ -246,29 +259,21 @@ const EditModal = ({
       crop_left_bottom ||
       crop_right_bottom
     ) {
-      if (crop_left_top) {
-        ChangeCrop("top", "left", e);
-      }
-      if (crop_right_top) {
-        ChangeCrop("top", "right", e);
-      }
-      if (crop_left_bottom) {
-        ChangeCrop("bottom", "left", e);
-      }
-      if (crop_right_bottom) {
-        ChangeCrop("bottom", "right", e);
-      }
+      if (crop_left_top) ChangeCrop("top", "left", e);
+      if (crop_right_top) ChangeCrop("top", "right", e);
+      if (crop_left_bottom) ChangeCrop("bottom", "left", e);
+      if (crop_right_bottom) ChangeCrop("bottom", "right", e);
     }
   };
   return (
     <Modal
-      show={show_edit_modal[0]}
-      onHide={() => SetShowEditModal([false, ""])}
+      onHide={() => {}}
+      show={Boolean(show_edit_modal)}
       className="photos_preview_global_container"
     >
       <Modal.Body className="preview_photo_modal_body">
         <div className="photo_preview_modal_images_container">
-          <img src={show_edit_modal[1]} ref={image} alt="буба" />
+          <img src={show_edit_modal} ref={image} alt="буба" />
         </div>
         <div onMouseMove={CropMouseMove}>
           <canvas
@@ -278,48 +283,31 @@ const EditModal = ({
               MousePress = false;
               ctx.current.beginPath();
             }}
-            // onCLick={() => (MousePress = true)}
           ></canvas>
           {canvas_for_crop && (
             <div ref={crop} className="image_crop">
               <div className="crop_top">
                 <div
                   className="crop_left_top"
-                  onMouseDown={() => {
-                    crop_left_top = true;
-                  }}
-                  onMouseUp={() => {
-                    crop_left_top = false;
-                  }}
+                  onMouseDown={() => (crop_left_top = true)}
+                  onMouseUp={() => (crop_left_top = false)}
                 ></div>
                 <div
                   className="crop_right_top"
-                  onMouseDown={() => {
-                    crop_right_top = true;
-                  }}
-                  onMouseUp={() => {
-                    crop_right_top = false;
-                  }}
+                  onMouseDown={() => (crop_right_top = true)}
+                  onMouseUp={() => (crop_right_top = false)}
                 ></div>
               </div>
               <div className="crop_bottom">
                 <div
                   className="crop_left_bottom"
-                  onMouseDown={() => {
-                    crop_left_bottom = true;
-                  }}
-                  onMouseUp={() => {
-                    crop_left_bottom = false;
-                  }}
+                  onMouseDown={() => (crop_left_bottom = true)}
+                  onMouseUp={() => (crop_left_bottom = false)}
                 ></div>
                 <div
                   className="crop_right_bottom"
-                  onMouseDown={() => {
-                    crop_right_bottom = true;
-                  }}
-                  onMouseUp={() => {
-                    crop_right_bottom = false;
-                  }}
+                  onMouseDown={() => (crop_right_bottom = true)}
+                  onMouseUp={() => (crop_right_bottom = false)}
                 ></div>
               </div>
             </div>
@@ -344,7 +332,7 @@ const EditModal = ({
                   color: "white",
                   backgroundColor: "#0075FF",
                 }}
-                onClick={() => SetShowEditModal([false, ""])}
+                onClick={() => SetShowEditModal("")}
               >
                 Go Back
               </Button>
@@ -367,7 +355,7 @@ const EditModal = ({
                   color: "white",
                   backgroundColor: "#0075FF",
                 }}
-                onClick={() => SetShowEditModal([false, ""])}
+                onClick={() => SetShowEditModal("")}
               >
                 Go Back
               </Button>
