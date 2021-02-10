@@ -1,1 +1,1 @@
-export const GetFromAuth = (state, el) => state.Auth[el];
+export const getIsAuth = (state) => state.Auth.isAuth;

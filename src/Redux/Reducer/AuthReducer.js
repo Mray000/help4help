@@ -1,11 +1,11 @@
 import { AuthAPI } from "../../axios/axios";
 import { SetError, SetRedirect } from "./AppReducer";
+import { SetProfile } from "./ProfileReducer";
 
 const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
 const SET_CAPTCHA = "auth/SET_CAPTCHA";
 
 let InintialState = {
-  id: null,
   email: null,
   login: null,
   isAuth: false,
@@ -15,10 +15,7 @@ let InintialState = {
 const AuthReducer = (state = InintialState, action) => {
   switch (action.type) {
     case SET_AUTH_DATA:
-      return {
-        ...state,
-        ...action.data,
-      };
+      return action.data;
     case SET_CAPTCHA:
       return {
         ...state,
@@ -50,21 +47,25 @@ export const SignUp = (
   password,
   name,
   surname,
-  age,
+  birthday,
   LessonsForHelping,
   LessonsForLearning
 ) => async (dispatch) => {
-  dispatch(SetRedirect("/dialogs"));
-  let data = await AuthAPI.signIn(
-    email,
-    password,
-    name,
-    surname,
-    age,
-    LessonsForHelping,
-    LessonsForLearning
-  );
-  if (data.error) dispatch(SetError(data.error));
+  let data = await AuthAPI.signUp({
+    email: email,
+    password: password,
+    name: name,
+    surname: surname,
+    birthday: birthday,
+    subjects: {
+      to_learn: LessonsForHelping,
+      to_teach: LessonsForLearning,
+    },
+  });
+  if (data.is_registrate) {
+    dispatch(SetError("You are registrate!"));
+    dispatch(SetRedirect("/login"));
+  } else dispatch(SetRedirect("/registration/confirm"));
 };
 // export const LoginAuth = (email, password, rememberMe, captcha) => async (
 //   dispatch
@@ -98,15 +99,37 @@ export const SignUp = (
 //   }
 // };
 
+export const SignIn = (email, password) => async (dispatch) => {
+  let data = await AuthAPI.signIn(email, password);
+  console.log(data);
+  if (data.no_user) {
+    dispatch(SetError("You are not registred!"));
+    dispatch(SetRedirect("/registration"));
+    return;
+  }
+  if (data.no_password) dispatch(SetError("Wrong password or login"));
+  else {
+    dispatch(SetAuthData(data._id, data.email, data.login, true));
+    dispatch(
+      SetProfile({
+        id: data._id,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        birthday: data.birthday,
+        subjects: {
+          to_learn: data.to_learn,
+          to_teach: data.to_teach,
+        },
+      })
+    );
+    dispatch(SetRedirect("/profile"));
+  }
+};
+
 export const SignOut = () => async (dispatch) => {
   let data = await AuthAPI.logout();
   if (data.resultCode === 0) dispatch(SetAuthData(null, null, null, false));
-};
-
-export const SignIn = (email, password) => async (dispatch) => {
-  dispatch(SetRedirect("/dialogs"));
-  let data = await AuthAPI.login(email, password);
-  console.log(data);
 };
 
 export default AuthReducer;

@@ -1,5 +1,5 @@
 import React from "react";
-import "./../Messanger.scss";
+import "../Messenger.scss";
 import AudioMessage from "./M_Types/AudioMessage";
 import FilesGroupMessage from "./M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage";

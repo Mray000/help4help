@@ -72,7 +72,8 @@
     position: relative;
     margin-left: 37px;
     .message_text {
-      max-width: 20vw;
+      max-width: 500px;
+      // width: 500px;
       word-wrap: break-word;
       overflow-wrap: break-word;
       white-space: pre-line;

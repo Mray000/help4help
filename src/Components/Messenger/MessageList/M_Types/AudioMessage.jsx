@@ -2,7 +2,7 @@ import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import wave from "./../../../../images/wave.svg";
-import "./../../Messanger.scss";
+import "../../Messenger.scss";
 
 const AudioMessage = ({ src, date = null, last = false }) => {
   const [playing, setPlaying] = useState(false);
@@ -31,7 +31,6 @@ const AudioMessage = ({ src, date = null, last = false }) => {
     let currentTime = audio_message.current.currentTime;
     let duration = audio_message.current.duration;
     let percent = (10 / duration) * currentTime * 10;
-    // console.log(duration);
     progress_bar.current.style.width = percent + "%";
   };
   return (

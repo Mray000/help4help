@@ -1,6 +1,12 @@
 import * as axios from "axios";
 
-let instance;
+let instance = axios.create({
+  baseURL: "http://localhost:3010/",
+  // withCredentials: true,
+  // heders: {
+  //   "Access-Control-Allow-Credentials": true,
+  // },
+});
 
 export const UsersAPI = {
   getUsers(currentPage, pageSize) {
@@ -17,6 +23,17 @@ export const FollowAPI = {
   },
 };
 
+export const MessengerAPI = {
+  addMessage(m) {
+    return instance.post("message", m).then((promise) => promise.data);
+    // .catch((e) => alert(e));
+  },
+  getMessages() {
+    return instance.get("message").then((promise) => promise.data);
+    // .catch((e) => alert(e));
+  },
+};
+
 export const ProfileAPI = {
   getProfile(id) {
     return instance.get(`profile/${id}`).then((promise) => promise.data);
@@ -28,13 +45,11 @@ export const ProfileAPI = {
       })
       .then((promise) => promise.data);
   },
-  getStatus(id) {
-    return instance.get(`profile/status/${id}`).then((promise) => promise.data);
-  },
+  getStatus: (id) =>
+    instance.get(`profile/status/${id}`).then((promise) => promise.data),
   UpdatePhoto(photo) {
     let formData = new FormData();
     formData.append("image", photo);
-
     return instance
       .put(`profile/photo`, formData)
       .then((promise) => promise.data);
@@ -75,50 +90,16 @@ export const ProfileAPI = {
 };
 
 export const AuthAPI = {
-  signIn(
-    email,
-    password,
-    name,
-    surname,
-    LessonsForLearning,
-    LessonsForHelping
-  ) {
-    return axios
-      .post("https://morning-shore-22478.herokuapp.com/api/users/", {
-        user: {
-          name: name,
-          surname: surname,
-          email: email,
-          country: "Russia",
-          age: 16,
-          password: password,
-          subjects: {
-            to_learn: LessonsForLearning,
-            to_teach: LessonsForHelping,
-          },
-        },
-      })
-      .then((promise) => promise.data);
+  signUp(user) {
+    return instance.post("signup", user).then((promise) => promise.data);
   },
   getMe() {
     return instance.get(`auth/me`).then((promise) => promise.data);
   },
-  login(email, password) {
-    return axios
-      .post(`https://afternoon-scrubland-20123.herokuapp.com/api-token-auth/`, {
-        username: "user",
-        password: "useruser",
-      })
-      .then((promise) => {
-        instance = axios.create({
-          baseURL: "https://afternoon-scrubland-20123.herokuapp.com/",
-          withCredentials: true,
-          headers: {
-            Authorization: `Token ${promise.data.token}`,
-          },
-        });
-        return promise.data;
-      });
+  signIn(email, password) {
+    return instance
+      .post("signin", { email: email, password: password })
+      .then((promise) => promise.data);
   },
   logout() {
     return instance.delete(`auth/login`).then((promise) => promise.data);

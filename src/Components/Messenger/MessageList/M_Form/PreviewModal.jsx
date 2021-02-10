@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Formik, Field } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import "./../../Messanger.scss";
+import "../../Messenger.scss";
 
 import { TextField } from "formik-material-ui";
 import FilesGroupMessage from "../M_Types/FilesGroupMessage";
@@ -32,6 +32,14 @@ const PreviewModal = ({
   const [show_edit_modal, SetShowEditModal] = useState("");
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      // reader.onload = () => resolve(reader.result);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   const dispatch = useDispatch();
 
@@ -87,17 +95,26 @@ const PreviewModal = ({
                 setSrcOfImg([]);
               }
               if (srcOfFiles.length || !values.compress) {
-                let massOfImgFiles = [];
+                let massOfImgFiles = [...srcOfFiles];
                 if (!values.compress) {
                   for (let i of srcOfImg) {
                     massOfImgFiles.push(await getFileImg(i));
                   }
                 }
+                let massForDispatch = [];
+                for (let f of massOfImgFiles) {
+                  massForDispatch.push({
+                    name: f.name,
+                    size: f.size,
+                    type: f.type,
+                    file: await toBase64(f),
+                  });
+                }
                 dispatch(
                   AddMessage(
                     values.preview_message ? values.preview_message : null,
                     null,
-                    [...srcOfFiles, ...massOfImgFiles]
+                    massForDispatch
                   )
                 );
                 setSrcOfFiles([]);

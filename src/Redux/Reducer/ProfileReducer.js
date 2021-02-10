@@ -11,20 +11,15 @@ const REDIRECT = "profile/REDIRECT";
 
 let InintialState = {
   profile: {
-    aboutMe: null,
-    contacts: {
-      facebook: null,
-      website: null,
-      vk: null,
-      twitter: null,
-      instagram: null,
-      youtube: null,
+    id: null,
+    name: null,
+    surname: null,
+    email: null,
+    birthday: null,
+    subjects: {
+      to_learn: null,
+      to_teach: null,
     },
-    fullName: null,
-    lookingForAJob: false,
-    lookingForAJobDescription: null,
-    photos: { small: null, large: null },
-    userId: null,
   },
   posts: [
     { id: 1, text: "blabla", likeCount: 12 },

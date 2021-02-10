@@ -70,9 +70,7 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
           !LessonsForHelping.find((i) => i.id === e.id) &&
           !LessonsForLearning.find((i) => i.id === e.id)
         }`}
-        onDragStart={(ev) => {
-          DragStart(ev, e);
-        }}
+        onDragStart={(ev) => DragStart(ev, e)}
       >
         <span>{e.lesson}</span>
       </div>
@@ -92,9 +90,7 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
           <div
             className="droppable_e_container_1"
             onDragOver={(e) => e.preventDefault()}
-            onDrop={(ev) => {
-              Drop(ev, hl);
-            }}
+            onDrop={(ev) => Drop(ev, hl)}
           >
             {massForElContainer1.map((e) => {
               return (
@@ -115,9 +111,7 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
           <div
             className="droppable_e_container_2"
             onDragOver={(e) => e.preventDefault()}
-            onDrop={(ev) => {
-              Drop(ev, hl);
-            }}
+            onDrop={(ev) => Drop(ev, hl)}
           >
             {massForElContainer2.map((e) => {
               return (

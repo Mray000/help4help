@@ -1,4 +1,9 @@
-import { faEdit, faReply, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClock,
+  faEdit,
+  faReply,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import AudioMessage from "./M_Types/AudioMessage";
@@ -25,6 +30,7 @@ const Message = ({
   setEditMessage = null,
   setReplyMessage = null,
   previous_message_date = null,
+  error = null,
 }) => {
   let MessageClass = classNames({
     my_m: m.whom === "my",
@@ -83,11 +89,7 @@ const Message = ({
               {m.audio && (
                 <AudioMessage src={m.audio} date={m.date} last={last} />
               )}
-              {m.text && (
-                <div className="message_text">
-                  <div>{m.text}</div>
-                </div>
-              )}
+              {m.text && <div className="message_text">{m.text}</div>}
 
               {m.reply && (
                 <ReplysGroupMessage
@@ -105,7 +107,8 @@ const Message = ({
               <div
                 className="message_date"
                 style={{
-                  marginLeft: m.photos ? "-29px" : null,
+                  marginLeft: m.photos ? "-28px" : null,
+                  marginRight: m.photos ? "8px" : null,
                 }}
               >
                 {m.date[m.date.length - 5] +
@@ -116,6 +119,7 @@ const Message = ({
               </div>
             )}
           </div>
+          {error && <FontAwesomeIcon icon={faClock} />}
         </div>
         <div className="message_pre_icons">
           {m.whom === "my" ? (

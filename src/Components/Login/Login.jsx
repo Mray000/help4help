@@ -13,7 +13,7 @@ const Login = ({ mobile }) => {
   return (
     <Formik
       initialValues={Object}
-      onSubmit={(values) => dispatch(SignIn("ainur", "aue12345"))}
+      onSubmit={(values) => dispatch(SignIn(values.email, values.password))}
     >
       {({ handleSubmit, handleChange, touched, errors, values }) => (
         <Form onSubmit={handleSubmit}>

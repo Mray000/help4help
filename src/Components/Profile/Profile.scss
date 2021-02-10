@@ -1,12 +1,7 @@
-#global_profile_container {
-  // background-color: #05396b;
-  height: 80% !important;
-  margin-top: 2vw;
-  border-radius: 2vw;
+.global_profile_container {
+  height: 90vh;
   color: white;
-  // height: 600px;
-  padding: 20px;
-
+  display: flex;
   .modal-dialog {
     display: flex;
     justify-content: center;
@@ -31,79 +26,58 @@
       }
     }
   }
-
-  .row {
-    height: 100% !important;
-  }
   .profile_avatar_edit {
-    height: 100% !important;
+    height: 90vh;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    // background-color: #05396b;
-    // .edit {
-    //   color: white;
-    //   text-shadow: #05396b 1px;
-    //   background-color: #05396b;
-    //   font-size: 20px;
-    //   border-radius: 10px;
-    //   width: 100%;
-    // }
-    .avatar_container_g {
-      display: flex;
-      background-color: #05396b;
-      border-radius: 10px;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      input {
-        display: none;
-      }
-      .avatar_container {
-        position: relative;
-        border-radius: 1vw;
-        overflow: hidden;
-        .avatar {
-          width: 100%;
-          transition: 0.8s;
-          backface-visibility: hidden;
-        }
-      }
-      .down {
-        bottom: 0px;
-        transition: 0.5s ease;
-        opacity: 0;
+    justify-content: center;
+    input {
+      display: none;
+    }
+    .avatar_container {
+      position: relative;
+      border-radius: 1vw;
+      overflow: hidden;
+      .avatar {
         width: 100%;
-        height: 100% !important;
-        position: absolute;
-        overflow: hidden;
+        transition: 0.8s;
+        backface-visibility: hidden;
+      }
+    }
+    .down {
+      bottom: 0px;
+      transition: 0.5s ease;
+      opacity: 0;
+      width: 100%;
+      height: 100% !important;
+      position: absolute;
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      .photo_delete_icon {
+        text-align: right;
+        margin-right: 10px;
+      }
+      label {
+        width: 100%;
+        margin-bottom: 0;
         display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        .photo_delete_icon {
-          text-align: right;
-          margin-right: 10px;
-        }
-        label {
+        div {
+          cursor: pointer;
+          text-align: center;
+          color: white;
+          background-color: rgba($color: #535050, $alpha: 0.4);
+          // z-index: -1;
           width: 100%;
-          margin-bottom: 0;
-          display: flex;
-          div {
-            cursor: pointer;
-            text-align: center;
-            color: white;
-            background-color: rgba($color: #535050, $alpha: 0.4);
-            // z-index: -1;
-            width: 100%;
-          }
         }
       }
     }
-    .avatar_container:hover .down {
-      opacity: 1;
-    }
+  }
+  .avatar_container:hover .down {
+    opacity: 1;
   }
 }
 

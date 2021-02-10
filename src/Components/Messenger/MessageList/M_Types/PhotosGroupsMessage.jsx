@@ -1,7 +1,7 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import "./../../Messanger.scss";
+import "../../Messenger.scss";
 
 const PhotosGroupMessage = ({
   photos,
@@ -12,7 +12,6 @@ const PhotosGroupMessage = ({
   setShowEditModal = null,
 }) => {
   const PhotoMessage = ({ src, width }) => {
-    console.log("render");
     return (
       <>
         {preview && (

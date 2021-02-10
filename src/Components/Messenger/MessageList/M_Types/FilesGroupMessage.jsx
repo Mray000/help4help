@@ -3,20 +3,15 @@ import fileSize from "filesize";
 import React, { useRef, useState } from "react";
 import { truncate } from "../../../../utils/truncate";
 import document_icon from "./../../../../images/document.svg";
-import "./../../Messanger.scss";
+import "../../Messenger.scss";
 
 const FilesGroupMessage = ({ files, preview = null }) => {
   let a = useRef();
-  const [show_photo, setShowPhoto] = useState([false, ""]);
-  let urls;
-  if (!preview) {
-    urls = files.map((f) => window.URL.createObjectURL(f));
-  }
-
+  const [photo, setPhoto] = useState("");
   return (
     <>
       {files.map((f) => {
-        let image = f.type.indexOf("image") !== -1;
+        let image = f.type.includes("image");
         return (
           <div
             key={files.indexOf(f)}
@@ -39,13 +34,13 @@ const FilesGroupMessage = ({ files, preview = null }) => {
               }
               if (!preview && image) {
                 e.stopPropagation();
-                setShowPhoto([true, urls[files.indexOf(f)]]);
+                setPhoto(f.file);
               }
             }}
           >
             {image ? (
               <div className="file_mini_img_container">
-                <img src={urls[files.indexOf(f)]} alt="биба" />
+                <img src={f.file} alt="биба" />
               </div>
             ) : (
               <img
@@ -64,38 +59,26 @@ const FilesGroupMessage = ({ files, preview = null }) => {
             </div>
             {!preview && (
               <>
-                {!f.type.indexOf("image") !== -1 && (
-                  <a
-                    download={f.name}
-                    href={urls[files.indexOf(f)]}
-                    ref={a}
-                  ></a>
+                {!image && (
+                  <a download={f.name} ref={a} href={f.file}>
+                    {}
+                  </a>
                 )}
               </>
             )}
           </div>
         );
       })}
-      {!preview && (
-        <FilePhotoPreviw
-          show={show_photo[0]}
-          photo={show_photo[1]}
-          setShowPhoto={setShowPhoto}
-        />
-      )}
+      {!preview && <FilePhotoPreviw photo={photo} setPhoto={setPhoto} />}
     </>
-    // </div>
   );
 };
 
-const FilePhotoPreviw = ({ show, setShowPhoto, photo }) => {
+const FilePhotoPreviw = ({ setPhoto, photo }) => {
   return (
     <Modal
-      show={show}
-      onHide={() => {
-        // e.target.stopPropagation();
-        setShowPhoto([false, ""]);
-      }}
+      show={Boolean(photo)}
+      onHide={() => setPhoto("")}
       className="photos_preview_global_container"
     >
       <div className="prt" style={{ position: "relative" }}>
@@ -107,7 +90,7 @@ const FilePhotoPreviw = ({ show, setShowPhoto, photo }) => {
           }}
           style={{ position: "absolute", top: "2%", left: "90%" }}
         /> */}
-        <img src={photo} alt="" style={{ width: "50%" }} />
+        <img src={photo} alt="" />
       </div>
     </Modal>
   );

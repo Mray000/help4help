@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ReactMic } from "react-mic";
 import { useDispatch } from "react-redux";
 import { AddMessage } from "../../../../Redux/Reducer/DialogsReducer";
-import "./../../Messanger.scss";
+import "../../Messenger.scss";
 
 const AudioMessageInput = ({
   setDisplay,
@@ -18,13 +18,11 @@ const AudioMessageInput = ({
     setRecord(!record);
   };
   const dispatch = useDispatch();
-
-  const onData = (recordedBlob) => {
-    console.log("chunk of real-time data is: ", recordedBlob);
-  };
-  const onStop = (recordedBlob) => {
-    console.log("recordedBlob is: ", recordedBlob);
-    dispatch(AddMessage(null, null, null, recordedBlob));
+  const onStop = (data) => {
+    var reader = new FileReader();
+    reader.readAsDataURL(data.blob);
+    reader.onloadend = () =>
+      dispatch(AddMessage(null, null, null, reader.result));
   };
   const display_audio_none = !record;
   const icon_add_message = useRef(null);
@@ -63,11 +61,9 @@ const AudioMessageInput = ({
       >
         <ReactMic
           record={record}
-          // visualSetting="sinewave"
           visualSetting="frequencyBars"
           className="audio_message_in"
           onStop={onStop}
-          onData={onData}
           strokeColor="#fff"
           backgroundColor="#242526"
         />
@@ -85,7 +81,7 @@ const AudioMessageInput = ({
           className="icon_in_audio"
           ref={icon_audio}
         >
-          <FontAwesomeIcon icon={faMicrophone} color="white" size={"lg"} />
+          <FontAwesomeIcon icon={faMicrophone} color="white" size="lg" />
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef } from "react";
 import { Modal } from "react-bootstrap";
-import "./../Messanger.scss";
+import "../Messenger.scss";
 
 const LargePhotosPreview = ({
   show,

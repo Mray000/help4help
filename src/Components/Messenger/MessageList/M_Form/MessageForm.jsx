@@ -9,7 +9,7 @@ import {
 import AudioMessageInput from "./AudioMessageInput";
 import PreviewModal from "./PreviewModal";
 import "emoji-mart/css/emoji-mart.css";
-import "./../../Messanger.scss";
+import "../../Messenger.scss";
 import { faPaperclip, faSmile } from "@fortawesome/free-solid-svg-icons";
 
 const MessageForm = ({

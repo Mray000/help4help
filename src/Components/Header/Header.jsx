@@ -6,31 +6,12 @@ import ava from "./../../images/ava.png";
 import { NavLink, withRouter } from "react-router-dom";
 
 const Header = ({ mobile, location }) => {
-  // if (location.pathname === "/dialogs") return null;
-
-  // useEffect(() => {
-  //   if (error) {
-  //     // window.p = modal.current;
-  //     setTimeout(() => {
-  //       modal.current._modal.dialog.classList.remove("fade");
-  //     }, 100);
-  //   }
-  // }, [error]);
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"
       id={`global_header_${mobile ? "mobile_" : ""}container`}
       style={{ height: "10vh" }}
     >
-      {/* <Modal
-        show={Boolean(error)}
-        onHide={() => dispatch(SetError(""))}
-        ref={modal}
-      >
-        <ModalBody>
-          <div style={{ color: "pink" }}>{error}</div>
-        </ModalBody>
-      </Modal> */}
       <img src={help4help} alt="Наша ава!" id="help4help_header_img" />
       <button
         className="navbar-toggler"
@@ -47,13 +28,17 @@ const Header = ({ mobile, location }) => {
         {/* <Search mobile={mobile} /> */}
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <span className="nav-link">User</span>
+            <NavLink to="/users" className="nav-link">
+              Users
+            </NavLink>
           </li>
           <li className="nav-item">
-            <span className="nav-link">Questions</span>
+            <NavLink to="/video" className="nav-link">
+              Lesson
+            </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/dialogs" className="nav-link">
+            <NavLink to="/messenger" className="nav-link">
               Messenger
             </NavLink>
           </li>

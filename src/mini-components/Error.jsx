@@ -17,9 +17,9 @@ const Error = () => {
           color: "#721C24",
         }}
       >
-        <ModalHeader style={{ textAlign: "right", backgroundColor: "white" }}>
+        {/* <ModalHeader style={{ textAlign: "right", backgroundColor: "white" }}>
           <FontAwesomeIcon icon={faTimes} />
-        </ModalHeader>
+        </ModalHeader> */}
         <Modal.Body>
           <span>
             <span style={{ color: "#491217", fontWeight: "900" }}>Error!</span>

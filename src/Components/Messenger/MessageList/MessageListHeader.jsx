@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import React, { useEffect, useRef } from "react";
 import message_ava from "./../../../images/ava.png";
-import "./../Messanger.scss";
+import "../Messenger.scss";
 
 const MessageListHeader = ({
   FilterMessage,
