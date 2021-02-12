@@ -1,33 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.scss";
 import Header from "./Components/Header/Header.jsx";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import WithSuspence from "./utils/WithSuspence";
 import Profile from "./Components/Profile/Profile";
 import Messenger from "./Components/Messenger/Messenger";
 import Error from "./mini-components/Error";
 import { useDispatch, useSelector } from "react-redux";
 import { getRedirect } from "./Redux/Selectors/AppSelectors";
-import { SetRedirect } from "./Redux/Reducer/AppReducer";
+import { Initialing, SetRedirect } from "./Redux/Reducer/AppReducer";
 import Test from "./Components/Test";
+import Preloader from "./mini-components/Preloader";
+import PageNotFound from "./mini-components/PageNotFound";
 const Login = React.lazy(() => import("./Components/Login/Login.jsx"));
 const Registration = React.lazy(() =>
   import("./Components/Login/Registration/Registration.jsx")
 );
 const Video = React.lazy(() => import("./Components/Video/Video.jsx"));
 
-// useEffect(() => {
-//   Initialing();
-// }, [Initialing]);s
-// if (!initialized) return <Preloader />;
-
 const App = () => {
   const dispatch = useDispatch();
+  const initialized = useSelector((state) => state.App.initialized);
   const redirect = useSelector(getRedirect);
+  useEffect(() => dispatch(Initialing()), []);
+  if (!initialized) return <Preloader />;
+
   if (redirect) {
-    setTimeout(() => {
-      dispatch(SetRedirect(""));
-    }, 0);
+    setTimeout(() => dispatch(SetRedirect("")), 0);
     return <Redirect to={redirect} />; //тут происходит редирект
   }
 
@@ -41,12 +40,16 @@ const App = () => {
     <div className="app-wrapper">
       <Header mobile={mobile} />
       <div className="container  app_wraper_content">
-        <Route path="/login" render={WithSuspence(Login)} />
-        <Route path="/profile" render={() => <Profile mobile={mobile} />} />
-        <Route path="/messenger" render={() => <Messenger mobile={mobile} />} />
-        <Route path="/registration" render={WithSuspence(Registration)} />
-        <Route path="/video" render={WithSuspence(Video)} />
-        <Route path="/test" render={() => <Test />} />
+        <Switch>
+          <Route path="/login" render={WithSuspence(Login)} />
+          <Route path="/profile/:id" component={Profile} />
+          <Route path="/messenger" component={Messenger} />
+          <Route path="/test" component={Test} />
+          <Route path="/registration" render={WithSuspence(Registration)} />
+          <Route path="/video" render={WithSuspence(Video)} />
+          <Route path="/page_not_found" component={PageNotFound} />
+          <Route component={PageNotFound} />
+        </Switch>
       </div>
       <Error />
     </div>

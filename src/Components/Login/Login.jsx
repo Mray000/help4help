@@ -5,11 +5,15 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import registration_ava from "./../../images/registration_ava2.png";
 import { email } from "../../utils/Validaters";
-import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { NavLink, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { SignIn } from "./../../Redux/Reducer/AuthReducer";
+import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
 const Login = ({ mobile }) => {
   const dispatch = useDispatch();
+  const my_id = useSelector(getAuthId);
+  if (localStorage.getItem("token"))
+    return <Redirect to={`profile/${my_id}`} />;
   return (
     <Formik
       initialValues={Object}

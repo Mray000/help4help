@@ -30,4 +30,5 @@ const Messenger = () => {
   );
 };
 
-export default withAuthRedirect(Messenger);
+// export default withAuthRedirect(Messenger);
+export default Messenger;

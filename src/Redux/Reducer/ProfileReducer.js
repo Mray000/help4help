@@ -1,6 +1,7 @@
 import { ProfileAPI } from "../../axios/axios";
 import { ArrayFilter } from "../../utils/ArrayTreatment";
 import { stopSubmit } from "redux-form";
+import { SetRedirect } from "./AppReducer";
 
 const ADD_POST = "profile/ADD-POST";
 const DELETE_POST = "profile/DELETE_POST";
@@ -99,11 +100,23 @@ export const Redirect = (redirect) => ({
 });
 
 export const GetProfile = (id) => async (dispatch) => {
-  dispatch(SetProfile({ aboutMe: null }));
-  let profileData = await ProfileAPI.getProfile(id);
-  let statusData = await ProfileAPI.getStatus(id);
-  dispatch(SetProfile(profileData));
-  dispatch(SetStatus(statusData));
+  let data = await ProfileAPI.getProfile(id);
+  console.log(data);
+  if (data.no_user) dispatch(SetRedirect("/page_not_found"));
+  else
+    dispatch(
+      SetProfile({
+        id: data.id,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        birthday: data.birthday,
+        subjects: {
+          to_learn: data.subjects.to_learn,
+          to_teach: data.subjects.to_teach,
+        },
+      })
+    );
 };
 
 export const UpdateStatus = (status) => async (dispatch) => {

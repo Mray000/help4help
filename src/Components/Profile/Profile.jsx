@@ -1,19 +1,28 @@
 import { faArrowAltCircleUp, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Profile.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../Redux/Selectors/ProfileSelectors";
 import { withAuthRedirect } from "../../utils/WithAuthRedirect";
+import Preloader from "../../mini-components/Preloader";
+import { GetProfile } from "../../Redux/Reducer/ProfileReducer";
+import { useRouteMatch } from "react-router-dom";
 
 const Profile = ({
   user_ava = "https://mir-avatarok.3dn.ru/_si/0/84829236.jpg",
 }) => {
+  const dispatch = useDispatch();
+  let match = useRouteMatch();
   const profile = useSelector(getProfile);
-  console.log(profile);
+  console.log(match);
+  useEffect(() => {
+    dispatch(GetProfile(match.params.id));
+  }, []);
   const [show, setShow] = useState(false);
   const photo = "https://mir-avatarok.3dn.ru/_si/0/84829236.jpg";
+  if (!profile) return <Preloader />;
 
   return (
     <div className="global_profile_container">

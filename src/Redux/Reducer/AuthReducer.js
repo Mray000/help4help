@@ -6,16 +6,14 @@ const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
 const SET_CAPTCHA = "auth/SET_CAPTCHA";
 
 let InintialState = {
-  email: null,
-  login: null,
+  id: null,
   isAuth: false,
-  captcha: null,
 };
 
 const AuthReducer = (state = InintialState, action) => {
   switch (action.type) {
     case SET_AUTH_DATA:
-      return action.data;
+      return { id: action.id, isAuth: action.isAuth };
     case SET_CAPTCHA:
       return {
         ...state,
@@ -26,22 +24,26 @@ const AuthReducer = (state = InintialState, action) => {
   }
 };
 
-export const SetAuthData = (id, email, login, isAuth) => ({
+export const SetAuthData = (id, isAuth) => ({
   type: SET_AUTH_DATA,
-  data: { id: id, email: email, login: login, isAuth: isAuth },
+  id: id,
+  isAuth: isAuth,
 });
 
 export const SetCaptcha = (img) => ({
   type: SET_CAPTCHA,
   img: img,
 });
+
 export const GetMeData = () => async (dispatch) => {
-  let data = await AuthAPI.getMe();
-  let { id, email, login } = data.data;
-  if (data.resultCode === 0) {
-    dispatch(SetAuthData(id, email, login, true));
+  if (!localStorage.getItem("token")) dispatch(SetRedirect("/login"));
+  else {
+    let data = await AuthAPI.getMe();
+    dispatch(SetAuthData(data.id, true));
+    // dispatch(SetRedirect(`/profile/${data.id}`));
   }
 };
+
 export const SignUp = (
   email,
   password,
@@ -67,41 +69,9 @@ export const SignUp = (
     dispatch(SetRedirect("/login"));
   } else dispatch(SetRedirect("/registration/confirm"));
 };
-// export const LoginAuth = (email, password, rememberMe, captcha) => async (
-//   dispatch
-// ) => {
-//   let data = await AuthAPI.login(email, password, rememberMe, captcha);
-//   console.log(data);
-//   switch (data.resultCode) {
-//     case 0:
-//       dispatch(GetMeData());
-//       dispatch(SetCaptcha(null));
-//       break;
-//     case 1:
-//       dispatch(
-//         stopSubmit("login", {
-//           _error: data.messages[0],
-//         })
-//       );
-//       dispatch(SetCaptcha(null));
-//       break;
-//     case 10:
-//       let captchaData = await SecurityAPI.getCaptcha();
-//       dispatch(
-//         stopSubmit("login", {
-//           _error: data.messages[0],
-//         })
-//       );
-//       dispatch(SetCaptcha(captchaData.url));
-//       break;
-//     default:
-//       return;
-//   }
-// };
 
 export const SignIn = (email, password) => async (dispatch) => {
   let data = await AuthAPI.signIn(email, password);
-  console.log(data);
   if (data.no_user) {
     dispatch(SetError("You are not registred!"));
     dispatch(SetRedirect("/registration"));
@@ -109,21 +79,8 @@ export const SignIn = (email, password) => async (dispatch) => {
   }
   if (data.no_password) dispatch(SetError("Wrong password or login"));
   else {
-    dispatch(SetAuthData(data._id, data.email, data.login, true));
-    dispatch(
-      SetProfile({
-        id: data._id,
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        birthday: data.birthday,
-        subjects: {
-          to_learn: data.to_learn,
-          to_teach: data.to_teach,
-        },
-      })
-    );
-    dispatch(SetRedirect("/profile"));
+    localStorage.setItem("token", data.token);
+    await dispatch(GetMeData());
   }
 };
 

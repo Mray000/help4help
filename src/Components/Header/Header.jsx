@@ -4,8 +4,11 @@ import "./Header.scss";
 import help4help from "./../../images/лого4.jpg";
 import ava from "./../../images/ava.png";
 import { NavLink, withRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
 
 const Header = ({ mobile, location }) => {
+  const my_id = useSelector(getAuthId);
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"
@@ -54,7 +57,7 @@ const Header = ({ mobile, location }) => {
               <img src={ava} alt="" id="user_avatar_img" />
             </span>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <NavLink to="/profile" className="dropdown-item">
+              <NavLink to={`/profile/${my_id}`} className="dropdown-item">
                 Profile
               </NavLink>
               <span className="dropdown-item">Another action</span>
