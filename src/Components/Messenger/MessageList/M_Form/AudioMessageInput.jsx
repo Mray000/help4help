@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { ReactMic } from "react-mic";
 import { useDispatch } from "react-redux";
-import { AddMessage } from "../../../../Redux/Reducer/DialogsReducer";
+import { AddMessage } from "../../../../Redux/Reducer/MessengerReducer";
 import "../../Messenger.scss";
 
 const AudioMessageInput = ({

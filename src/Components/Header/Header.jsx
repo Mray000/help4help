@@ -1,14 +1,24 @@
-// /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import "./Header.scss";
 import help4help from "./../../images/лого4.jpg";
 import ava from "./../../images/ava.png";
-import { NavLink, withRouter } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
+import { SetRedirect } from "../../Redux/Reducer/AppReducer";
+import { SetAuthData } from "../../Redux/Reducer/AuthReducer";
+import { getDialogsList } from "../../Redux/Selectors/MessengerSelector";
 
-const Header = ({ mobile, location }) => {
+const Header = ({ mobile }) => {
   const my_id = useSelector(getAuthId);
+  const dialogs = useSelector(getDialogsList);
+  const message_link = dialogs.length ? dialogs[0].self.id : 0;
+  const dispatch = useDispatch();
+  const Logout = () => {
+    localStorage.setItem("token", "");
+    dispatch(SetAuthData(null, false));
+    dispatch(SetRedirect());
+  };
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"
@@ -41,7 +51,10 @@ const Header = ({ mobile, location }) => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/messenger" className="nav-link">
+            <NavLink
+              to={"/messenger?self=" + message_link}
+              className="nav-link"
+            >
               Messenger
             </NavLink>
           </li>
@@ -60,6 +73,9 @@ const Header = ({ mobile, location }) => {
               <NavLink to={`/profile/${my_id}`} className="dropdown-item">
                 Profile
               </NavLink>
+              <div className="dropdown-item" onClick={Logout}>
+                Logout
+              </div>
               <span className="dropdown-item">Another action</span>
               <span className="dropdown-item">Something else here</span>
             </div>
@@ -103,4 +119,4 @@ const Header = ({ mobile, location }) => {
 //   );
 // };
 
-export default withRouter(Header);
+export default Header;

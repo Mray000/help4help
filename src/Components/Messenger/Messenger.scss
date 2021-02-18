@@ -534,10 +534,6 @@
       border-bottom: 2px solid white;
     }
   }
-  img {
-    width: 2vw;
-    border-radius: 100%;
-  }
 }
 
 .select_message_header_container {
@@ -588,15 +584,14 @@
     .form-control {
       border-radius: 0;
       border: 0;
-      // background-color: #242526;
       background-color: #0075ff;
       color: white;
-    }
-    .form-control::placeholder {
-      color: whitesmoke;
-    }
-    .form-control:focus {
-      box-shadow: none;
+      &::placeholder {
+        color: whitesmoke;
+      }
+      &:focus {
+        box-shadow: none;
+      }
     }
   }
   border-radius: 10px;
@@ -614,9 +609,11 @@
     padding: 0;
     margin: 0;
   }
+  .dialog_list_humon_active,
   .dialog_list_humon {
     transition: 0.6s;
     height: 10% !important;
+    // background-color: #0075ff;
     border-bottom: #4da0ff solid 1px;
     .avatar {
       width: 46px;
@@ -625,17 +622,18 @@
     display: flex;
     align-items: center;
     font-size: 16px;
-    .dialog_list_name_last_m {
+    .name_surname_last_message {
       padding: 0;
       .last_message {
         font-weight: 100;
-        // color: #aab5b7;
       }
     }
+    &:hover {
+      background-color: #004fa8;
+    }
   }
-  .dialog_list_humon:hover {
-    background-color: #004fa8;
-    border-bottom: #004fa8 solid 1px;
+  .dialog_list_humon_active {
+    background-color: #144c8b;
   }
 }
 .photo_with_plus_photos {

@@ -13,7 +13,7 @@ const ReplysGroupMessage = ({
   index_for_photos,
   setShow,
 }) => {
-  if (reply_messages) {
+  if (reply_messages.length) {
     return (
       <div className="messages_reply_container">
         {reply_messages.map((m) => {

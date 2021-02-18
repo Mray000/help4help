@@ -1,5 +1,5 @@
 import ProfileReducer from "./Reducer/ProfileReducer";
-import DialogsReducer from "./Reducer/DialogsReducer";
+import MessengerReducer from "./Reducer/MessengerReducer";
 import UsersReducer from "./Reducer/UserReducer";
 import AuthReducer from "./Reducer/AuthReducer";
 import AppReducer from "./Reducer/AppReducer";
@@ -14,7 +14,7 @@ const {
 
 let reducers = combineReducers({
   Profile: ProfileReducer,
-  Dialogs: DialogsReducer,
+  Messenger: MessengerReducer,
   Users: UsersReducer,
   Auth: AuthReducer,
   App: AppReducer,

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   AddMessage,
   EditMessage,
-} from "../../../../Redux/Reducer/DialogsReducer";
+} from "../../../../Redux/Reducer/MessengerReducer";
 import AudioMessageInput from "./AudioMessageInput";
 import PreviewModal from "./PreviewModal";
 import "emoji-mart/css/emoji-mart.css";

@@ -22,7 +22,9 @@ const App = () => {
   const dispatch = useDispatch();
   const initialized = useSelector((state) => state.App.initialized);
   const redirect = useSelector(getRedirect);
-  useEffect(() => dispatch(Initialing()), []);
+  useEffect(() => {
+    dispatch(Initialing());
+  }, [initialized]);
   if (!initialized) return <Preloader />;
 
   if (redirect) {

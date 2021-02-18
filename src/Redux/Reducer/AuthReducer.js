@@ -1,5 +1,6 @@
 import { AuthAPI } from "../../axios/axios";
 import { SetError, SetRedirect } from "./AppReducer";
+import { MessengerConnect } from "./MessengerReducer";
 import { SetProfile } from "./ProfileReducer";
 
 const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
@@ -39,7 +40,8 @@ export const GetMeData = () => async (dispatch) => {
   if (!localStorage.getItem("token")) dispatch(SetRedirect("/login"));
   else {
     let data = await AuthAPI.getMe();
-    dispatch(SetAuthData(data.id, true));
+    await dispatch(SetAuthData(data.id, true));
+    dispatch(MessengerConnect(data.id));
     // dispatch(SetRedirect(`/profile/${data.id}`));
   }
 };
@@ -63,6 +65,7 @@ export const SignUp = (
       to_learn: LessonsForHelping,
       to_teach: LessonsForLearning,
     },
+    chat_rooms: [],
   });
   if (data.is_registrate) {
     dispatch(SetError("You are registrate!"));

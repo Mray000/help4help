@@ -4,7 +4,7 @@ import AudioMessage from "./M_Types/AudioMessage";
 import FilesGroupMessage from "./M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage";
 // import ReplysGroupMessage from "./M_Types/ReplyGroupMessage";
-import classNames from "classnames";
+import moment from "moment";
 
 const MessageSearchList = ({
   messages_for_search,
@@ -12,6 +12,7 @@ const MessageSearchList = ({
   display_none,
   setMessagesForSearch,
   NextDay,
+  my_id,
 }) => {
   return (
     <div
@@ -31,6 +32,7 @@ const MessageSearchList = ({
               previous_message_date={
                 messages_for_search[messages_for_search.indexOf(m) - 1]?.date
               }
+              my={my_id === m.whom}
             />
           );
         })}
@@ -44,16 +46,13 @@ const Message = ({
   setMessagesForSearch,
   NextDay,
   previous_message_date,
+  my,
 }) => {
-  var MessageClass = classNames({
-    my_m: m.whom === "my",
-    him_m: m.whom === "him",
-  });
   return (
     <div>
       {NextDay(m, "search", previous_message_date)}
       <div
-        className={MessageClass}
+        className={my ? "my_m" : "him_m"}
         onClick={() => {
           MessageToFind(m.id);
           setMessagesForSearch([0]);
@@ -62,7 +61,7 @@ const Message = ({
         <div className="message_content_contaiener">
           <img
             src={
-              m.whom === "my"
+              my
                 ? "https://img2.freepng.ru/20180523/tha/kisspng-businessperson-computer-icons-avatar-clip-art-lattice-5b0508dc6a3a10.0013931115270566044351.jpg"
                 : "https://spark.ru/public/img/user_ava_big.png"
             }
@@ -86,23 +85,7 @@ const Message = ({
               {m.audio && (
                 <AudioMessage src={m.audio} date={m.date} last={true} />
               )}
-              {m.text && (
-                <div className="message_text">
-                  <div>{m.text}</div>
-                </div>
-              )}
-              {/* {m.reply && (
-                <ReplysGroupMessage
-                  m={m}
-                  FindReplyM={FindReplyM}
-                  MessageToFind={MessageToFind}
-                  my_name={my_name}
-                  him_name={him_name}
-                  setImgIndex={setImgIndex}
-                  photos={photos}
-                  setShow={setShow}
-                />
-              )} */}
+              {m.text && <div className="message_text">{m.text}</div>}
             </div>
             <br />
             {!m.audio && (
@@ -112,11 +95,7 @@ const Message = ({
                   marginLeft: m.photos ? "-29px" : null,
                 }}
               >
-                {m.date[m.date.length - 5] +
-                  m.date[m.date.length - 4] +
-                  m.date[m.date.length - 3] +
-                  m.date[m.date.length - 2] +
-                  m.date[m.date.length - 1]}
+                {moment(m.date).format("HH:mm")}
               </div>
             )}
           </div>

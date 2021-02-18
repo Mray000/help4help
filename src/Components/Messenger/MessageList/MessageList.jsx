@@ -1,25 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getErrorMessages,
   getMessages,
-} from "../../../Redux/Selectors/DialogsSelector.js";
+} from "../../../Redux/Selectors/MessengerSelector.js";
 import MessageForm from "./M_Form/MessageForm.jsx";
 import LargePhotosPreview from "./LargePhotosPreview.jsx";
 import MessageListHeader from "./MessageListHeader.jsx";
 import MessageSearchList from "./MessageSearchList.jsx";
 
-import {
-  DeleteMessage,
-  SetMessages,
-} from "../../../Redux/Reducer/DialogsReducer.js";
+import { DeleteMessage } from "../../../Redux/Reducer/MessengerReducer.js";
 import moment from "moment";
 
 import "../Messenger.scss";
@@ -27,13 +18,16 @@ import ReplyMessagePreview from "./ReplyMessagePreview.jsx";
 import Message from "./Message.jsx";
 import classnames from "classnames";
 import { GetPosition } from "../../../utils/GetPosition.js";
+import { getAuthId } from "../../../Redux/Selectors/AuthSelectors.js";
+import Preloader from "../../../mini-components/Preloader.jsx";
+import { useRouteMatch } from "react-router-dom";
 
-const MessageList = () => {
+const MessageList = ({ current_self }) => {
   const my_name = "Aynur Habibullin";
   const him_name = "Stas KakayProsto";
   const messages = useSelector(getMessages);
   const error_messages = useSelector(getErrorMessages);
-
+  const my_id = useSelector(getAuthId);
   const dispatch = useDispatch();
   const [search_message_id, setMessageSearchId] = useState(0);
   const [select_messages_id, setSelectMessage] = useState([]);
@@ -43,41 +37,94 @@ const MessageList = () => {
   const [imgIndex, setImgIndex] = useState(0);
   const [messages_for_search, setMessagesForSearch] = useState([]);
   const [display_none, setDisplayNone] = useState(false);
-  const date_ref_index = useRef(0);
   const [show, setShow] = useState(false);
+  const date_ref_index = useRef(0);
   let indexOfRef = useRef(-1);
   let scroll_list = useRef(null);
   let message_to_find = useRef(null);
   let top_date = useRef(null);
   let date_refs = useRef([]);
-  var timer;
+  let first_render = useRef(true);
+  // let match_render = useRef(false);
   let last = false;
+  var timer;
+  window.dr = date_refs.current;
+  let match = useRouteMatch();
   useEffect(() => {
-    // document.addEventListener(
-    //   "DOMContentLoaded",
-    //   () => (scroll_list.current.scrollTop = scroll_list.current.scrollHeight)
-    // );
-    if (messages.length) {
-      if (
-        GetPosition(scroll_list, "top") <
-        GetPosition(date_refs.current[date_refs.current.length - 1], "top")
-      ) {
+    if (!first_render.current) {
+      scroll_list.current.removeEventListener("scroll", onScroll);
+      date_refs.current = [];
+      setImgIndex(0);
+      setEditMessage(0);
+      setMessageSearchId(0);
+      setShow(false);
+      setSelectMessage([]);
+      setReplyMessage([]);
+      setMessagesForSearch([]);
+      setPhotos([]);
+      message_to_find.current = null;
+      indexOfRef.current = -1;
+      date_ref_index.current = 0;
+      last = false;
+      // first_render.current = true;
+      // match_render.current = true;
+    }
+  }, [match]);
+  useEffect(() => {
+    // console.log(match_render.current, date_refs.current);
+    // if(top_date.current) {
+
+    // }
+    if (top_date.current) {
+      if (messages.length) {
+        scroll_list.current.addEventListener("scroll", onScroll);
         date_ref_index.current = date_refs.current.length - 1;
-        InnerTextToDate();
+        setTimeout(
+          () => top_date.current && top_date.current.classList.add("opacity0"),
+          3000
+        );
+        let basic = moment(
+          messages[messages.length - 1].date,
+          "MMMM D YYYY h:mm"
+        );
+        top_date.current.innerText =
+          basic.format("MMMM") + " " + basic.format("D");
       }
-      scroll_list.current.scrollTop = scroll_list.current.scrollHeight;
-      let mass_photos = [];
-      messages.forEach((m) =>
-        m.photos?.forEach((p) => !photos.includes(p) && mass_photos.push(p))
-      );
-      setPhotos([...photos, ...mass_photos]);
+
+      first_render.current = false;
+    }
+  }, [match]);
+  // window.f = first_render.current;
+  // window.m = match_render.current;
+  // window.dr = date_refs.current;
+
+  useEffect(() => {
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => (scroll_list.current.scrollTop = scroll_list.current.scrollHeight)
+    );
+    if (date_refs.current.length) {
+      if (messages.length) {
+        if (
+          GetPosition(scroll_list, "top") <
+          GetPosition(date_refs.current[date_refs.current.length - 1], "top")
+        ) {
+          date_ref_index.current = date_refs.current.length - 1;
+          InnerTextToDate();
+        }
+        scroll_list.current.scrollTop = scroll_list.current.scrollHeight;
+        let mass_photos = [];
+        messages.forEach((m) =>
+          m.photos?.forEach((p) => !photos.includes(p) && mass_photos.push(p))
+        );
+        setPhotos([...photos, ...mass_photos]);
+      }
     }
   }, [messages]);
   useEffect(() => {
     if (message_to_find.current) {
       let local_minimum = Infinity;
       scroll_list.current.scrollTop = scroll_list.current.scrollHeight;
-
       scroll_list.current.scrollTop =
         scroll_list.current.scrollHeight -
         (GetPosition(scroll_list, "bottom") -
@@ -107,21 +154,8 @@ const MessageList = () => {
       }, 3000);
     }
   }, [search_message_id]);
-  useEffect(() => {
-    if (messages.length) {
-      scroll_list.current.addEventListener("scroll", onScroll);
-      date_ref_index.current = date_refs.current.length - 1;
-      setTimeout(() => top_date.current.classList.add("opacity0"), 3000);
-      let basic = moment(
-        messages[messages.length - 1].date,
-        "MMMM D YYYY h:mm"
-      );
-      top_date.current.innerText =
-        basic.format("MMMM") + " " + basic.format("D");
-    }
-  }, []);
 
-  const onScroll = () => {
+  const onScroll = useCallback(() => {
     if (date_refs.current[date_ref_index.current - 1]) {
       if (
         GetPosition(scroll_list, "top") -
@@ -142,7 +176,7 @@ const MessageList = () => {
         InnerTextToDate();
       }
     }
-  };
+  }, []);
   const MessageToFind = useCallback((id) => {
     setDisplayNone(false);
     setMessageSearchId(id);
@@ -248,7 +282,8 @@ const MessageList = () => {
     display_none: display_none,
     height_76: reply_messages_id.length,
   });
-
+  // window.r = scroll_list.current;
+  // window.r = scroll_list.current;
   let ReplyMessagesGroupsState = useRef([]); //массив объектов, где ключ это id сообщения, а значение это ссылка массив прикреплыных сообщений
   const ReplyMessagesGroup = (reply_messages, id) => {
     let reply_group = ReplyMessagesGroupsState.current.find((e) => e.id === id);
@@ -257,7 +292,6 @@ const MessageList = () => {
     ReplyMessagesGroupsState.current.push({ id: id, reply_messages: arr });
     return arr;
   }; // если сообщение уже есть в массиве, вернем массив его прикреплленых сообщений, если нет, то создадим этот массив
-
   return (
     <div className="col-8 message_list_global_container">
       <MessageListHeader
@@ -267,17 +301,22 @@ const MessageList = () => {
         setSelectMessage={setSelectMessage}
         setReplyMessage={setReplyMessage}
         messages_for_search={messages_for_search}
+        current_self={current_self}
       />
       <div
         className={MessageListContainerClass}
         ref={scroll_list}
         onMouseMove={() => {
           clearTimeout(timer);
-          top_date.current.classList.remove("opacity0");
-          top_date.current.classList.add("opacity1");
+          if (top_date.current) {
+            top_date.current.classList.remove("opacity0");
+            top_date.current.classList.add("opacity1");
+          }
           timer = setTimeout(() => {
-            top_date.current.classList.remove("opacity1");
-            top_date.current.classList.add("opacity0");
+            if (top_date.current) {
+              top_date.current.classList.remove("opacity1");
+              top_date.current.classList.add("opacity0");
+            }
           }, 1500);
         }}
       >
@@ -320,6 +359,7 @@ const MessageList = () => {
                 }
                 previous_message_date={messages[messages.indexOf(m) - 1]?.date}
                 error={error_messages.includes(m.id)}
+                my={my_id === m.whom}
               />
             );
           })}
@@ -331,6 +371,7 @@ const MessageList = () => {
         messages_for_search={messages_for_search}
         MessageToFind={MessageToFind}
         display_none={!display_none}
+        my_id={my_id}
       />
       <ReplyMessagePreview
         reply_messages_id={reply_messages_id}

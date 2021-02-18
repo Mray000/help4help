@@ -1,4 +1,5 @@
 import { GetMeData } from "./AuthReducer";
+import { MessengerConnect } from "./MessengerReducer";
 
 const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS";
 const SET_ERROR = "SET_ERROR";
@@ -32,7 +33,7 @@ const AuthReducer = (state = InintialState, action) => {
   }
 };
 
-const SetInitial = () => ({
+export const SetInitial = () => ({
   type: INITIALIZED_SUCCESS,
 });
 
@@ -46,9 +47,13 @@ export const SetRedirect = (redirect) => ({
   redirect: redirect,
 });
 
-export const Initialing = () => async (dispatch) => {
-  let promise1 = dispatch(GetMeData());
-  Promise.all([promise1]).then(() => dispatch(SetInitial()));
+export const Initialing = () => async (dispatch, getState) => {
+  await dispatch(GetMeData());
+  if (getState().Auth.isAuth) {
+    await dispatch(MessengerConnect());
+  } else dispatch(SetInitial());
+  // window.Comm
+  // Promise.all([get_me, socket]).then(() => dispatch(SetInitial()));
 };
 
 export default AuthReducer;

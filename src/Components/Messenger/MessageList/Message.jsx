@@ -11,6 +11,8 @@ import FilesGroupMessage from "./M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage";
 import ReplysGroupMessage from "./M_Types/ReplyGroupMessage";
 import classNames from "classnames";
+import moment from "moment";
+// import "../../../../node_modules/moment/locale/ru.js";
 
 const Message = ({
   m,
@@ -31,10 +33,11 @@ const Message = ({
   setReplyMessage = null,
   previous_message_date = null,
   error = null,
+  my = null,
 }) => {
   let MessageClass = classNames({
-    my_m: m.whom === "my",
-    him_m: m.whom === "him",
+    my_m: my,
+    him_m: !my,
     last: last && !m.audio,
     search: search,
     select: select,
@@ -53,7 +56,7 @@ const Message = ({
           {last && (
             <img
               src={
-                m.whom === "my"
+                my
                   ? "https://img2.freepng.ru/20180523/tha/kisspng-businessperson-computer-icons-avatar-clip-art-lattice-5b0508dc6a3a10.0013931115270566044351.jpg"
                   : "https://spark.ru/public/img/user_ava_big.png"
               }
@@ -111,11 +114,7 @@ const Message = ({
                   marginRight: m.photos ? "8px" : null,
                 }}
               >
-                {m.date[m.date.length - 5] +
-                  m.date[m.date.length - 4] +
-                  m.date[m.date.length - 3] +
-                  m.date[m.date.length - 2] +
-                  m.date[m.date.length - 1]}
+                {moment(m.date).format("HH:mm")}
               </div>
             )}
           </div>

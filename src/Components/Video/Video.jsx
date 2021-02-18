@@ -9,9 +9,9 @@ const Video = () => {
   let ctx;
   let localMediaStream;
   const dispatch = useDispatch();
+  canvas = document.createElement("canvas");
+  ctx = canvas.getContext("2d");
   useEffect(() => {
-    canvas = document.createElement("canvas");
-    ctx = canvas.getContext("2d");
     return () => {
       video.current.stop();
       clearInterval(cameraInterval);
@@ -25,12 +25,12 @@ const Video = () => {
   window.URL = window.URL || window.webkitURL;
   navigator.getUserMedia(
     { video: true },
-    function (stream) {
+    (stream) => {
       video.current.srcObject = stream;
       video.current.play();
       localMediaStream = stream;
     },
-    dispatch(SetError("Camera did not work :("))
+    () => dispatch(SetError("Camera did not work :("))
   );
   let cameraInterval = setInterval(() => snapshot(), 1);
   const snapshot = () => localMediaStream && ctx.drawImage(video.current, 0, 0);

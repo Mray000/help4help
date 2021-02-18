@@ -3,6 +3,9 @@ import { Button, Form } from "react-bootstrap";
 import React, { useEffect, useRef } from "react";
 import message_ava from "./../../../images/ava.png";
 import "../Messenger.scss";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SetRedirect } from "../../../Redux/Reducer/AppReducer";
 
 const MessageListHeader = ({
   FilterMessage,
@@ -11,7 +14,9 @@ const MessageListHeader = ({
   DeleteMessage,
   setSelectMessage,
   setReplyMessage,
+  current_self,
 }) => {
+  const dispatch = useDispatch();
   const SelectDelete = () => {
     DeleteMessage(select_messages_id);
     setSelectMessage([]);
@@ -23,14 +28,19 @@ const MessageListHeader = ({
   if (select_messages_id.length === 0) {
     return (
       <div className="message_list_header_global_container">
-        <div>
-          <div>Name Surname</div>
-        </div>
         <MessageListSearchForm
           FilterMessage={FilterMessage}
           messages_for_search={messages_for_search}
         />
-        <img src={message_ava} alt=":B" />
+        <div>
+          <div>{current_self.name_surname}</div>
+        </div>
+        <img
+          style={{ width: "40px" }}
+          src={current_self.ava ? current_self.ava : message_ava}
+          alt=":B"
+          onClick={() => dispatch(SetRedirect("profile/" + current_self.id))}
+        />
       </div>
     );
   } else {

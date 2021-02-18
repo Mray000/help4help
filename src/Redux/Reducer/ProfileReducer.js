@@ -103,20 +103,7 @@ export const GetProfile = (id) => async (dispatch) => {
   let data = await ProfileAPI.getProfile(id);
   console.log(data);
   if (data.no_user) dispatch(SetRedirect("/page_not_found"));
-  else
-    dispatch(
-      SetProfile({
-        id: data.id,
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        birthday: data.birthday,
-        subjects: {
-          to_learn: data.subjects.to_learn,
-          to_teach: data.subjects.to_teach,
-        },
-      })
-    );
+  else dispatch(SetProfile(data));
 };
 
 export const UpdateStatus = (status) => async (dispatch) => {

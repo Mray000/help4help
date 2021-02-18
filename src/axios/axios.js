@@ -1,4 +1,5 @@
 import * as axios from "axios";
+import { io } from "socket.io-client";
 
 let instance = axios.create({
   baseURL: "http://localhost:3010/",
@@ -28,13 +29,16 @@ export const FollowAPI = {
 };
 
 export const MessengerAPI = {
-  addMessage(m) {
-    return instance.post("message", m).then((promise) => promise.data);
-    // .catch((e) => alert(e));
+  io,
+  connect(id) {
+    this.io = io("http://localhost:3010", { query: "id=" + id });
+    return this.io;
   },
-  getMessages() {
-    return instance.get("message").then((promise) => promise.data);
-    // .catch((e) => alert(e));
+  addMessage(from, to, message) {
+    return this.io.emit("message", { from: from, to: to, message: message });
+  },
+  getMessages(id) {
+    return instance.get("messages?cr_id=" + id).then((promise) => promise.data);
   },
 };
 
@@ -105,7 +109,7 @@ export const AuthAPI = {
           baseURL: "http://localhost:3010/",
           withCredentials: false,
           headers: {
-            Autorisation: promise.data.token,
+            Autorisation: promise.data.token ? promise.data.token : "",
           },
         });
         return promise.data;
