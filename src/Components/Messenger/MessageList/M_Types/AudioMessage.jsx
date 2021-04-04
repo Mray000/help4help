@@ -50,9 +50,9 @@ const AudioMessage = ({ src, date = null, last = false }) => {
           style={{ zIndex: 2, marginRight: "4px", marginLeft: "4px" }}
         >
           {playing ? (
-            <FontAwesomeIcon icon={faPause} />
+            <FontAwesomeIcon icon={faPause} style={{ color: "white" }} />
           ) : (
-            <FontAwesomeIcon icon={faPlay} />
+            <FontAwesomeIcon icon={faPlay} style={{ color: "white" }} />
           )}
         </div>
         <div>
@@ -76,5 +76,4 @@ const AudioMessage = ({ src, date = null, last = false }) => {
     </div>
   );
 };
-
 export default AudioMessage;

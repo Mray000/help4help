@@ -10,7 +10,7 @@ const TOGGLE_IS_FETCHING = " TOGGLE-IS-FETCHING";
 const TOGGLE_IS_FOLLOWING = "TOGGLE_IS_FOLLOWING";
 
 let InintialState = {
-  users: [],
+  users: null,
   pageSize: 3,
   totalUsersCount: null,
   currentPage: 1,
@@ -86,12 +86,9 @@ const ToggleIsFollowing = (expected, id) => ({
   id,
 });
 
-export const GetUsers = (currentPage, pageSize) => async (dispatch) => {
-  dispatch(ToggleIsFetching(true));
-  let data = await UsersAPI.getUsers(currentPage, pageSize);
-  dispatch(SetUsers(data.items));
-  dispatch(ToggleIsFetching(false));
-  dispatch(TotalUsersCount(data.totalCount));
+export const GetUsers = (filter = null) => async (dispatch, getState) => {
+  let data = await UsersAPI.getUsers(getState().Auth.id, filter);
+  dispatch(SetUsers(data));
 };
 
 const FollowUnfollow = async (dispatch, id, action, ApiRequest) => {

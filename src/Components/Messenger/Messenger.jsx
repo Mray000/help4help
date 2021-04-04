@@ -1,9 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import Preloader from "../../mini-components/Preloader";
-import { AddDialogUser } from "../../Redux/Reducer/MessengerReducer";
-import { getDialogsList } from "../../Redux/Selectors/MessengerSelector";
-import { useQuery } from "../../utils/useQuery";
+import {
+  AddDialogUser,
+  SetMessages,
+  set_current_self_id,
+  set_dialog_index,
+} from "../../Redux/Reducer/MessengerReducer";
+import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
+import {
+  getCurrentSelfId,
+  getDialogsList,
+} from "../../Redux/Selectors/MessengerSelector";
+import { getCurrentSelf } from "../../utils/GetCurrentSelf";
 import { withAuthRedirect } from "../../utils/WithAuthRedirect";
 import DialogsList from "./DialogsList/DialogsList";
 import MessegeList from "./MessageList/MessageList";
@@ -11,22 +21,52 @@ import "./Messenger.scss";
 
 const Messenger = () => {
   let dialogs = useSelector(getDialogsList);
-  let self_id = useQuery("self");
+  let current_self_id = useSelector(getCurrentSelfId);
+  let my_id = useSelector(getAuthId);
+  let current_self_id_query = getCurrentSelf();
   const dispatch = useDispatch();
-  let current = dialogs.find((d) => d.self.id === self_id);
-  let current_self;
-  if (current) current_self = current.self;
-  else dispatch(AddDialogUser(self_id));
-  if (!dialogs.length) {
-    return <div>U not messaging</div>;
-  }
+  let current_dialog = dialogs.find((d) => d.self.id === current_self_id_query);
+  let current_self = current_dialog?.self;
+  console.log(dialogs?.indexOf(current_dialog));
+  useEffect(() => {
+    dispatch(set_dialog_index(dialogs?.indexOf(current_dialog)));
+  }, [current_self_id]);
+  useEffect(() => {
+    if (!(current_self_id_query === my_id))
+      dispatch(SetMessages(current_dialog.id));
+  }, []);
+
+  if (current_self_id_query === my_id)
+    return <Redirect to={"/messenger?self=" + dialogs[0].self.id} />;
+
+  if (!current_dialog) dispatch(AddDialogUser(current_self_id_query));
+
   if (!dialogs) return <Preloader />;
+
+  if (!dialogs.length) return <div>U not messaging</div>;
+
   if (!current_self) return <Preloader />;
+
   return (
     <div className="row global_messanger_container">
-      <DialogsList dialogs_list_global={dialogs} />
+      <DialogsList
+        dialogs_list_global={dialogs}
+        current_self_id={current_self_id_query}
+      />
       <div className="col-1"></div>
-      <MessegeList current_self={current_self} />
+
+      {current_self_id !== current_self_id_query ? (
+        <div className="col-8">
+          <Preloader width={50} />
+        </div>
+      ) : (
+        <MessegeList
+          current_self={current_self}
+          dialogs={dialogs}
+          unread_messages={current_dialog.unread_messages}
+          dialog_id={current_dialog.id}
+        />
+      )}
     </div>
   );
 };

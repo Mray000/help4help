@@ -80,7 +80,6 @@ const Test = () => {
   const GetMessage = () => {
     fetch(`http://localhost:3010/message`)
       .then((req) => req.json())
-      .then((m) => console.log(m))
       .catch((e) => dispatch(SetError(e)));
   };
   return (
@@ -122,6 +121,15 @@ const Test = () => {
           <img style={{ width: "300px" }} src={m.photo} alt="говно" />
         ))}
       </div>
+
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/VuuUsU8CBks?start=105"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./Registration.scss";
 import DnD from "./DnD";
+import CountryInput from "./CountryInput";
 import { Button } from "@material-ui/core";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -9,25 +10,28 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
+
   password: Yup.string()
     .min(8, "Too Short!")
-    .max(20, "Too Long!")
+    .max(50, "Too Long!")
     .required("Required"),
+
   name: Yup.string()
     .min(2, "Too Short!")
-    .max(20, "Too Long!")
+    .max(50, "Too Long!")
     .test("DOB", "you are 🤡", (value) => !["admin", "god"].includes(value))
     .required("Required"),
 
   surname: Yup.string()
     .min(2, "Too Short!")
-    .max(20, "Too Long!")
+    .max(50, "Too Long!")
     .required("Required"),
+
   bd: Yup.string()
     .test(
       "DOB",
       "very young :)",
-      (value) => !(moment().diff(moment(value), "years") <= 7)
+      (value) => moment().diff(moment(value), "years") >= 7
     )
     .test(
       "DOB",
@@ -41,6 +45,7 @@ const Registration = () => {
   const mobile = false;
   let match = useRouteMatch();
   const [pageNumber, setPageNumber] = useState(1);
+  const [country, setCountry] = useState("");
   const [fade, setFade] = useState(false);
   let pre_submit_values = useRef({});
   return (
@@ -62,7 +67,7 @@ const Registration = () => {
       <Route path={match.path}>
         <Formik
           onSubmit={(values) => {
-            pre_submit_values.current = values;
+            pre_submit_values.current = { ...values, country: country.label };
             setFade(true);
             setTimeout(() => setPageNumber(2), 1000);
           }}
@@ -88,8 +93,8 @@ const Registration = () => {
                       fade ? "fade" : ""
                     }`}
                   >
-                    <div className="registration_form__title">
-                      <h1 className="title_content">Registration</h1>
+                    <div style={{ fontWeight: "700", fontSize: "26px" }}>
+                      Registration
                     </div>
                     <div className="registration_form_in_container">
                       <div className="field_label">Email</div>
@@ -144,6 +149,10 @@ const Registration = () => {
                           {errors.surname}
                         </div>
                       )}
+                    </div>
+                    <div className="registration_form_in_container">
+                      <div className="field_label">Country</div>
+                      <CountryInput setCountry={setCountry} country={country} />
                     </div>
                     <div className="registration_form_in_container">
                       <div className="field_label">Birthday</div>

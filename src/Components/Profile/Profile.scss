@@ -38,7 +38,7 @@
     }
     .avatar_container {
       position: relative;
-      border-radius: 1vw;
+      border-radius: 100%;
       overflow: hidden;
       .avatar {
         width: 100%;
@@ -55,12 +55,8 @@
       position: absolute;
       overflow: hidden;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       flex-direction: column;
-      .photo_delete_icon {
-        text-align: right;
-        margin-right: 10px;
-      }
       label {
         width: 100%;
         margin-bottom: 0;
@@ -70,8 +66,9 @@
           text-align: center;
           color: white;
           background-color: rgba($color: #535050, $alpha: 0.4);
-          // z-index: -1;
           width: 100%;
+          padding: 7px;
+          padding-bottom: 10px;
         }
       }
     }
@@ -81,16 +78,91 @@
   }
 }
 
-.user_info {
-  .name {
+.info_reviews {
+  width: 70%;
+  overflow-x: scroll;
+  display: flex;
+  height: 90vh;
+  align-items: center;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+  .info_header,
+  .reviews_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #535050;
     color: black;
     font-weight: 700;
     padding-left: 20px;
     padding-bottom: 5px;
     font-size: 30px;
-    border-bottom: 1px solid #535050;
+  }
+  .info,
+  .reviews {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 100%;
+  }
+  .reviews {
+    .reviews_container {
+      height: 50vh;
+      overflow-y: scroll;
+      padding-left: 10px;
+      padding-right: 10px;
+      .review_header {
+        color: gray;
+        display: flex;
+      }
+      .review {
+        background-color: white;
+        border-radius: 4px;
+        margin-top: 8px;
+        padding: 4px;
+        color: black;
+      }
+    }
+    .reviews_input_container {
+      background-color: black;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-radius: 5px;
+      padding: 4px;
+      input {
+        width: 80%;
+        font-size: 1.2rem;
+        color: white;
+        padding: 0;
+        background-color: transparent;
+        background-clip: padding-box;
+        border: 0;
+        border-radius: 0;
+        transition: none;
+        resize: none;
+        height: 100% !important;
+      }
+      input:focus {
+        outline: none;
+      }
+      input::placeholder {
+        color: #e7e7e7;
+      }
+      .reviews_stars {
+        font-size: 14px;
+        .fa-star {
+          margin: 2px;
+        }
+      }
+      .paper_plane:hover {
+        color: #0075ff;
+      }
+    }
   }
 }
+
 .name_user_form {
   margin-top: 30px;
   display: flex;

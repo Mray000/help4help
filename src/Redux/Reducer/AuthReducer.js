@@ -1,7 +1,6 @@
 import { AuthAPI } from "../../axios/axios";
-import { SetError, SetRedirect } from "./AppReducer";
+import { SetError, SetRedirect, set_initial } from "./AppReducer";
 import { MessengerConnect } from "./MessengerReducer";
-import { SetProfile } from "./ProfileReducer";
 
 const SET_AUTH_DATA = "auth/SET-AUTH-DATA";
 const SET_CAPTCHA = "auth/SET_CAPTCHA";
@@ -37,12 +36,18 @@ export const SetCaptcha = (img) => ({
 });
 
 export const GetMeData = () => async (dispatch) => {
-  if (!localStorage.getItem("token")) dispatch(SetRedirect("/login"));
-  else {
+  if (!localStorage.getItem("token")) {
+    dispatch(SetRedirect("/login"));
+    dispatch(set_initial());
+  } else {
     let data = await AuthAPI.getMe();
-    await dispatch(SetAuthData(data.id, true));
-    dispatch(MessengerConnect(data.id));
-    // dispatch(SetRedirect(`/profile/${data.id}`));
+    if (data.no_token) {
+      dispatch(SetRedirect("/login"));
+      dispatch(set_initial());
+    } else {
+      await dispatch(SetAuthData(data.id, true));
+      dispatch(MessengerConnect(data.id));
+    }
   }
 };
 
@@ -51,6 +56,7 @@ export const SignUp = (
   password,
   name,
   surname,
+  country,
   birthday,
   LessonsForHelping,
   LessonsForLearning
@@ -60,6 +66,9 @@ export const SignUp = (
     password: password,
     name: name,
     surname: surname,
+    ava: null,
+    online: "online",
+    country: country,
     birthday: birthday,
     subjects: {
       to_learn: LessonsForHelping,

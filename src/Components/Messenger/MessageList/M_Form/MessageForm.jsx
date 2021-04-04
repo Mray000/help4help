@@ -1,16 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Field, Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddMessage,
   EditMessage,
+  IsTyping,
+  NotTyping,
 } from "../../../../Redux/Reducer/MessengerReducer";
 import AudioMessageInput from "./AudioMessageInput";
 import PreviewModal from "./PreviewModal";
 import "emoji-mart/css/emoji-mart.css";
 import "../../Messenger.scss";
 import { faPaperclip, faSmile } from "@fortawesome/free-solid-svg-icons";
+import { getCurrentSelf } from "../../../../utils/GetCurrentSelf";
+import { getAuthId } from "../../../../Redux/Selectors/AuthSelectors";
+import { getDialogsList } from "../../../../Redux/Selectors/MessengerSelector";
 
 const MessageForm = ({
   display_global_none,
@@ -28,28 +33,41 @@ const MessageForm = ({
   const dispatch = useDispatch();
   const [display_emoji, setDisplay_emoji] = useState(false);
   const [display_none, setDisplay] = useState(false);
-  let form = React.useRef(null);
+  let message_ref = useRef(null);
+  let formik = useRef(null);
+  let timer;
+  let typing = useRef(false);
+  const to = getCurrentSelf();
+  const chat_room_id = useSelector(getDialogsList).find((d) => d.self.id === to)
+    .id;
+  const my_id = useSelector(getAuthId);
   useEffect(() => {
-    if (form.current && reply_messages_id.length) form.current[1].focus();
+    if (message_ref.current && reply_messages_id.length)
+      message_ref.current.focus();
   }, [reply_messages_id]);
+
   useEffect(() => {
-    if (edit_message != null && form.current) {
-      let reactHandlerKey = Object.keys(form.current).filter(
-        (item) => item.indexOf("__reactEventHandlers") >= 0
-      );
-      form.current[reactHandlerKey[0]].setMessageValue();
-      form.current[1].focus();
+    if (edit_message && formik.current) {
+      formik.current.setFieldValue("message", edit_message.text);
+      console.log("даб я");
     }
   }, [edit_message]);
   return (
     <Formik
       onSubmit={(values, actions) => {
         if (values.message) {
-          if (edit_message !== 0) {
-            dispatch(EditMessage(edit_message.id, values.message));
+          if (edit_message) {
+            dispatch(
+              EditMessage(
+                my_id,
+                to,
+                chat_room_id,
+                edit_message.id,
+                values.message
+              )
+            );
             setEditMessage(0);
-            actions.resetForm();
-          } else
+          } else {
             dispatch(
               AddMessage(
                 values.message,
@@ -59,16 +77,19 @@ const MessageForm = ({
                 reply_messages_id.length ? reply_messages_id : null
               )
             );
-          setReplyMessage([]);
-          actions.resetForm();
+            setReplyMessage([]);
+          }
         } else if (reply_messages_id.length) {
           dispatch(
             AddMessage(values.message, null, null, null, reply_messages_id)
           );
           setReplyMessage([]);
-          actions.resetForm();
         }
+        clearTimeout(timer);
+        typing.current = false;
+        actions.resetForm();
       }}
+      innerRef={formik}
       initialValues={{ message: "", add_photo: "" }}
     >
       {({ handleSubmit, setFieldValue, values, handleChange, ...props }) => (
@@ -77,8 +98,22 @@ const MessageForm = ({
           className={`add_message_in_${mobile ? "mobile_" : ""}container ${
             display_global_none ? "display_none" : ""
           }`}
-          setMessageValue={() => setFieldValue("message", edit_message.text)}
-          ref={form}
+          onChange={(e) => {
+            if (!e.target.value) {
+              dispatch(NotTyping(my_id, to));
+              typing.current = false;
+              return;
+            }
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              dispatch(NotTyping(my_id, to));
+              typing.current = false;
+            }, 5000);
+            if (!typing.current) {
+              dispatch(IsTyping(my_id, to, 1));
+              typing.current = true;
+            }
+          }}
         >
           <PreviewModal
             srcOfImg={srcOfImg}
@@ -90,7 +125,7 @@ const MessageForm = ({
             AddMessage={AddMessage}
           />
           <div className="add_photo_container">
-            <label htmlFor="add_photo" className="icon_add_photo">
+            <label htmlFor="add_photo" className="icon_opacity">
               <FontAwesomeIcon
                 icon={faPaperclip}
                 color="white"
@@ -104,6 +139,8 @@ const MessageForm = ({
               type="file"
               name="add_photo"
               multiple
+              innerRef={message_ref}
+              autoFocus
               onChange={(e) => {
                 let massOfImg = [];
                 let massOfFile = [];
@@ -117,11 +154,9 @@ const MessageForm = ({
                     extension === "docx" ||
                     extension === "doc" ||
                     extension === "pptx"
-                  ) {
+                  )
                     massOfFile.push(f);
-                  } else {
-                    massOfImg.push(window.URL.createObjectURL(f));
-                  }
+                  else massOfImg.push(window.URL.createObjectURL(f));
                 });
                 setSrcOfImg(massOfImg);
                 setSrcOfFiles(massOfFile);
@@ -140,6 +175,7 @@ const MessageForm = ({
                 event.preventDefault();
               }
             }}
+            onChange={handleChange}
           />
           <div className="emoji_container">
             <div
@@ -156,7 +192,7 @@ const MessageForm = ({
                 theme="dark"
               /> */}
             </div>
-            <div className="icon_in_smile">
+            <div className="icon_opacity">
               <FontAwesomeIcon
                 icon={faSmile}
                 color="white"
@@ -169,10 +205,15 @@ const MessageForm = ({
             </div>
           </div>
           <AudioMessageInput
+            IsTyping={IsTyping}
+            NotTyping={NotTyping}
+            my_id={my_id}
+            chat_room_id={chat_room_id}
             submit={() => handleSubmit()}
             setDisplay={setDisplay}
             display={display_none}
             message_dirty={Boolean(values.message)}
+            to={to}
           />
         </Form>
       )}

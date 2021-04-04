@@ -58,6 +58,8 @@
     display: block;
     align-items: center;
     .title_content {
+      font-weight: 500;
+      font-size: 30px;
       text-align: center;
     }
   }
@@ -66,7 +68,9 @@
 .login_form_button_submit {
   width: 40%;
   margin-left: 30%;
-  border-radius: 30vw;
+  border-radius: 30px;
+  // border-radius: 30vw;
+  margin-top: 20px;
   background-color: #5cdb94;
   border-color: #5cdb94;
 }

@@ -10,32 +10,40 @@ const ReplyMessagePreview = ({
   him_name,
 }) => {
   if (reply_messages_id.length > 0) {
+    let message_0 = FindReplyM(0);
+    let message_1 = FindReplyM(1);
     return (
       <div className="reply_message_pre_input_container">
         <div className="reply_icon">
           <FontAwesomeIcon icon={faReply} size="2x" />
         </div>
-        {reply_messages_id.length < 2 && FindReplyM(1).photos ? (
+        {reply_messages_id.length < 2 && message_1.photos ? (
           <div className="reply_img">
-            <img src={FindReplyM(1).photos[0]} alt="" />
+            <img src={message_1.photos[0]} alt="" />
           </div>
         ) : null}
         <div className="reply_name_message">
           <div className="reply_name">
             {reply_messages_id.length < 2
-              ? FindReplyM(1).whom === "my"
+              ? message_1.whom === "my"
                 ? my_name
                 : him_name
               : "Messages reply"}
           </div>
           <div className="reply_message">
             {reply_messages_id.length < 2
-              ? FindReplyM(0).text
-                ? FindReplyM(0).text.substring(0, 16) + "..."
-                : FindReplyM(0).photo
+              ? message_0.text
+                ? message_0.text.length > 16
+                  ? message_0.text.substring(0, 16) + "..."
+                  : message_0.text
+                : message_0.photos
                 ? "Photo"
-                : FindReplyM(0).audio
+                : message_0.audio
                 ? "Audio"
+                : message_0.files
+                ? "Files"
+                : message_0.reply
+                ? message_0.reply.length + " replying message"
                 : null
               : `${reply_messages_id.length} messages reply`}
           </div>

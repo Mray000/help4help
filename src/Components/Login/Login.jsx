@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.scss";
 import { Formik } from "formik";
 import Form from "react-bootstrap/Form";
@@ -9,15 +9,20 @@ import { NavLink, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SignIn } from "./../../Redux/Reducer/AuthReducer";
 import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
+import Preloader from "../../mini-components/Preloader";
 const Login = ({ mobile }) => {
   const dispatch = useDispatch();
+  const [is_submit, setIsSubmit] = useState(false);
   const my_id = useSelector(getAuthId);
   if (localStorage.getItem("token"))
     return <Redirect to={`profile/${my_id}`} />;
   return (
     <Formik
       initialValues={Object}
-      onSubmit={(values) => dispatch(SignIn(values.email, values.password))}
+      onSubmit={(values) => {
+        setIsSubmit(true);
+        dispatch(SignIn(values.email, values.password));
+      }}
     >
       {({ handleSubmit, handleChange, touched, errors, values }) => (
         <Form onSubmit={handleSubmit}>
@@ -64,25 +69,20 @@ const Login = ({ mobile }) => {
                         isInvalid={touched.password && !values.password}
                       />
                     </Form.Group>
-                    <Form.Group className="form_group">
-                      <Form.Check
-                        name="rememberMe"
-                        label="Remember me!"
-                        onChange={handleChange}
-                        feedback={errors.terms}
-                        className="remember_check_in"
-                      />
-                    </Form.Group>
                   </div>
-                  <Button
-                    type="submit"
-                    onClick={handleSubmit}
-                    className={`login_form_${
-                      mobile ? "mobile_" : ""
-                    }button_submit`}
-                  >
-                    Submit
-                  </Button>
+                  {!is_submit ? (
+                    <Button
+                      type="submit"
+                      onClick={handleSubmit}
+                      className={`login_form_${
+                        mobile ? "mobile_" : ""
+                      }button_submit`}
+                    >
+                      Submit
+                    </Button>
+                  ) : (
+                    <Preloader width="100px" height="40px" />
+                  )}
                   <div
                     className={`registration_${
                       mobile ? "mobile_" : ""

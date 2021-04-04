@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Formik, Field } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { toBase64 } from "../../../../utils/toBase64.js";
 import "../../Messenger.scss";
 
 import { TextField } from "formik-material-ui";
@@ -32,14 +33,6 @@ const PreviewModal = ({
   const [show_edit_modal, SetShowEditModal] = useState("");
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      // reader.onload = () => resolve(reader.result);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
 
   const dispatch = useDispatch();
 
@@ -156,10 +149,10 @@ const PreviewModal = ({
                   name="preview_message"
                   placeholder="type..."
                   className="preview_add_message_in"
-                  onKeyPress={(event) => {
-                    if (event.key === "Enter" && !event.shiftKey) {
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
                       handleSubmit();
-                      event.preventDefault();
                       handleClose();
                     }
                   }}

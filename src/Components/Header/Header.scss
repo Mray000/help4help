@@ -1,14 +1,11 @@
 #global_header_container {
-  // background-color: #1c8adb;
-  // background-color: #013b46;
-  // background-color: #06575b;
-  // background-color: #05396b;
-  // background-color: #4c4c4c;
+  height: 10vh;
   background-color: black;
   color: white;
   font-weight: 600;
   .nav-link {
     color: white;
+    cursor: pointer;
   }
   .nav-link:hover {
     color: #0075ff;
@@ -17,7 +14,7 @@
     margin-left: 3%;
   }
   #help4help_header_img {
-    width: 45px;
+    width: 55px;
     margin-left: 3%;
     // border-radius: 100%;
   }
@@ -66,6 +63,7 @@
   }
   .dropdown-item {
     color: white;
+    cursor: pointer;
   }
   .dropdown-item.active,
   .dropdown-item:active {
@@ -75,7 +73,7 @@
   .dropdown-item:focus,
   .dropdown-item:hover {
     background-color: transparent;
-    color: #c4dfe6;
+    color: #0075ff;
   }
 }
 

@@ -5,17 +5,15 @@ let instance = axios.create({
   baseURL: "http://localhost:3010/",
   withCredentials: false,
   headers: {
-    Autorisation: localStorage.getItem("token")
-      ? localStorage.getItem("token")
-      : "",
+    Autorisation: localStorage.getItem("token") || "",
   },
 });
 
-window.i = instance;
-
 export const UsersAPI = {
-  getUsers(currentPage, pageSize) {
-    return instance.get(`api/users/`).then((promise) => promise.data);
+  getUsers(id, filter) {
+    return instance
+      .post(`users`, { id: id, filter: filter })
+      .then((promise) => promise.data);
   },
 };
 
@@ -31,14 +29,55 @@ export const FollowAPI = {
 export const MessengerAPI = {
   io,
   connect(id) {
+    console.log("connect req");
     this.io = io("http://localhost:3010", { query: "id=" + id });
     return this.io;
+  },
+  disconnect() {
+    this.io.disconnect();
+  },
+  IsTyping(from, to, type) {
+    this.io.emit("typing", {
+      from: from,
+      to: to,
+      type: type,
+    });
+  },
+  NotTyping(from, to) {
+    this.io.emit("not_typing", {
+      from: from,
+      to: to,
+    });
+  },
+  messagesRead(from, to, c_r_id) {
+    this.io.emit("message_read", {
+      from: from,
+      to: to,
+      chat_room_id: c_r_id,
+    });
   },
   addMessage(from, to, message) {
     return this.io.emit("message", { from: from, to: to, message: message });
   },
   getMessages(id) {
     return instance.get("messages?cr_id=" + id).then((promise) => promise.data);
+  },
+  deleteMessage(from, d_id, m_ids, u_m) {
+    this.io.emit("delete_message", {
+      from: from,
+      d_id: d_id,
+      m_ids: m_ids,
+      u_m: u_m,
+    });
+  },
+  editMessage(from, to, d_id, m_id, new_text) {
+    this.io.emit("edit_message", {
+      from: from,
+      to: to,
+      d_id: d_id,
+      m_id: m_id,
+      new_text: new_text,
+    });
   },
 };
 
@@ -51,15 +90,6 @@ export const ProfileAPI = {
       .put(`profile/status`, {
         status: status,
       })
-      .then((promise) => promise.data);
-  },
-  getStatus: (id) =>
-    instance.get(`profile/${id}`).then((promise) => promise.data),
-  UpdatePhoto(photo) {
-    let formData = new FormData();
-    formData.append("image", photo);
-    return instance
-      .put(`profile/photo`, formData)
       .then((promise) => promise.data);
   },
   UpdateProfile({
@@ -94,6 +124,9 @@ export const ProfileAPI = {
         },
       })
       .then((promise) => promise.data);
+  },
+  addReview(to, review) {
+    return instance.post("profile/review", { to: to, review: review });
   },
 };
 

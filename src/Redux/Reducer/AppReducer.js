@@ -1,14 +1,17 @@
-import { GetMeData } from "./AuthReducer";
-import { MessengerConnect } from "./MessengerReducer";
+import { GetMeData, SetAuthData } from "./AuthReducer";
+import { MessengerConnect, ResetMessenger } from "./MessengerReducer";
+import { reset_profile } from "./ProfileReducer";
 
 const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS";
 const SET_ERROR = "SET_ERROR";
 const SET_REDIRECT = "SET_REDIRECT";
+const SET_WINDOW_FOCUS = "SET_WINDOW_FOCUS";
 
 let InintialState = {
   initialized: false,
   error: "",
   redirect: "",
+  focus: true,
 };
 
 const AuthReducer = (state = InintialState, action) => {
@@ -23,6 +26,11 @@ const AuthReducer = (state = InintialState, action) => {
         ...state,
         error: action.error,
       };
+    case SET_WINDOW_FOCUS:
+      return {
+        ...state,
+        focus: action.focus,
+      };
     case SET_REDIRECT:
       return {
         ...state,
@@ -33,8 +41,13 @@ const AuthReducer = (state = InintialState, action) => {
   }
 };
 
-export const SetInitial = () => ({
+export const set_initial = () => ({
   type: INITIALIZED_SUCCESS,
+});
+
+export const set_window_focus = (focus) => ({
+  type: SET_WINDOW_FOCUS,
+  focus: focus,
 });
 
 export const SetError = (error) => ({
@@ -47,13 +60,12 @@ export const SetRedirect = (redirect) => ({
   redirect: redirect,
 });
 
-export const Initialing = () => async (dispatch, getState) => {
-  await dispatch(GetMeData());
-  if (getState().Auth.isAuth) {
-    await dispatch(MessengerConnect());
-  } else dispatch(SetInitial());
-  // window.Comm
-  // Promise.all([get_me, socket]).then(() => dispatch(SetInitial()));
+export const ResetData = () => (dispatch) => {
+  dispatch(ResetMessenger());
+  dispatch(reset_profile());
+  dispatch(SetAuthData(null, false));
 };
+
+export const Initialing = () => async (dispatch) => await dispatch(GetMeData());
 
 export default AuthReducer;

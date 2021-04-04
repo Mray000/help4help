@@ -11,14 +11,21 @@ const AudioMessageInput = ({
   display_none,
   message_dirty,
   submit,
+  my_id,
+  chat_room_id,
+  IsTyping,
+  NotTyping,
+  to,
 }) => {
   const [record, setRecord] = useState(false);
   const changeRecording = () => {
+    if (!record) dispatch(IsTyping(my_id, to, 2));
     setDisplay(!record);
     setRecord(!record);
   };
   const dispatch = useDispatch();
   const onStop = (data) => {
+    dispatch(NotTyping(my_id, to));
     var reader = new FileReader();
     reader.readAsDataURL(data.blob);
     reader.onloadend = () =>
@@ -69,16 +76,12 @@ const AudioMessageInput = ({
         />
       </div>
       <div className="icons_a_m_container">
-        <div
-          onClick={submit}
-          className="icon_add_message"
-          ref={icon_add_message}
-        >
+        <div onClick={submit} className="icon_opacity" ref={icon_add_message}>
           <FontAwesomeIcon icon={faPaperPlane} color="white" />
         </div>
         <div
           onClick={changeRecording}
-          className="icon_in_audio"
+          className="icon_opacity"
           ref={icon_audio}
         >
           <FontAwesomeIcon icon={faMicrophone} color="white" size="lg" />

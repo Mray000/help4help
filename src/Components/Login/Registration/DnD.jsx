@@ -8,18 +8,18 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
   const [LessonsForLearning, setLessonsForLearning] = useState([]);
   const dispatch = useDispatch();
   const lessons = [
-    { id: 1, lesson: "Math", img: "" },
-    { id: 2, lesson: "Lang", img: "" },
-    { id: 3, lesson: "Phith", img: "" },
-    { id: 4, lesson: "Biology", img: "" },
-    { id: 5, lesson: "Chemistry", img: "" },
-    { id: 6, lesson: "PCScince", img: "" },
-    { id: 7, lesson: "Aue", img: "" },
-    { id: 8, lesson: "PE", img: "" },
-    { id: 9, lesson: "History", img: "" },
-    { id: 10, lesson: "Social", img: "" },
-    { id: 11, lesson: "English", img: "" },
-    { id: 12, lesson: "Music", img: "" },
+    { id: 1, lesson: "Algebra📊", text: "Algebra" },
+    { id: 2, lesson: "Music🎶", text: "Music" },
+    { id: 3, lesson: "Physics🌌", text: "Physics" },
+    { id: 4, lesson: "Biology🌿", text: "Biology" },
+    { id: 5, lesson: "Chemistry👨‍🔬", text: "Chemistry" },
+    { id: 6, lesson: "IT_Scince💻", text: "IT_Scince" },
+    { id: 7, lesson: "Literature📕", text: "Literature" },
+    { id: 8, lesson: "Geography🌍", text: "Geography" },
+    { id: 9, lesson: "History🏛️", text: "History" },
+    { id: 10, lesson: "Social👨‍👨‍👦‍👦", text: "Social" },
+    { id: 11, lesson: "English🗽", text: "English" },
+    { id: 12, lesson: "Geometry📐", text: "Geometry" },
   ];
   const DragStart = (ev, e) => {
     ev.dataTransfer.setData("id", e.id);
@@ -178,9 +178,10 @@ const DnD = ({ fade, setFade, setPageNumber, data }) => {
                 data.password,
                 data.name,
                 data.surname,
+                data.country,
                 data.bd,
-                LessonsForHelping.map((e) => e.lesson),
-                LessonsForLearning.map((e) => e.lesson)
+                LessonsForHelping.map((e) => e.text),
+                LessonsForLearning.map((e) => e.text)
               )
             );
           }}

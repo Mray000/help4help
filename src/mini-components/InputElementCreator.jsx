@@ -4,7 +4,6 @@ import pointer from "./../images/strelka.png";
 import cn from "classnames";
 
 export const InputElementCreator = (El) => ({ input, meta, ...props }) => {
-  // console.log('render');
   return (
     <div
       className={cn(

@@ -12,7 +12,6 @@ import PhotosGroupMessage from "./M_Types/PhotosGroupsMessage";
 import ReplysGroupMessage from "./M_Types/ReplyGroupMessage";
 import classNames from "classnames";
 import moment from "moment";
-// import "../../../../node_modules/moment/locale/ru.js";
 
 const Message = ({
   m,
@@ -34,6 +33,8 @@ const Message = ({
   previous_message_date = null,
   error = null,
   my = null,
+  ReplyMessagesGroup = null,
+  unread = null,
 }) => {
   let MessageClass = classNames({
     my_m: my,
@@ -41,6 +42,7 @@ const Message = ({
     last: last && !m.audio,
     search: search,
     select: select,
+    unread: unread,
   });
   return (
     <div>
@@ -48,9 +50,7 @@ const Message = ({
       <div
         className={MessageClass}
         ref={message_to_find}
-        onClick={() => {
-          SelectMessage(m.id);
-        }}
+        onClick={() => SelectMessage(m.id)}
       >
         <div className="message_content_contaiener">
           {last && (
@@ -102,6 +102,8 @@ const Message = ({
                   him_name={him_name}
                   setImgIndex={setImgIndex}
                   setShow={setShow}
+                  my={my}
+                  ReplyMessagesGroup={ReplyMessagesGroup}
                 />
               )}
             </div>
@@ -121,7 +123,7 @@ const Message = ({
           {error && <FontAwesomeIcon icon={faClock} />}
         </div>
         <div className="message_pre_icons">
-          {m.whom === "my" ? (
+          {my ? (
             <FontAwesomeIcon
               icon={faEdit}
               size="sm"
@@ -130,7 +132,7 @@ const Message = ({
                 e.stopPropagation();
                 setEditMessage(m);
               }}
-              className="icon_edit"
+              className="icon_opacity"
             />
           ) : (
             <FontAwesomeIcon
@@ -141,14 +143,14 @@ const Message = ({
                 e.stopPropagation();
                 setReplyMessage([m.id]);
               }}
-              className="icon_reply"
+              className="icon_opacity"
             />
           )}
           <FontAwesomeIcon
             icon={faStar}
             color="white"
             size="sm"
-            className="icon_star"
+            className="icon_opacity"
           />
         </div>
       </div>

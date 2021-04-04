@@ -8,24 +8,19 @@ import "../../Messenger.scss";
 const FilesGroupMessage = ({ files, preview = null }) => {
   let a = useRef();
   const [photo, setPhoto] = useState("");
+
   return (
     <>
       {files.map((f) => {
         let image = f.type.includes("image");
+        let length =
+          f.name.length > f.size.length ? f.name.length : f.size.length;
         return (
           <div
             key={files.indexOf(f)}
             className="message_file"
             style={{
-              width: `${
-                50 +
-                (f.name.length > f.size.length
-                  ? f.name.length > 40
-                    ? truncate(f.name, 30).length
-                    : f.name.length
-                  : f.size.length) *
-                  6
-              }px`,
+              width: `${length > 30 ? 180 : length * 6}px`,
             }}
             onClick={(e) => {
               if (!preview && !image) {
@@ -52,9 +47,7 @@ const FilesGroupMessage = ({ files, preview = null }) => {
               />
             )}
             <div>
-              <div style={{ color: "white" }}>
-                {f.name.length > 40 ? truncate(f.name, 30) : f.name}
-              </div>
+              <div style={{ color: "white" }}>{truncate(f.name, 30)}</div>
               <div style={{ color: "#E1BEE1" }}>{fileSize(f.size)}</div>
             </div>
             {!preview && (
