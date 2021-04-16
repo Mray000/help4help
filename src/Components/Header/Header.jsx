@@ -38,7 +38,6 @@ const Header = ({ mobile }) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          {/* <Search mobile={mobile} /> */}
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink to="/users" className="nav-link">
@@ -46,7 +45,7 @@ const Header = ({ mobile }) => {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/video" className="nav-link">
+              <NavLink to="/lesson" className="nav-link">
                 Lesson
               </NavLink>
             </li>
@@ -84,21 +83,7 @@ const Header = ({ mobile }) => {
         </div>
       </nav>
     );
-  else
-    return (
-      <nav
-        style={{
-          textAlign: "center",
-          height: "10vh",
-          backgroundColor: "black",
-          color: "white",
-          lineHeight: "10vh",
-          fontWeight: "700",
-        }}
-      >
-        HelpForHelp
-      </nav>
-    );
+  else return null;
 };
 
 // const Search = ({ mobile }) => {

@@ -1,4 +1,3 @@
-import { Button } from "react-bootstrap";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Preloader from "../../mini-components/Preloader";
@@ -45,7 +44,7 @@ const UserItem = ({ u, dispatch }) => {
         >
           <div
             className="center_img"
-            style={{ width: "40px", height: "40px" }}
+            style={{ width: "40px", height: "40px", marginRight: "5px" }}
             onClick={() => dispatch(SetRedirect("profile/" + u.id))}
           >
             <img src={u.ava || ava} alt="" />
@@ -67,7 +66,7 @@ const UserItem = ({ u, dispatch }) => {
               Teach:&nbsp;
               {u.subjects.to_teach.map((s, i) => (
                 <span>
-                  {s + (i === u.subjects.to_teach.length - 1 ? "." : ",")}
+                  {s + (i === u.subjects.to_teach.length - 1 ? "." : ", ")}
                 </span>
               ))}
             </div>
@@ -75,7 +74,7 @@ const UserItem = ({ u, dispatch }) => {
               Learn:&nbsp;
               {u.subjects.to_learn.map((s, i) => (
                 <span>
-                  {s + (i === u.subjects.to_learn.length - 1 ? "." : ",")}
+                  {s + (i === u.subjects.to_learn.length - 1 ? "." : ", ")}
                 </span>
               ))}
             </div>

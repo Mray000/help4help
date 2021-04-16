@@ -30,9 +30,7 @@ const LargePhotosPreview = ({
   const PhotosPreview = useRef(null);
 
   useEffect(() => {
-    if (show) {
-      PhotosPreview.current.focus();
-    }
+    if (show) PhotosPreview.current.focus();
   }, [show]);
   return (
     <Modal

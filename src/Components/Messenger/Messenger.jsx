@@ -25,21 +25,17 @@ const Messenger = () => {
   let my_id = useSelector(getAuthId);
   let current_self_id_query = getCurrentSelf();
   const dispatch = useDispatch();
-  let current_dialog = dialogs.find((d) => d.self.id === current_self_id_query);
+  let current_dialog = dialogs.find((d) => d.user_id === current_self_id_query);
   let current_self = current_dialog?.self;
-  console.log(dialogs?.indexOf(current_dialog));
+
+  if (!current_dialog) dispatch(AddDialogUser(current_self_id_query));
+
   useEffect(() => {
     dispatch(set_dialog_index(dialogs?.indexOf(current_dialog)));
   }, [current_self_id]);
   useEffect(() => {
-    if (!(current_self_id_query === my_id))
-      dispatch(SetMessages(current_dialog.id));
+    if (current_dialog) dispatch(SetMessages(current_dialog.id));
   }, []);
-
-  if (current_self_id_query === my_id)
-    return <Redirect to={"/messenger?self=" + dialogs[0].self.id} />;
-
-  if (!current_dialog) dispatch(AddDialogUser(current_self_id_query));
 
   if (!dialogs) return <Preloader />;
 

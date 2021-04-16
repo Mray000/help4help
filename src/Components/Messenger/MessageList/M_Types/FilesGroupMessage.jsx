@@ -23,14 +23,9 @@ const FilesGroupMessage = ({ files, preview = null }) => {
               width: `${length > 30 ? 180 : length * 6}px`,
             }}
             onClick={(e) => {
-              if (!preview && !image) {
-                e.stopPropagation();
-                a.current.click();
-              }
-              if (!preview && image) {
-                e.stopPropagation();
-                setPhoto(f.file);
-              }
+              e.stopPropagation();
+              if (!preview && !image) a.current.click();
+              if (!preview && image) setPhoto(f.file);
             }}
           >
             {image ? (
@@ -48,7 +43,7 @@ const FilesGroupMessage = ({ files, preview = null }) => {
             )}
             <div>
               <div style={{ color: "white" }}>{truncate(f.name, 30)}</div>
-              <div style={{ color: "#E1BEE1" }}>{fileSize(f.size)}</div>
+              <div style={{ color: "wheat" }}>{fileSize(f.size)}</div>
             </div>
             {!preview && (
               <>
@@ -74,17 +69,7 @@ const FilePhotoPreviw = ({ setPhoto, photo }) => {
       onHide={() => setPhoto("")}
       className="photos_preview_global_container"
     >
-      <div className="prt" style={{ position: "relative" }}>
-        {/* <FontAwesomeIcon
-          icon={faTimes}
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowPhoto([false, ""]);
-          }}
-          style={{ position: "absolute", top: "2%", left: "90%" }}
-        /> */}
-        <img src={photo} alt="" />
-      </div>
+      <img src={photo} alt="" />
     </Modal>
   );
 };

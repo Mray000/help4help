@@ -15,6 +15,7 @@
       width: 40px;
       height: 40px;
       border-radius: 100%;
+      cursor: pointer;
     }
     button {
       color: white;
@@ -25,9 +26,10 @@
       text-transform: none;
       padding: 2px 1px;
       border: 0;
+      transition: 0.2s;
       &:hover {
-        background-color: rgb(97, 96, 96);
-        color: white;
+        // background-color: rgb(139, 139, 139);
+        background-color: rgb(46, 145, 202);
       }
     }
     .subjects {
@@ -38,7 +40,7 @@
       span {
         color: gray;
         font-weight: 600;
-        font-size: 15px;
+        font-size: 14px;
       }
     }
   }

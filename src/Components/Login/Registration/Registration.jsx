@@ -56,7 +56,7 @@ const Registration = () => {
             textAlign: "center",
             fontWeight: "800",
             color: "#0075FF",
-            height: "90vh",
+            height: "100vh",
             fontSize: "50px",
             paddingTop: "25%",
           }}

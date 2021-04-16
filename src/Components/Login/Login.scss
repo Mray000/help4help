@@ -1,171 +1,68 @@
-#global_login_container {
-  // background-color: #eaeaea;
-  background-color: #05396b;
-  // background-color: #66a5ae;
-  margin-top: 2vw;
-  border-radius: 2vw;
+.login_container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.login {
+  background: linear-gradient(#2069fd, #c223ff);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 20px 20px 20px;
+  text-align: center;
+  border-radius: 5px;
   color: white;
-  .nav-link {
-    color: #5cdb94;
-  }
-}
-.registration_ava_container {
-  display: flex;
-  align-items: center;
-  height: 84vh;
-  justify-content: center;
-  #registration_ava {
-    width: 24vw;
-    border-radius: 100%;
-    filter: brightness(124%);
-  }
-}
-
-.login_form {
-  display: flex;
-  flex-direction: column;
-  .login_form_in {
-    width: 70%;
-    margin-left: 14%;
-    border-radius: 2vw;
-    border: none;
-  }
-  .form-control:focus {
-    box-shadow: none;
-  }
-  .in_feedback {
-    width: 100%;
-    display: block;
-    text-align: center;
-  }
-  .remember_check_in {
-    width: 100%;
-    font-size: 18px;
-    text-align: center;
-  }
-  .form-check-input {
-    position: relative;
-    margin-right: 0.3rem;
-  }
-
-  .in__label {
-    width: 100%;
-    display: block;
-    text-align: center;
-  }
-
-  .login_form__title {
-    display: block;
-    align-items: center;
-    .title_content {
-      font-weight: 500;
-      font-size: 30px;
-      text-align: center;
-    }
-  }
-}
-
-.login_form_button_submit {
-  width: 40%;
-  margin-left: 30%;
-  border-radius: 30px;
-  // border-radius: 30vw;
-  margin-top: 20px;
-  background-color: #5cdb94;
-  border-color: #5cdb94;
-}
-
-.registration_penitration {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1%;
-  justify-content: center;
-  text-align: center;
-  .dont_have_account {
-    margin-top: 24%;
-  }
-}
-
-//mobile..................
-
-#global_login_mobile_container {
-  background-color: #eaeaea;
-  margin-top: 4vw;
-  border-radius: 2vw;
-  font-size: 5vw;
-}
-
-.registration_ava_mobile_container {
-  display: flex;
-  align-items: center;
-  height: 16vh;
-  justify-content: center;
-  #registration_ava {
-    width: 24vw;
-  }
-}
-
-.login_mobile_form {
-  display: flex;
-  flex-direction: column;
-  height: 126vw;
-  .login_form_in {
+  height: 40vh;
+  .login_form_in_container {
+    border-radius: 6px;
+    overflow: hidden;
     width: 80%;
-    height: 6vh;
-    margin-left: 10%;
-    border-radius: 2vw;
-    font-size: 5vw;
-  }
-
-  .in__label {
-    width: 100%;
-    display: block;
-    text-align: center;
-  }
-  .form_group {
-    margin-bottom: 6%;
-  }
-
-  .remember_check_in {
-    width: 100%;
-    text-align: center;
-  }
-  .form-check-input {
-    position: relative;
-    margin-top: 0.3rem;
-    margin-left: 0rem;
-    width: 4vw;
-    height: 4vw;
-  }
-
-  .login_form__title {
-    display: block;
-    align-items: center;
-    .title_content {
-      text-align: center;
-      font-size: 8vw;
+    color: #757575;
+    background-color: white;
+    display: flex;
+    .login_form_in_icon {
+      padding: 0.375rem 0.75rem;
+      font-weight: 700;
+      font-size: 18px;
+      border-right: 1px #757575 solid;
     }
-    margin-bottom: 3%;
+    .field_label {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .login_form_in {
+      padding: 0.375rem 0.75rem;
+      width: 100%;
+      border: none;
+      &:focus {
+        outline: none;
+      }
+    }
+    .registration_valid_error {
+      border: 1px solid red;
+      color: red;
+      font-weight: 600;
+      font-size: small;
+      width: 50%;
+      position: absolute;
+      border-radius: 5px;
+      margin-top: 2px;
+      left: 25%;
+    }
+    .registration_form_in:focus {
+      outline: none;
+    }
   }
-}
-
-.login_form_mobile_button_submit {
-  width: 80%;
-  margin-left: 10%;
-  margin-top: 2%;
-  height: 10vw;
-  border-radius: 2vw;
-  align-items: center;
-  font-size: 5vw;
-}
-
-.registration_mobile_penitration {
-  display: flex;
-  flex-direction: column;
-  margin-top: 4%;
-  justify-content: center;
-  text-align: center;
-  .dont_have_account {
-    margin-top: 12%;
+  button {
+    background-color: #5cdb94;
+    color: white;
+    width: 80%;
+    &:hover {
+      background-color: #5cdb94;
+    }
   }
 }

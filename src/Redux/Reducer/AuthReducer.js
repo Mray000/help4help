@@ -75,6 +75,7 @@ export const SignUp = (
       to_teach: LessonsForLearning,
     },
     chat_rooms: [],
+    reviews: [],
   });
   if (data.is_registrate) {
     dispatch(SetError("You are registrate!"));
@@ -84,6 +85,7 @@ export const SignUp = (
 
 export const SignIn = (email, password) => async (dispatch) => {
   let data = await AuthAPI.signIn(email, password);
+  console.log(data);
   if (data.no_user) {
     dispatch(SetError("You are not registred!"));
     dispatch(SetRedirect("/registration"));

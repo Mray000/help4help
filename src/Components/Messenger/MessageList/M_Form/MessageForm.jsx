@@ -16,6 +16,7 @@ import { faPaperclip, faSmile } from "@fortawesome/free-solid-svg-icons";
 import { getCurrentSelf } from "../../../../utils/GetCurrentSelf";
 import { getAuthId } from "../../../../Redux/Selectors/AuthSelectors";
 import { getDialogsList } from "../../../../Redux/Selectors/MessengerSelector";
+import { Picker } from "emoji-mart";
 
 const MessageForm = ({
   display_global_none,
@@ -184,13 +185,12 @@ const MessageForm = ({
               }}
               className="emoji_picker"
             >
-              {/* <Picker
+              <Picker
                 set="apple"
                 onSelect={(e) => {
                   setFieldValue("message", values.message + e.native);
                 }}
-                theme="dark"
-              /> */}
+              />
             </div>
             <div className="icon_opacity">
               <FontAwesomeIcon

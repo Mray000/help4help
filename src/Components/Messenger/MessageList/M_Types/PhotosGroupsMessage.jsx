@@ -13,19 +13,28 @@ const PhotosGroupMessage = ({
 }) => {
   const PhotoMessage = ({ src, width }) => {
     return (
-      <>
+      <div style={{ width: `${width}%`, position: "relative" }}>
         {preview && (
-          <FontAwesomeIcon
-            icon={faEdit}
-            style={{ position: "absolute" }}
-            onClick={() => setShowEditModal(src)}
-          />
+          <div
+            style={{
+              width: "100%",
+              position: "absolute",
+              padding: "5px",
+              textAlign: "right",
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faEdit}
+              color="white"
+              onClick={() => setShowEditModal(src)}
+            />
+          </div>
         )}
         <img
           alt="📷"
           src={src}
           style={{
-            width: `${width}%`,
+            width: "100%",
             objectFit: "contain",
             display: "block",
             borderRadius: "5px",
@@ -38,7 +47,7 @@ const PhotosGroupMessage = ({
             }
           }}
         />
-      </>
+      </div>
     );
   };
 

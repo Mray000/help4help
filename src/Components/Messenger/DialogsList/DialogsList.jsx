@@ -34,6 +34,7 @@ const DialogsList = ({ dialogs_list_global, current_self_id }) => {
             active={current_self_id === d.self.id}
             new_messages={d.new_messages}
             unread_messages={d.unread_messages}
+            key={d.id}
           />
         ))}
     </div>

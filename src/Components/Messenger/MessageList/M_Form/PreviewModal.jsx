@@ -1,24 +1,17 @@
 import React, { useState } from "react";
 import { Form, Formik, Field } from "formik";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { toBase64 } from "../../../../utils/toBase64.js";
 import "../../Messenger.scss";
+import { Button } from "@material-ui/core";
 
-import { TextField } from "formik-material-ui";
 import FilesGroupMessage from "../M_Types/FilesGroupMessage";
 import PhotosGroupMessage from "../M_Types/PhotosGroupsMessage";
 
 import EditModal from "./EditModal";
 import { SetError } from "../../../../Redux/Reducer/AppReducer";
-
-const getImage = (dataUrl) => {
-  return new Promise((resolve, reject) => {
-    let image = new Image();
-    image.src = dataUrl;
-    image.onload = () => resolve(image);
-  });
-};
+import { getImage } from "../../../../utils/GetImage.js";
 
 const PreviewModal = ({
   AddMessage,
@@ -55,7 +48,7 @@ const PreviewModal = ({
       {!show_edit_modal && (
         <Modal.Body className="preview_photo_modal_body">
           <div className="photo_preview_modal_images_container">
-            {srcOfImg.length && (
+            {srcOfImg.length ? (
               <div className="photo_preview_modal_image_container">
                 <PhotosGroupMessage
                   photos={srcOfImg}
@@ -63,10 +56,10 @@ const PreviewModal = ({
                   setShowEditModal={SetShowEditModal}
                 />
               </div>
-            )}
-            {srcOfFiles.length && (
+            ) : null}
+            {srcOfFiles.length ? (
               <FilesGroupMessage files={srcOfFiles} preview={true} />
-            )}
+            ) : null}
           </div>
           <Formik
             onSubmit={async (values, actions) => {
@@ -130,22 +123,19 @@ const PreviewModal = ({
                     style={{
                       display: "flex",
                       width: "100%",
-                      color: "white",
                       alignItems: "center",
-                      justifyContent: "center",
                     }}
                   >
                     <Field
                       type="checkbox"
                       name="compress"
-                      style={{ marginRight: "4px" }}
+                      style={{ marginRight: "4px", borderRadius: "10px" }}
                     />
-                    <label htmlFor="compress">COMPRESS IMAGE</label>
+                    <label htmlFor="compress">Compress image</label>
                   </div>
                 )}
                 <Field
-                  component={TextField}
-                  multiline
+                  multiline="true"
                   name="preview_message"
                   placeholder="type..."
                   className="preview_add_message_in"
@@ -157,7 +147,6 @@ const PreviewModal = ({
                     }
                   }}
                 />
-
                 <Modal.Footer>
                   <Button onClick={handleClose}>Close</Button>
                   <Button onClick={handleSubmit}>Send</Button>

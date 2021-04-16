@@ -24,6 +24,7 @@ const ReplysGroupMessage = ({
               e.stopPropagation();
               MessageToFind(m.id);
             }}
+            key={m.id}
           >
             <div className="message_reply_name">{my ? my_name : him_name}</div>
             <div className="message_reply_content">

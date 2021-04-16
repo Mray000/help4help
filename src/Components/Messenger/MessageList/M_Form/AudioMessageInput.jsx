@@ -72,7 +72,7 @@ const AudioMessageInput = ({
           className="audio_message_in"
           onStop={onStop}
           strokeColor="#fff"
-          backgroundColor="#242526"
+          backgroundColor="#0075ff"
         />
       </div>
       <div className="icons_a_m_container">

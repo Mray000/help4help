@@ -66,6 +66,6 @@ export const ResetData = () => (dispatch) => {
   dispatch(SetAuthData(null, false));
 };
 
-export const Initialing = () => async (dispatch) => await dispatch(GetMeData());
+export const Initialing = () => async (dispatch) => dispatch(GetMeData());
 
 export default AuthReducer;

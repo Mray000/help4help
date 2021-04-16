@@ -8,6 +8,7 @@ import {
   SetRedirect,
   set_window_focus,
 } from "./AppReducer";
+import { Socket } from "socket.io-client";
 
 const ADD_MESSAGE = "ADD-MESSAGE";
 const DELETE_MESSAGE = "DELETE_MESSAGE";
@@ -28,14 +29,6 @@ const SET_DIALOG_UNREAD_MESSAGES = "SET_DIALOG_UNREAD_MESSAGES";
 const RESET_MESSENGER = "RESET_MESSENGER";
 const SET_ONLINE_CONNECT = "SET_ONLINE_CONNECT";
 const SET_ONLINE_DISCONNECT = "SET_ONLINE_DISCONNECT";
-
-// const CheckOnline = async () => {
-//   return fetch(
-//     "https://static-global-s-msn-com.akamaized.net/hp-neu/sc/2b/a5ea21.ico?d=1"
-//   )
-//     .then(() => true)
-//     .catch(() => false);
-// };
 
 let InintialState = {
   dialogs: null,
@@ -155,8 +148,22 @@ const DialogsReducer = (state = InintialState, action) => {
         ...state,
         dialogs: [
           ...state.dialogs,
-          { self: action.user, id: null, messages: [] },
+          {
+            self: action.user,
+            id: null,
+            messages: [],
+            user_id: action.user.id,
+            new_messages: 0,
+            unread_messages: 0,
+          },
         ],
+        messages: !action.is_to_me ? [] : state.messages,
+        dialog_index: !action.is_to_me
+          ? state.dialogs.length
+          : state.dialog_index,
+        current_self_id: !action.is_to_me
+          ? action.user.id
+          : state.current_self_id,
       };
     }
 
@@ -340,9 +347,10 @@ const add_dialog_message = (id, m) => ({
   message: m,
 });
 
-const add_dialog_user = (u) => ({
+const add_dialog_user = (u, is_to_me) => ({
   type: ADD_DIALOG_USER,
   user: u,
+  is_to_me: is_to_me,
 });
 
 //общие сеттеры
@@ -423,26 +431,9 @@ export const AddMessage = (
   };
   dispatch(add_message(added_message, true));
   MessengerAPI.addMessage(whom, to, added_message);
-  // if (await CheckOnline())
-  //   await MessengerAPI.addMessage(whom, to, added_message);
-  // else {
-  //   if (!getState().Dialogs.error_messages.length) {
-  //     interval = setInterval(async () => {
-  //       if (await CheckOnline()) {
-  //         let error_messages_mass = getState().Dialogs.messages.filter((m) =>
-  //           getState().Dialogs.error_messages.includes(m.id)
-  //         );
-  //         for (let m of error_messages_mass) {
-  //           await MessengerAPI.addMessage(m);
-  //           dispatch(set_error_messages(m.id, "delete"));
-  //         }
-  //         clearInterval(interval);
-  //       }
-  //     }, 3000);
-  //   }
-  //   dispatch(set_error_messages(id, "add"));
-  // }
 };
+
+export const GetSocket = () => MessengerAPI.getSocket();
 
 export const SetMessagesRead = (from, to, c_r_id) => (dispatch) => {
   MessengerAPI.messagesRead(from, to, c_r_id);
@@ -469,7 +460,10 @@ export const EditMessage = (from, to, d_id, m_id, new_text) => async (
   dispatch(edit_message(to, m_id, new_text));
 };
 
-export const AddDialogUser = (id) => async (dispatch, getState) => {
+export const AddDialogUser = (id, is_to_me = false) => async (
+  dispatch,
+  getState
+) => {
   let data = await ProfileAPI.getProfile(id);
   if (data.no_user) {
     dispatch(SetError("No user😕"));
@@ -483,12 +477,15 @@ export const AddDialogUser = (id) => async (dispatch, getState) => {
     );
   } else {
     dispatch(
-      add_dialog_user({
-        id: data.id,
-        name_surname: data.name + " " + data.surname,
-        online: data.online,
-        ava: data.ava,
-      })
+      add_dialog_user(
+        {
+          id: data.id,
+          name_surname: data.name + " " + data.surname,
+          online: data.online,
+          ava: data.ava,
+        },
+        is_to_me
+      )
     );
     dispatch(set_messages([]));
   }
@@ -586,7 +583,7 @@ export const MessengerConnect = () => async (dispatch, getState) => {
       //если диалога нет, значит это новый собеседник
       else {
         //создаем нвоый диалог
-        await dispatch(AddDialogUser(m.whom));
+        await dispatch(AddDialogUser(m.whom, true));
         //находим его
         let dialog = getState().Messenger.dialogs.find(
           (d) => d.self.id === m.whom

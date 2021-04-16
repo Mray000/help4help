@@ -143,7 +143,6 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
       }, 3000);
     }
   }, [search_message_id]);
-
   const onScroll = useCallback(() => {
     if (date_refs.current[date_ref_index.current - 1]) {
       if (
@@ -205,43 +204,30 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
     } else return messages.find((m) => m.id === id);
   };
 
-  const NextDayReturn = (noi, month1, day1) => {
-    if (noi === "noi") return true;
+  const NextDayReturn = (noi, date) => {
+    const find_ref_index = date_refs.current.findIndex(
+      (r) => r.current?.innerText === date
+    );
+    if (noi === "last") return true;
 
-    if (noi === "search")
-      return <div className="next_day_date">{month1 + " " + day1}</div>;
+    if (noi === "search") return <div className="next_day_date">{date}</div>;
 
-    if (
-      !date_refs.current.find((ref) => {
-        if (ref.current?.innerText === month1 + " " + day1) return true;
-        else return false;
-      })
-    ) {
+    if (!~find_ref_index) {
       date_refs.current.push(React.createRef());
       indexOfRef.current++;
-      return (
-        <div
-          className="next_day_date"
-          ref={date_refs.current[indexOfRef.current]}
-        >
-          {month1 + " " + day1}
-        </div>
-      );
-    } else
-      return (
-        <div
-          className="next_day_date"
-          ref={
-            date_refs.current[
-              date_refs.current.findIndex(
-                (r) => r.current.innerText === month1 + " " + day1
-              )
-            ]
-          }
-        >
-          {month1 + " " + day1}
-        </div>
-      );
+    }
+    return (
+      <div
+        className="next_day_date"
+        ref={
+          date_refs.current[
+            !~find_ref_index ? indexOfRef.current : find_ref_index
+          ]
+        }
+      >
+        {date}
+      </div>
+    );
   };
 
   const NextDay = useCallback((m, noi, last_date = null) => {
@@ -251,9 +237,9 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
     let date2 = moment(last_date, "MMMM D YYYY h:mm");
     let month2 = date2.format("MMMM");
     let day2 = date2.format("D");
-    if (month1 + day1 !== month2 + day2)
-      return NextDayReturn(noi, month1, day1);
-    else return null;
+    if (month1 + day1 !== month2 + day2) {
+      return NextDayReturn(noi, month1 + " " + day1);
+    } else return null;
   }, []);
 
   const InnerTextToDate = () => {
@@ -323,7 +309,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
               messages[messages.indexOf(m) + 1].whom === m.whom &&
               !NextDay(
                 messages[messages.indexOf(m) + 1],
-                "noi",
+                "last",
                 messages[messages.indexOf(m)]?.date
               )
             )

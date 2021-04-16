@@ -63,8 +63,8 @@ const MessageListHeader = ({
       {!select_messages_id.length && !find && (
         <div className="message_list_header_global_container">
           <div style={{ display: "flex", width: "85%", alignItems: "center" }}>
-            <img
-              src={current_self.ava || ava}
+            <div
+              className="center_img"
               style={{
                 width: "42px",
                 height: "42px",
@@ -72,11 +72,15 @@ const MessageListHeader = ({
                 marginRight: "5px",
                 cursor: "pointer",
               }}
-              alt=":B"
-              onClick={() =>
-                dispatch(SetRedirect("profile/" + current_self.id))
-              }
-            />
+            >
+              <img
+                src={current_self.ava || ava}
+                alt=":B"
+                onClick={() =>
+                  dispatch(SetRedirect("profile/" + current_self.id))
+                }
+              />
+            </div>
             <div>
               <div>{current_self.name_surname}</div>
               {is_typing ? (

@@ -1,11 +1,9 @@
 import {
-  faArrowAltCircleRight,
   faArrowAltCircleUp,
   faLongArrowAltLeft,
   faLongArrowAltRight,
   faPaperPlane,
   faStar,
-  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
@@ -149,7 +147,12 @@ const Profile = ({ profile, dispatch, my_id }) => {
             <div className="down">
               <label
                 htmlFor="update_photo"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  if (!is_my_profile) {
+                    e.preventDefault();
+                    dispatch(SetRedirect("/messenger?self=" + profile.id));
+                  }
+                }}
               >
                 <div>
                   <FontAwesomeIcon
@@ -168,7 +171,7 @@ const Profile = ({ profile, dispatch, my_id }) => {
                   if (is_my_profile) {
                     let img = await toBase64(e.target.files[0]);
                     dispatch(UpdatePhoto(img));
-                  } else dispatch(SetRedirect("messenger?self=" + profile.id));
+                  }
                 }}
               />
             </div>
@@ -221,7 +224,7 @@ const Profile = ({ profile, dispatch, my_id }) => {
                 {profile.subjects.to_teach.map((s, i) => (
                   <span>
                     {s +
-                      (i === profile.subjects.to_teach.length - 1 ? "." : ",")}
+                      (i === profile.subjects.to_teach.length - 1 ? "." : ", ")}
                   </span>
                 ))}
               </div>
@@ -232,7 +235,7 @@ const Profile = ({ profile, dispatch, my_id }) => {
                 {profile.subjects.to_learn.map((s, i) => (
                   <span>
                     {s +
-                      (i === profile.subjects.to_learn.length - 1 ? "." : ",")}
+                      (i === profile.subjects.to_learn.length - 1 ? "." : ", ")}
                   </span>
                 ))}
               </div>
@@ -293,7 +296,9 @@ const Profile = ({ profile, dispatch, my_id }) => {
                   fontWeight: 600,
                 }}
               >
-                Be the first!
+                {!is_my_profile
+                  ? "Be the first!"
+                  : "Reviews about you will be here!"}
               </div>
             )}
           </div>

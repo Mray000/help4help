@@ -9,6 +9,14 @@ let instance = axios.create({
   },
 });
 
+const CreateInstance = (token) => {
+  instance = axios.create({
+    baseURL: "http://localhost:3010/",
+    withCredentials: false,
+    headers: { Autorisation: token || "" },
+  });
+};
+
 export const UsersAPI = {
   getUsers(id, filter) {
     return instance
@@ -79,6 +87,15 @@ export const MessengerAPI = {
       new_text: new_text,
     });
   },
+  video(img, to) {
+    this.io.emit("video", {
+      img: img,
+      to: to,
+    });
+  },
+  getSocket() {
+    return this.io;
+  },
 };
 
 export const ProfileAPI = {
@@ -137,19 +154,23 @@ export const AuthAPI = {
   signIn(email, password) {
     return instance
       .post("signin", { email: email, password: password })
-      .then((promise) => {
-        instance = axios.create({
-          baseURL: "http://localhost:3010/",
-          withCredentials: false,
-          headers: {
-            Autorisation: promise.data.token ? promise.data.token : "",
-          },
-        });
-        return promise.data;
+      .then((promise) => promise.data)
+      .then((data) => {
+        CreateInstance(data.token);
+        return data;
       });
   },
   getMe() {
-    return instance.get(`me`).then((promise) => promise.data);
+    return instance
+      .get(`me`)
+      .then((promise) => promise.data)
+      .then((data) => {
+        if (data.no_token) {
+          CreateInstance("");
+          localStorage.setItem("token", "");
+        }
+        return data;
+      });
   },
   logout() {
     return instance.delete(`auth/login`).then((promise) => promise.data);
@@ -162,13 +183,4 @@ export const SecurityAPI = {
       .get(`security/get-captcha-url`)
       .then((promise) => promise.data);
   },
-};
-
-export const onNewMessage = async function () {
-  // let dispatch = useDispatch();
-  let websocket = new WebSocket(
-    "wss://social-network.samuraijs.com/handlers/ChatHandler.ashx"
-  );
-  window.s = websocket.send.bind(websocket);
-  return websocket;
 };
