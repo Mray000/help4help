@@ -1,28 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Login.scss";
 import { Button } from "@material-ui/core";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { NavLink, Redirect } from "react-router-dom";
-import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
+import { getMyId } from "../../Redux/Selectors/AuthSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { SignIn } from "../../Redux/Reducer/AuthReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
-import { SetError } from "../../Redux/Reducer/AppReducer";
+import { getGlobalError } from "../../Redux/Selectors/AppSelectors";
 
 const SignupSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string()
-    .min(8, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
+  // email: Yup.string().email("Invalid email").required("Required"),
+  // password: Yup.string()
+  //   .min(8, "Too Short!")
+  //   .max(50, "Too Long!")
+  //   .required("Required"),
 });
 
 const Login = () => {
   const dispatch = useDispatch();
   const [is_submit, setIsSubmit] = useState(false);
-  const my_id = useSelector(getAuthId);
+  const error = useSelector(getGlobalError);
+  useEffect(() => {
+    if (error) setIsSubmit(false);
+  }, [error]);
+  const my_id = useSelector(getMyId);
   if (my_id) return <Redirect to={`profile/${my_id}`} />;
   return (
     <Formik
@@ -35,10 +39,6 @@ const Login = () => {
     >
       {({ handleSubmit, handleChange, errors }) => (
         <Form onSubmit={handleSubmit} className="login_container">
-          {(() => {
-            // if (errors.email) dispatch(SetError(errors.email));
-            // if (errors.password) dispatch(SetError(errors.password));
-          })()}
           <div className="col-4"></div>
           <div className="login col-4">
             <div style={{ fontWeight: "700", fontSize: "26px" }}>Login</div>
@@ -76,6 +76,7 @@ const Login = () => {
               type="submit"
               className="login_form_submit"
               onClick={handleSubmit}
+              disabled={is_submit}
             >
               Sing In
             </Button>

@@ -1,24 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.scss";
 import help4help from "./../../images/logo.png";
 import ava from "./../../images/ava.png";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthId, getIsAuth } from "../../Redux/Selectors/AuthSelectors";
+import { getMyId, getIsAuth } from "../../Redux/Selectors/AuthSelectors";
 import { ResetData, SetRedirect } from "../../Redux/Reducer/AppReducer";
 import { getDialogsList } from "../../Redux/Selectors/MessengerSelector";
+import { GetProfile } from "../../Redux/Reducer/ProfileReducer";
+import { ProfileAPI } from "../../axios/axios";
 
 const Header = ({ mobile }) => {
-  const my_id = useSelector(getAuthId);
+  const my_id = useSelector(getMyId);
   const dialogs = useSelector(getDialogsList);
+  const [user_ava, setUserAva] = useState("");
   const message_link = dialogs ? (dialogs.length ? dialogs[0].self.id : 0) : 0;
   const isAuth = useSelector(getIsAuth);
   const dispatch = useDispatch();
   const Logout = () => {
     localStorage.setItem("token", "");
+    navigator.sendBeacon(
+      "http://localhost:3010/disconnect",
+      JSON.stringify({ id: my_id })
+    );
     dispatch(ResetData());
     dispatch(SetRedirect("/login"));
   };
+  useEffect(() => {
+    (async () => {
+      if (my_id) setUserAva(await ProfileAPI.getProfile(my_id).ava);
+    })();
+  }, [my_id]);
   if (isAuth)
     return (
       <nav
@@ -66,7 +78,7 @@ const Header = ({ mobile }) => {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <img src={ava} alt="" id="user_avatar_img" />
+                <img src={user_ava || ava} alt="" id="user_avatar_img" />
               </span>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <NavLink to={`/profile/${my_id}`} className="dropdown-item">
@@ -85,38 +97,5 @@ const Header = ({ mobile }) => {
     );
   else return null;
 };
-
-// const Search = ({ mobile }) => {
-//   return (
-//     <Formik onSubmit={console.log} initialValues={Object}>
-//       {({ handleSubmit, handleChange, touched, errors }) => (
-//         <Form
-//           onChange={handleSubmit}
-//           className={`search_in_${mobile ? "mobile_" : ""}group`}
-//         >
-//           <InputGroup>
-//             <InputGroup.Prepend>
-//               <InputGroup.Text className="search_prepend_in">
-//                 <FontAwesomeIcon
-//                   icon={faSearch}
-//                   color="blue"
-//                   size={mobile ? `3x` : null}
-//                 />
-//               </InputGroup.Text>
-//             </InputGroup.Prepend>
-//             <Form.Control
-//               required
-//               name="user"
-//               onChange={handleChange}
-//               placeholder="Search"
-//               className="search_in"
-//               type="search"
-//             />
-//           </InputGroup>
-//         </Form>
-//       )}
-//     </Formik>
-//   );
-// };
 
 export default Header;

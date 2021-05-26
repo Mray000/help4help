@@ -12,9 +12,10 @@ import { Initialing, SetRedirect } from "./Redux/Reducer/AppReducer";
 import Test from "./Components/Test";
 import Preloader from "./mini-components/Preloader";
 import PageNotFound from "./mini-components/PageNotFound";
-import { getAuthId } from "./Redux/Selectors/AuthSelectors";
+import { getMyId } from "./Redux/Selectors/AuthSelectors";
 import Users from "./Components/Users/Users";
 import Lesson from "./Components/Lesson/Lesson";
+import Home from "./Components/Home/Home";
 const Login = React.lazy(() => import("./Components/Login/Login.jsx"));
 
 const Registration = React.lazy(() =>
@@ -25,7 +26,7 @@ const App = () => {
   const dispatch = useDispatch();
   const initialized = useSelector((state) => state.App.initialized);
   const redirect = useSelector(getRedirect);
-  const my_id = useSelector(getAuthId);
+  const my_id = useSelector(getMyId);
   useEffect(() => {
     if (!initialized) dispatch(Initialing());
   }, [initialized]);
@@ -33,7 +34,7 @@ const App = () => {
   if (!initialized) return <Preloader height={100} />;
   if (redirect) {
     setTimeout(() => dispatch(SetRedirect("")), 0);
-    return <Redirect to={redirect} />; //тут происходит редирект
+    return <Redirect to={redirect} />;
   }
   window.onbeforeunload = () => {
     navigator.sendBeacon(
@@ -42,10 +43,10 @@ const App = () => {
     );
   };
 
-  const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
-    navigator.userAgent
-  );
-  console.log(mobile);
+  const mobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+      navigator.userAgent
+    );
 
   return (
     <div className="app-wrapper">
@@ -53,6 +54,7 @@ const App = () => {
       <div className="container  app_wraper_content">
         <Switch>
           <Route path="/login" render={WithSuspence(Login)} />
+          <Route path="/home" component={Home} />
           <Route path="/profile" component={ProfileContainer} />
           <Route path="/messenger" component={Messenger} />
           <Route path="/test" component={Test} />

@@ -5,13 +5,13 @@ import React from "react";
 const ReplyMessagePreview = ({
   reply_messages_id,
   setReplyMessage,
-  FindReplyM,
+  FindReplyMessage,
   my_name,
   him_name,
 }) => {
   if (reply_messages_id.length > 0) {
-    let message_0 = FindReplyM(0);
-    let message_1 = FindReplyM(1);
+    let message_0 = FindReplyMessage(0);
+    let message_1 = FindReplyMessage(1);
     return (
       <div className="reply_message_pre_input_container">
         <div className="reply_icon">

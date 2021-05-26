@@ -19,19 +19,19 @@ const MessageListHeader = ({
   FilterMessage,
   select_messages_id,
   messages_for_search,
-  DeleteMessage,
   setSelectMessage,
   setReplyMessage,
   current_self,
   setMessagesForSearch,
   online,
+  RemoveDates,
 }) => {
   const dispatch = useDispatch();
 
   const [find, SetFind] = useState(false);
 
   const SelectDelete = () => {
-    DeleteMessage(select_messages_id);
+    RemoveDates(select_messages_id);
     setSelectMessage([]);
   };
   const SelectReply = () => {

@@ -86,10 +86,12 @@ const ToggleIsFollowing = (expected, id) => ({
   id,
 });
 
-export const GetUsers = (filter = null) => async (dispatch, getState) => {
-  let data = await UsersAPI.getUsers(getState().Auth.id, filter);
-  dispatch(SetUsers(data));
-};
+export const GetUsers =
+  (filter = { fullname: "", country: "", age: 15, smart: true }) =>
+  async (dispatch, getState) => {
+    let data = await UsersAPI.getUsers(getState().Auth.id, filter);
+    dispatch(SetUsers(data));
+  };
 
 const FollowUnfollow = async (dispatch, id, action, ApiRequest) => {
   dispatch(ToggleIsFollowing(true, id));

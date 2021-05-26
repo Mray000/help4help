@@ -37,7 +37,6 @@ export const FollowAPI = {
 export const MessengerAPI = {
   io,
   connect(id) {
-    console.log("connect req");
     this.io = io("http://localhost:3010", { query: "id=" + id });
     return this.io;
   },

@@ -46,7 +46,7 @@ const Message = ({
   });
   return (
     <div>
-      {NextDay(m, false, previous_message_date)}
+      {NextDay(m.date, false, previous_message_date)}
       <div
         className={MessageClass}
         ref={message_to_find}

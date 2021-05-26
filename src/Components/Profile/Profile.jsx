@@ -30,102 +30,6 @@ const Profile = ({ profile, dispatch, my_id }) => {
   const [is_submit, setIsSubmit] = useState(false);
   let grade = useRef(0);
   let review_input = useRef();
-  const reviews = [
-    {
-      profile: {
-        name: "Aboba",
-        surname: "Kukurov",
-        id: 90,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 4,
-      text:
-        "Невероятный человек, очень умен, пунктуален и добр! Сразу после начала общения, он произвел на меня большое впечателние и я поняла, что это именно тот кто сможет обучить меня капрофильскому гей сексу.",
-    },
-    {
-      profile: {
-        name: "ДАбаДбадДАб",
-        surname: "KOlllololg",
-        id: 30,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 2,
-      text: "Хуня какая-то",
-    },
-    {
-      profile: {
-        name: "Lolik",
-        surname: "Partizan",
-        id: 10,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 5,
-      text: "Ну такой вопстановительно расскеслительный ауешник",
-    },
-    {
-      profile: {
-        name: "Rujgdsg",
-        surname: "Akgljds",
-        id: 70,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 3,
-      text: "Крассава чел ваще маолчек крутой очень прям мне понрав.",
-    },
-    {
-      profile: {
-        name: "Aboba",
-        surname: "Kukurov",
-        id: 90,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 4,
-      text:
-        "Невероятный человек, очень умен, пунктуален и добр! Сразу после начала общения, он произвел на меня большое впечателние и я поняла, что это именно тот кто сможет обучить меня капрофильскому гей сексу.",
-    },
-    {
-      profile: {
-        name: "ДАбаДбадДАб",
-        surname: "KOlllololg",
-        id: 30,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 2,
-      text: "Хуня какая-то",
-    },
-    {
-      profile: {
-        name: "Lolik",
-        surname: "Partizan",
-        id: 10,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 5,
-      text: "Ну такой вопстановительно расскеслительный ауешник",
-    },
-    {
-      profile: {
-        name: "Rujgdsg",
-        surname: "Akgljds",
-        id: 70,
-        ava:
-          "https://tehnografi.com/wp-content/uploads/2019/08/1566746059_823_%D0%A2%D0%BE%D0%BF-5-Discord-%D0%B1%D0%BE%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D0%B6%D0%B4%D1%8B%D0%B9-%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD-%D0%B8%D0%BC%D0%B5%D1%82%D1%8C.jpg",
-      },
-      grade: 3,
-      text: "Крассава чел ваще маолчек крутой очень прям мне понрав.",
-    },
-  ];
-  reviews.forEach((r) => {
-    r.profile.name_surname = r.profile.name + " " + r.profile.surname;
-    r.review = { grade: r.grade, text: r.text };
-  });
   if (!profile.id) return <Preloader />;
   if (profile.id !== getCurrentProfileId()) return <Preloader />;
   return (
@@ -275,7 +179,9 @@ const Profile = ({ profile, dispatch, my_id }) => {
                         {(() => {
                           let stars = [];
                           for (let i = 0; i < r.review.grade; i++)
-                            stars.push(<FontAwesomeIcon icon={faStar} />);
+                            stars.push(
+                              <FontAwesomeIcon icon={faStar} key={i} />
+                            );
                           return stars;
                         })()}
                       </span>

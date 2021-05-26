@@ -22,7 +22,7 @@ import ReplyMessagePreview from "./ReplyMessagePreview.jsx";
 import Message from "./Message.jsx";
 import classnames from "classnames";
 import { GetPosition } from "../../../utils/GetPosition.js";
-import { getAuthId } from "../../../Redux/Selectors/AuthSelectors.js";
+import { getMyId } from "../../../Redux/Selectors/AuthSelectors.js";
 import { getCurrentSelf } from "../../../utils/GetCurrentSelf.js";
 
 const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
@@ -30,7 +30,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
   const him_name = "Stas KakayProsto";
   const messages = useSelector(getMessages);
   const error_messages = useSelector(getErrorMessages);
-  const my_id = useSelector(getAuthId);
+  const my_id = useSelector(getMyId);
   const dispatch = useDispatch();
   const [search_message_id, setMessageSearchId] = useState(0);
   const [select_messages_id, setSelectMessage] = useState([]);
@@ -80,7 +80,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
       indexOfRef.current = -1;
       date_ref_index.current = 0;
       last = false;
-      if (getCurrentSelf()) {
+      if (getCurrentSelf() && localStorage.getItem("token")) {
         dispatch(
           SetMessages(dialogs.find((d) => d.self.id === getCurrentSelf()).id)
         );
@@ -89,11 +89,8 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
   }, [getCurrentSelf()]);
 
   useEffect(() => {
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => (scroll_list.current.scrollTop = scroll_list.current.scrollHeight)
-    );
     if (messages.length) {
+      scroll_list.current.scrollTop = scroll_list.current.scrollHeight;
       if (
         GetPosition(scroll_list, "top") <
         GetPosition(date_refs.current[date_refs.current.length - 1], "top")
@@ -101,7 +98,6 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
         date_ref_index.current = date_refs.current.length - 1;
         InnerTextToDate();
       }
-      scroll_list.current.scrollTop = scroll_list.current.scrollHeight;
       let mass_photos = [];
       messages.forEach((m) =>
         m.photos?.forEach((p) => !photos.includes(p) && mass_photos.push(p))
@@ -196,7 +192,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
     });
   }, []);
 
-  const FindReplyM = (fl, id = null) => {
+  const FindReplyMessage = (fl, id = null) => {
     if (fl != null) {
       return messages.find(
         (m) => m.id === reply_messages_id[fl ? 0 : reply_messages_id.length - 1]
@@ -204,13 +200,13 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
     } else return messages.find((m) => m.id === id);
   };
 
-  const NextDayReturn = (noi, date) => {
+  const NextDayReturn = (type, date) => {
     const find_ref_index = date_refs.current.findIndex(
       (r) => r.current?.innerText === date
     );
-    if (noi === "last") return true;
-
-    if (noi === "search") return <div className="next_day_date">{date}</div>;
+    if (type === "delete") return find_ref_index;
+    if (type === "last") return true;
+    if (type === "search") return <div className="next_day_date">{date}</div>;
 
     if (!~find_ref_index) {
       date_refs.current.push(React.createRef());
@@ -230,17 +226,43 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
     );
   };
 
-  const NextDay = useCallback((m, noi, last_date = null) => {
-    let date1 = moment(m.date, "MMMM D YYYY h:mm");
+  const NextDay = useCallback((current_date, type, previous_date = null) => {
+    let date1 = moment(current_date, "MMMM D YYYY h:mm");
     let month1 = date1.format("MMMM");
     let day1 = date1.format("D");
-    let date2 = moment(last_date, "MMMM D YYYY h:mm");
+    let date2 = moment(previous_date, "MMMM D YYYY h:mm");
     let month2 = date2.format("MMMM");
     let day2 = date2.format("D");
     if (month1 + day1 !== month2 + day2) {
-      return NextDayReturn(noi, month1 + " " + day1);
+      return NextDayReturn(type, month1 + " " + day1);
     } else return null;
   }, []);
+
+  const RemoveDates = (m_ids) => {
+    scroll_list.current.removeEventListener("scroll", onScroll);
+    m_ids.forEach((m_id, i) => {
+      let current_index;
+      const current_message = messages.find((m, i) => {
+        if (m.id === m_id) {
+          current_index = i;
+          return true;
+        } else return false;
+      });
+      const previous_message = messages[current_index - 1];
+      const ref_i = NextDay(
+        current_message.date,
+        "delete",
+        previous_message.date
+      );
+      if (Number.isInteger(ref_i)) delete date_refs.current[ref_i];
+    });
+    date_ref_index.current = date_refs.current.length - 1;
+    date_refs.current = date_refs.current.filter(Boolean);
+    window.dri = date_ref_index.current;
+    window.dr = date_refs.current;
+    dispatch(DeleteMessage(my_id, dialog_id, m_ids));
+    scroll_list.current.addEventListener("scroll", onScroll);
+  };
 
   const InnerTextToDate = () => {
     let NewDate = moment(
@@ -264,7 +286,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
   const ReplyMessagesGroup = useCallback((reply_messages, id) => {
     let reply_group = ReplyMessagesGroupsState.current.find((e) => e.id === id);
     if (reply_group) return reply_group.reply_messages;
-    let arr = reply_messages.map((m_id) => FindReplyM(null, m_id));
+    let arr = reply_messages.map((m_id) => FindReplyMessage(null, m_id));
     ReplyMessagesGroupsState.current.push({ id: id, reply_messages: arr });
     return arr;
   }, []);
@@ -274,9 +296,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
       <MessageListHeader
         select_messages_id={select_messages_id}
         FilterMessage={FilterMessage}
-        DeleteMessage={(m_ids) =>
-          dispatch(DeleteMessage(my_id, dialog_id, m_ids))
-        }
+        RemoveDates={RemoveDates}
         setSelectMessage={setSelectMessage}
         setReplyMessage={setReplyMessage}
         messages_for_search={messages_for_search}
@@ -308,7 +328,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
             else if (
               messages[messages.indexOf(m) + 1].whom === m.whom &&
               !NextDay(
-                messages[messages.indexOf(m) + 1],
+                messages[messages.indexOf(m) + 1].date,
                 "last",
                 messages[messages.indexOf(m)]?.date
               )
@@ -359,7 +379,7 @@ const MessageList = ({ current_self, dialogs, unread_messages, dialog_id }) => {
       <ReplyMessagePreview
         reply_messages_id={reply_messages_id}
         setReplyMessage={setReplyMessage}
-        FindReplyM={FindReplyM}
+        FindReplyMessage={FindReplyMessage}
         my_name={my_name}
         him_name={him_name}
       />

@@ -50,7 +50,7 @@ const Message = ({
 }) => {
   return (
     <div>
-      {NextDay(m, "search", previous_message_date)}
+      {NextDay(m.date, "search", previous_message_date)}
       <div
         className={my ? "my_m" : "him_m"}
         onClick={() => {

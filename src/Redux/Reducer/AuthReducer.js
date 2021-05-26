@@ -37,12 +37,12 @@ export const SetCaptcha = (img) => ({
 
 export const GetMeData = () => async (dispatch) => {
   if (!localStorage.getItem("token")) {
-    dispatch(SetRedirect("/login"));
+    dispatch(SetRedirect("/home"));
     dispatch(set_initial());
   } else {
     let data = await AuthAPI.getMe();
     if (data.no_token) {
-      dispatch(SetRedirect("/login"));
+      dispatch(SetRedirect("/home"));
       dispatch(set_initial());
     } else {
       await dispatch(SetAuthData(data.id, true));
@@ -51,41 +51,42 @@ export const GetMeData = () => async (dispatch) => {
   }
 };
 
-export const SignUp = (
-  email,
-  password,
-  name,
-  surname,
-  country,
-  birthday,
-  LessonsForHelping,
-  LessonsForLearning
-) => async (dispatch) => {
-  let data = await AuthAPI.signUp({
-    email: email,
-    password: password,
-    name: name,
-    surname: surname,
-    ava: null,
-    online: "online",
-    country: country,
-    birthday: birthday,
-    subjects: {
-      to_learn: LessonsForHelping,
-      to_teach: LessonsForLearning,
-    },
-    chat_rooms: [],
-    reviews: [],
-  });
-  if (data.is_registrate) {
-    dispatch(SetError("You are registrate!"));
-    dispatch(SetRedirect("/login"));
-  } else dispatch(SetRedirect("/registration/confirm"));
-};
+export const SignUp =
+  (
+    email,
+    password,
+    name,
+    surname,
+    country,
+    birthday,
+    LessonsForHelping,
+    LessonsForLearning
+  ) =>
+  async (dispatch) => {
+    let data = await AuthAPI.signUp({
+      email: email,
+      password: password,
+      name: name,
+      surname: surname,
+      ava: null,
+      online: "online",
+      country: country,
+      birthday: birthday,
+      subjects: {
+        to_learn: LessonsForHelping,
+        to_teach: LessonsForLearning,
+      },
+      chat_rooms: [],
+      reviews: [],
+    });
+    if (data.is_registrate) {
+      dispatch(SetError("You are registrate!"));
+      dispatch(SetRedirect("/login"));
+    } else dispatch(SetRedirect("/registration/confirm"));
+  };
 
 export const SignIn = (email, password) => async (dispatch) => {
   let data = await AuthAPI.signIn(email, password);
-  console.log(data);
   if (data.no_user) {
     dispatch(SetError("You are not registred!"));
     dispatch(SetRedirect("/registration"));

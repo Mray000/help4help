@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Preloader from "../../mini-components/Preloader";
-import { GetUsers } from "../../Redux/Reducer/UserReducer";
+import { GetUsers, SetUsers } from "../../Redux/Reducer/UserReducer";
 import { getUsers } from "../../Redux/Selectors/UsersSelector";
 import "./Users.scss";
 import ava from "./../../images/ava.png";
 import { SetRedirect } from "../../Redux/Reducer/AppReducer";
 import moment from "moment";
+import { Form, Field, Formik } from "formik";
 
 const Users = () => {
   let users = useSelector(getUsers);
@@ -16,10 +17,15 @@ const Users = () => {
   }, []);
   if (!users) return <Preloader />;
   return (
-    <div className="users_container">
-      {users.map((u) => (
-        <UserItem u={u} dispatch={dispatch} key={u.id} />
-      ))}
+    <div>
+      <FilterForm dispatch={dispatch} />
+      <div className="users_container">
+        {users.length ? (
+          users.map((u) => <UserItem u={u} dispatch={dispatch} key={u.id} />)
+        ) : (
+          <h1 style={{ marginTop: "20px" }}>No results found😞</h1>
+        )}
+      </div>
     </div>
   );
 };
@@ -89,5 +95,86 @@ const UserItem = ({ u, dispatch }) => {
     </div>
   );
 };
+
+const FilterForm = ({ dispatch }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      marginTop: "20px",
+    }}
+  >
+    <div style={{ width: "50%" }}>
+      <h2>Search</h2>
+    </div>
+    <Formik
+      initialValues={{ fullname: "", country: "", age: 15, smart: true }}
+      onSubmit={(values) => dispatch(GetUsers(values))}
+    >
+      {({ handleChange }) => (
+        <Form
+          className="form-group"
+          onChange={handleChange}
+          style={{ width: "50%", justifyContent: "center", min_age: "" }}
+        >
+          <div style={{ display: "flex" }}>
+            <Field
+              className="form-control"
+              name="fullname"
+              placeholder="Fullname"
+              onChange={handleChange}
+            />
+            <Field
+              className="form-control"
+              name="country"
+              placeholder="Country"
+              onChange={handleChange}
+            />
+          </div>
+          <div style={{ display: "flex" }}>
+            <Field
+              type="number"
+              className="form-control"
+              name="age"
+              placeholder="Min age"
+              onChange={handleChange}
+              style={{ width: "33.3%", border: "1px solid #ced4da" }}
+            />
+            <div
+              style={{
+                width: "33.3%",
+                backgroundColor: "white",
+                borderRadius: "5px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "1px solid #ced4da",
+              }}
+            >
+              <label htmlFor="flexCheckDefault">Smart</label>
+              <Field
+                type="checkbox"
+                name="smart"
+                id="flexCheckDefault"
+                onChange={handleChange}
+                style={{ marginLeft: "5px", marginTop: "4px" }}
+              />
+            </div>
+            <button
+              style={{ width: "33.3%", border: "1px solid #ced4da" }}
+              type="submit"
+              className="btn btn-primary"
+            >
+              Search
+            </button>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  </div>
+);
 
 export default Users;

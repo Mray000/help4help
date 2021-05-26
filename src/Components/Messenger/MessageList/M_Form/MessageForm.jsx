@@ -14,7 +14,7 @@ import "emoji-mart/css/emoji-mart.css";
 import "../../Messenger.scss";
 import { faPaperclip, faSmile } from "@fortawesome/free-solid-svg-icons";
 import { getCurrentSelf } from "../../../../utils/GetCurrentSelf";
-import { getAuthId } from "../../../../Redux/Selectors/AuthSelectors";
+import { getMyId } from "../../../../Redux/Selectors/AuthSelectors";
 import { getDialogsList } from "../../../../Redux/Selectors/MessengerSelector";
 import { Picker } from "emoji-mart";
 
@@ -39,9 +39,10 @@ const MessageForm = ({
   let timer;
   let typing = useRef(false);
   const to = getCurrentSelf();
-  const chat_room_id = useSelector(getDialogsList).find((d) => d.self.id === to)
-    .id;
-  const my_id = useSelector(getAuthId);
+  const chat_room_id = useSelector(getDialogsList).find(
+    (d) => d.self.id === to
+  ).id;
+  const my_id = useSelector(getMyId);
   useEffect(() => {
     if (message_ref.current && reply_messages_id.length)
       message_ref.current.focus();

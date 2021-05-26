@@ -4,11 +4,11 @@ import { withAuthRedirect } from "../../utils/WithAuthRedirect.jsx";
 import Profile from "./Profile.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../Redux/Selectors/ProfileSelectors";
-import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
+import { getMyId } from "../../Redux/Selectors/AuthSelectors";
 
 const ProfileContainer = () => {
   const dispatch = useDispatch();
-  const my_id = useSelector(getAuthId);
+  const my_id = useSelector(getMyId);
   const profile = useSelector(getProfile);
   return (
     <Switch>

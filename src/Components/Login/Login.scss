@@ -62,7 +62,12 @@
     color: white;
     width: 80%;
     &:hover {
-      background-color: #5cdb94;
+      background-color: #0b7239;
     }
+  }
+  button:disabled {
+    color: white;
+    background-color: #0b7239;
+    opacity: 0.5;
   }
 }

@@ -408,30 +408,26 @@ export const SetMessages = (id) => async (dispatch, getState) => {
   }
 };
 
-export const AddMessage = (
-  text = null,
-  photos = null,
-  files = null,
-  audio = null,
-  reply = null
-) => async (dispatch, getState) => {
-  let id = Date.now().toString();
-  let date = moment().format("MMMM D YYYY HH:mm");
-  let whom = getState().Auth.id;
-  let to = getCurrentSelf();
-  let added_message = {
-    id: id,
-    whom: whom,
-    text: text,
-    photos: photos,
-    files: files,
-    audio: audio,
-    reply: reply,
-    date: date,
+export const AddMessage =
+  (text = null, photos = null, files = null, audio = null, reply = null) =>
+  async (dispatch, getState) => {
+    let id = Date.now().toString();
+    let date = moment().format("MMMM D YYYY HH:mm");
+    let whom = getState().Auth.id;
+    let to = getCurrentSelf();
+    let added_message = {
+      id: id,
+      whom: whom,
+      text: text,
+      photos: photos,
+      files: files,
+      audio: audio,
+      reply: reply,
+      date: date,
+    };
+    dispatch(add_message(added_message, true));
+    MessengerAPI.addMessage(whom, to, added_message);
   };
-  dispatch(add_message(added_message, true));
-  MessengerAPI.addMessage(whom, to, added_message);
-};
 
 export const GetSocket = () => MessengerAPI.getSocket();
 
@@ -440,56 +436,52 @@ export const SetMessagesRead = (from, to, c_r_id) => (dispatch) => {
   dispatch(set_dialog_new_messages(to));
 };
 
-export const DeleteMessage = (from, d_id, m_ids) => async (
-  dispatch,
-  getState
-) => {
-  MessengerAPI.deleteMessage(
-    from,
-    d_id,
-    m_ids,
-    getState().Messenger.dialogs.find((d) => d.id === d_id).unread_messages
-  );
-  dispatch(delete_message(d_id, m_ids, true));
-};
-
-export const EditMessage = (from, to, d_id, m_id, new_text) => async (
-  dispatch
-) => {
-  MessengerAPI.editMessage(from, to, d_id, m_id, new_text);
-  dispatch(edit_message(to, m_id, new_text));
-};
-
-export const AddDialogUser = (id, is_to_me = false) => async (
-  dispatch,
-  getState
-) => {
-  let data = await ProfileAPI.getProfile(id);
-  if (data.no_user) {
-    dispatch(SetError("No user😕"));
-    let dialogs = getState().Messenger.dialogs;
-    dispatch(
-      SetRedirect(
-        dialogs.length
-          ? "messenger/self=" + dialogs[0].self.id
-          : "profile/" + getState().Auth.id
-      )
+export const DeleteMessage =
+  (from, d_id, m_ids) => async (dispatch, getState) => {
+    MessengerAPI.deleteMessage(
+      from,
+      d_id,
+      m_ids,
+      getState().Messenger.dialogs.find((d) => d.id === d_id).unread_messages
     );
-  } else {
-    dispatch(
-      add_dialog_user(
-        {
-          id: data.id,
-          name_surname: data.name + " " + data.surname,
-          online: data.online,
-          ava: data.ava,
-        },
-        is_to_me
-      )
-    );
-    dispatch(set_messages([]));
-  }
-};
+    dispatch(delete_message(d_id, m_ids, true));
+  };
+
+export const EditMessage =
+  (from, to, d_id, m_id, new_text) => async (dispatch) => {
+    MessengerAPI.editMessage(from, to, d_id, m_id, new_text);
+    dispatch(edit_message(to, m_id, new_text));
+  };
+
+export const AddDialogUser =
+  (id, is_to_me = false) =>
+  async (dispatch, getState) => {
+    let data = await ProfileAPI.getProfile(id);
+    if (data.no_user) {
+      dispatch(SetError("No user😕"));
+      let dialogs = getState().Messenger.dialogs;
+      dispatch(
+        SetRedirect(
+          dialogs.length
+            ? "messenger/self=" + dialogs[0].self.id
+            : "profile/" + getState().Auth.id
+        )
+      );
+    } else {
+      dispatch(
+        add_dialog_user(
+          {
+            id: data.id,
+            name_surname: data.name + " " + data.surname,
+            online: data.online,
+            ava: data.ava,
+          },
+          is_to_me
+        )
+      );
+      dispatch(set_messages([]));
+    }
+  };
 
 export const ResetMessenger = () => async (dispatch) => {
   dispatch(reset_messenger());

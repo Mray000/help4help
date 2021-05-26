@@ -10,7 +10,10 @@ const FilesGroupMessage = ({ files, preview = null }) => {
   const [photo, setPhoto] = useState("");
 
   return (
-    <>
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
+    >
       {files.map((f) => {
         let image = f.type.includes("image");
         let length =
@@ -33,13 +36,7 @@ const FilesGroupMessage = ({ files, preview = null }) => {
                 <img src={f.file} alt="биба" />
               </div>
             ) : (
-              <img
-                src={document_icon}
-                alt="биба"
-                style={{
-                  width: "30px",
-                }}
-              />
+              <img src={document_icon} alt="биба" style={{ width: "30px" }} />
             )}
             <div>
               <div style={{ color: "white" }}>{truncate(f.name, 30)}</div>
@@ -48,7 +45,12 @@ const FilesGroupMessage = ({ files, preview = null }) => {
             {!preview && (
               <>
                 {!image && (
-                  <a download={f.name} ref={a} href={f.file}>
+                  <a
+                    download={f.name}
+                    ref={a}
+                    href={f.file}
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {}
                   </a>
                 )}
@@ -58,7 +60,7 @@ const FilesGroupMessage = ({ files, preview = null }) => {
         );
       })}
       {!preview && <FilePhotoPreviw photo={photo} setPhoto={setPhoto} />}
-    </>
+    </div>
   );
 };
 
@@ -66,7 +68,7 @@ const FilePhotoPreviw = ({ setPhoto, photo }) => {
   return (
     <Modal
       show={Boolean(photo)}
-      onHide={() => setPhoto("")}
+      onHide={(e) => setPhoto("")}
       className="photos_preview_global_container"
     >
       <img src={photo} alt="" />

@@ -41,6 +41,7 @@ const PhotosGroupMessage = ({
           }}
           onClick={(e) => {
             if (!preview) {
+              e.persist();
               e.stopPropagation();
               setImgIndex(() => index_for_photos + photos.indexOf(src));
               setShow(true);

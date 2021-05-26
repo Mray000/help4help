@@ -8,7 +8,7 @@ import {
   set_current_self_id,
   set_dialog_index,
 } from "../../Redux/Reducer/MessengerReducer";
-import { getAuthId } from "../../Redux/Selectors/AuthSelectors";
+import { getMyId } from "../../Redux/Selectors/AuthSelectors";
 import {
   getCurrentSelfId,
   getDialogsList,
@@ -22,7 +22,7 @@ import "./Messenger.scss";
 const Messenger = () => {
   let dialogs = useSelector(getDialogsList);
   let current_self_id = useSelector(getCurrentSelfId);
-  let my_id = useSelector(getAuthId);
+  let my_id = useSelector(getMyId);
   let current_self_id_query = getCurrentSelf();
   const dispatch = useDispatch();
   let current_dialog = dialogs.find((d) => d.user_id === current_self_id_query);
